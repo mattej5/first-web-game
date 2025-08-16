@@ -1,31 +1,24 @@
+// app/blog/[slug]/page.tsx
 import { baseUrl } from '@/app/sitemap'
 import { notFound } from 'next/navigation'
 import { getBlogPosts, formatDate } from '../utils'
 import { MDXContent } from '@/components/mdx'
+import BackArrow from '@/components/back-arrow'
 
 export async function generateStaticParams() {
   const posts = getBlogPosts()
-
-  return posts.map((post) => ({
-    slug: post.slug,
-  }))
+  return posts.map((post) => ({ slug: post.slug }))
 }
 
-export function generateMetadata({ params }: { params: { slug: string } }) {
-  const post = getBlogPosts().find((post) => post.slug === params.slug)
-  if (!post) {
-    return
-  }
+export async function generateMetadata(
+  { params }: { params: Promise<{ slug: string }> }
+) {
+  const { slug } = await params
+  const post = getBlogPosts().find((p) => p.slug === slug)
+  if (!post) return {}
 
-  const {
-    title,
-    publishedAt: publishedTime,
-    summary: description,
-    image,
-  } = post.metadata
-  const ogImage = image
-    ? image
-    : `${baseUrl}/og?title=${encodeURIComponent(title)}`
+  const { title, publishedAt: publishedTime, summary: description, image } = post.metadata
+  const ogImage = image ?? `${baseUrl}/og?title=${encodeURIComponent(title)}`
 
   return {
     title,
@@ -36,30 +29,22 @@ export function generateMetadata({ params }: { params: { slug: string } }) {
       type: 'article',
       publishedTime,
       url: `${baseUrl}/blog/${post.slug}`,
-      images: [
-        {
-          url: ogImage,
-        },
-      ],
+      images: [{ url: ogImage }],
     },
-    twitter: {
-      card: 'summary_large_image',
-      title,
-      description,
-      images: [ogImage],
-    },
+    twitter: { card: 'summary_large_image', title, description, images: [ogImage] },
   }
 }
 
-export default function Blog({ params }: Readonly<{ params: { slug: string } }>) {
-  const post = getBlogPosts().find((post) => post.slug === params.slug)
-
-  if (!post) {
-    notFound()
-  }
+export default async function Blog(
+  { params }: Readonly<{ params: Promise<{ slug: string }> }>
+) {
+  const { slug } = await params
+  const post = getBlogPosts().find((p) => p.slug === slug)
+  if (!post) notFound()
 
   return (
-    <section>
+    <section className="max-w-4xl mx-auto px-8 text-lg leading-relaxed">
+      <BackArrow className="mb-6" fallbackHref="/blog" label="Back to posts" />
       <script
         type="application/ld+json"
         suppressHydrationWarning
@@ -75,14 +60,11 @@ export default function Blog({ params }: Readonly<{ params: { slug: string } }>)
               ? `${baseUrl}${post.metadata.image}`
               : `/og?title=${encodeURIComponent(post.metadata.title)}`,
             url: `${baseUrl}/blog/${post.slug}`,
-            author: {
-              '@type': 'Person',
-              name: 'Vin Jones Portfolio',
-            },
+            author: { '@type': 'Person', name: 'Vin Jones Portfolio' },
           }),
         }}
       />
-      <h1 className="title font-semibold text-2xl tracking-tighter">
+      <h1 className="title font-semibold text-3xl tracking-tighter">
         {post.metadata.title}
       </h1>
       <div className="flex justify-between items-center mt-2 mb-8 text-sm">
@@ -90,7 +72,9 @@ export default function Blog({ params }: Readonly<{ params: { slug: string } }>)
           {formatDate(post.metadata.publishedAt)}
         </p>
       </div>
-      <article className="prose">
+
+      {/* Formatting lives here */}
+      <article className="prose prose-zinc dark:prose-invert max-w-none">
         <MDXContent source={post.content} />
       </article>
     </section>

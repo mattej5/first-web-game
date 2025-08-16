@@ -8,10 +8,11 @@ import { Button } from '@mui/material';
 export default function ProjectPage() {
   return (
     <div>
-        <h1 className="text-2xl font-bold mb-4">My Projects</h1>
+        <h1 className="text-2xl font-bold mb-4">Current and Past Projects</h1>
         <p className="text-gray-400">
         Here you can find a selection of my recent projects, showcasing my skills in software development and cloud architecture.
         </p>
+        <br />
         <Accordion className="mb-6">
             <AccordionSummary
             expandIcon={<ExpandMoreIcon />}
@@ -42,7 +43,9 @@ export default function ProjectPage() {
                 <Typography>
                     This tool allows a user to compare two excel files representing the before and after 
                     states of a data migration, highlighting discrepancies in the data and providing a
-                    high-level overview of the accuracy of each column.
+                    high-level overview of the accuracy of each column. This is an older project using
+                    python and pandas, but it remains a useful utility for data migration tasks.
+                    
                     <br />
                     <a className="text-blue-500 hover:underline" href="https://github.com/mattej5/data-migration-accuracy-tool" target="_blank" rel="noopener noreferrer">
                         See Github Repository

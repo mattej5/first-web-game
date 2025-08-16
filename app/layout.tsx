@@ -32,7 +32,7 @@ export default function RootLayout({
             <ul className="flex space-x-6 text-gray-700 font-medium">
               <li>
                 <Link href="/projects" className="hover:text-green-600">
-                  Current Projects
+                  Projects
                 </Link>
               </li>
               <li>

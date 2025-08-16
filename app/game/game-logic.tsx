@@ -279,7 +279,6 @@ export default function Game() {
     const currentEnemySpeed = 0.6 + elapsedSeconds * 0.01;
     setEnemies((prev) =>
       prev.map((enemy) => {
-        const now = performance.now();
         const shouldChangeDirection = Math.random() < 0.02; // 2% chance per frame to change direction
         const directions = ['up', 'down', 'left', 'right'] as const;
 
@@ -355,7 +354,7 @@ export default function Game() {
     setEnemies((prev) => {
       const remaining: Entity[] = [];
 
-      for (let enemy of prev) {
+      for (const enemy of prev) {
         const isInvuln = enemy.invulnerable &&
           performance.now() - (enemy.spawnTime || 0) < spawnInvulnerableTime;
 
