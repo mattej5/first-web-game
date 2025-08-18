@@ -1,4 +1,5 @@
-import { Typography, Avatar } from "@mui/material";
+import Avatar from "@mui/material/Avatar";
+import Typography from "@mui/material/Typography"
 
 export default function Home() {
   return (
