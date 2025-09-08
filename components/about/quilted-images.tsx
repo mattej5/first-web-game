@@ -1,4 +1,5 @@
 import * as React from 'react';
+import Image from 'next/image';
 import ImageList from '@mui/material/ImageList';
 import ImageListItem from '@mui/material/ImageListItem';
 
@@ -19,15 +20,33 @@ export default function QuiltedImageList() {
       cols={4}
       rowHeight={121}
     >
-      {itemData.map((item) => (
-        <ImageListItem key={item.img} cols={item.cols || 1} rows={item.rows || 1}>
-          <img
-            {...srcset(item.img, 121, item.rows, item.cols)}
-            alt={item.title}
-            loading="lazy"
-          />
-        </ImageListItem>
-      ))}
+      {itemData.map((item) => {
+        const rows = item.rows ?? 1;
+        const cols = item.cols ?? 1;
+
+        // Build the path for this item
+        const url = `/${item.img}`;
+
+        return (
+          <ImageListItem
+            key={item.img}
+            cols={cols}
+            rows={rows}
+            sx={{
+              position: "relative",
+              height: rows * 121,
+            }}
+          >
+            <Image
+              src={encodeURI(url)}     // handles spaces safely
+              alt={item.title}
+              fill
+              sizes="(max-width: 768px) 100vw, 500px"
+              style={{ objectFit: "cover" }}
+            />
+          </ImageListItem>
+        );
+      })}
     </ImageList>
   );
 }
@@ -78,7 +97,7 @@ const itemData = [
     cols: 2,
   },
   {
-    img: 'Moab Wedding-592.jpg',
+    img: 'Moab_Wedding-592.jpg',
     title: 'A Cool Wedding Photo',
     rows: 2,
     cols: 2,

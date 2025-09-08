@@ -48,7 +48,6 @@ export function MDXContent({ source, extraComponents = {} }: Readonly<{ source: 
           remarkPlugins: [remarkGfm],
           rehypePlugins: [
             rehypeSlug,
-            [rehypeAutolinkHeadings, { behavior: "wrap", properties: { className: "anchor" } }],
             [rehypePrettyCode, { theme: { dark: "github-dark", light: "github-light" } }],
             [rehypeExternalLinks, { target: "_blank", rel: ["noopener", "noreferrer"] }],
           ],

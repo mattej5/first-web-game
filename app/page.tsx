@@ -17,7 +17,7 @@ export default function Home() {
 
       <div className="w-full">
         <Typography className="mb-6">
-          My name is Vin Jones, and you&apos;ve found my personal portfolio. As a student in information systems at Brigham
+          My name is Vin Jones, and you&apos;ve found my personal portfolio. As a masters student in information systems at Brigham
           Young University, I&apos;ve learned how to create robust solutions to business and technology challenges. With an
           emphasis in predictive and secure software development, I&apos;m especially prepared for your cloud engineering and
           AI questions. From simple CRUD tables and UX design to data pipelines and recommendation algorithms, if you 
@@ -27,7 +27,7 @@ export default function Home() {
         <Typography>
           Feel free to check out some of my projects, or try out{" "}
           <a
-            className="arcade-font text-pink-500 hover:text-pink-400 transition-colors duration-200"
+            className="arcade-font text-green-600 hover:text-green-400 transition-colors duration-200"
             href="/game"
           >
             Untitled Battle Squares
