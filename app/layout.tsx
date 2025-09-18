@@ -5,6 +5,7 @@ import "./globals.css";
 import { SiteHeader } from "@/components/page-header";
 import { Dancing_Script } from "next/font/google"
 import { SiteFooter } from "@/components/page-footer";
+import { Analytics } from "@vercel/analytics/next"
 
 const dancing = Dancing_Script({
   subsets: ["latin"],
