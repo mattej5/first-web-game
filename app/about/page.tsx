@@ -22,7 +22,7 @@ export default function AboutMe() {
       <p className="text-gray-400">
         I specialize in building user-friendly interfaces and seamless user
         experiences, with an emphasis in predictive and secure software development. When I&apos;m not coding, you can find me exploring new
-        technologies, debugging issues my teammates experience, and interacting with the end users of my software.
+        technologies, debugging issues my teammates experience, and interacting with the end users of my software. Fun fact: My favorite distro of Linux is Mint.
       </p>
       <br />
 
