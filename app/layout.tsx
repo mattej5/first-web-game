@@ -20,18 +20,18 @@ const nunito = Nunito({
 });
 
 export const metadata: Metadata = {
-  title: "Vin Jones' Portfolio",
-  description: "Showcasing my work and projects",
+  title: "Vin's Portfolio",
+  description: "Master's student in Information Systems at BYU specializing in predictive analytics, secure software development, and cloud engineering solutions.",
 };
 
 export default function RootLayout({
   children,
-}: {
+}: Readonly<{
   children: React.ReactNode;
-}) {
+}>) {
   return (
-    <html lang="en" className="h-full">
-      <body className="flex min-h-screen flex-col">
+    <html lang="en" className={`h-full ${nunito.variable} ${dancing.variable}`}>
+      <body className="flex min-h-screen flex-col font-sans">
         <SiteHeader />
 
         {/* main grows to push footer down */}

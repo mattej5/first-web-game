@@ -1,9 +1,32 @@
 ---
 title: 'Low-Code Automated Solution for Teachers'
 publishedAt: '2025-09-07'
-summary: ''
+summary: 'How I used Google tools to build an email-driven automation for my wife’s classroom while keeping student data safe.'
 ---
 
-## Coming Soon!
+## Automating Classroom Workflows with Google
 
-This is one of my most recent solutions I built for my wife who teaches science to high school students with autism. I'll have the details written soon!
+This project started with a simple need: my wife, a high school science teacher working with students on the autism spectrum, wanted to cut down on repetitive grading tasks so she could focus more on teaching.  
+
+### The Process
+I built a low-code automation using **Google Apps Script** and **Google Workspace tools**. The setup worked like this:  
+
+1. **Trigger:** When an email arrived, the script automatically detected it.  
+2. **Parser:** The email body was sent to Google's Gemini for feedback and a "grading suggestion"  
+3. **Response:** Based on the rules we wrote, the system would use the Gemini API to send back a reply as the CEO of Lyell Space Aeronautics (a fake company), providing the students with feedback on their notes.
+
+This gave her a reliable “virtual assistant” that handled routine tasks without requiring a full software system.  
+
+### Privacy and Student Safety
+Because this solution involved potentially sensitive information, protecting student privacy was a priority:  
+- **No personal student data** was stored or given to the AI.  
+- All automation ran inside Google Workspace, so data never left a secure, access-controlled environment.  
+- Any identifiers (like names or emails) were stripped or replaced with anonymized codes in logs and sheets.  
+- The system was designed so my wife remained the only person with access to the underlying data.  
+
+### What’s Next
+In the coming weeks, I'll be reporting on how well initial testing goes and get feedback on whether our solution helped to automate the grading process and gave the students a sense of accountability in their notetaking.
+
+---
+
+This project reminded me that sometimes the best solutions aren’t complicated—they’re just **thoughtful, repeatable workflows** that remove friction while respecting privacy.

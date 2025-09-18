@@ -20,6 +20,13 @@ interface Obstacle {
   height: number;
 }
 
+interface Heart {
+  x: number;
+  y: number;
+  size: number;
+  spawnTime: number;
+}
+
 const canvasWidth = 400;
 const canvasHeight = 400;
 const swordLength = 50;
@@ -29,6 +36,8 @@ const enemySize = 20;
 const enemySpawnDelay = 5000;
 const spawnInvulnerableTime = 1000;
 const safeSpawnDistance = 80;
+const heartSpawnChance = 0.0008; // ~0.08% chance per frame to spawn a heart
+const heartSize = 15;
 
 export default function Game() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -39,6 +48,7 @@ export default function Game() {
     facing: 'down', // default direction
   });
   const [enemies, setEnemies] = useState<Entity[]>([]);
+  const [hearts, setHearts] = useState<Heart[]>([]);
   const [hasGameStarted, setHasGameStarted] = useState(false);
   const gameStartTime = useRef(performance.now());
   const [score, setScore] = useState(0);
@@ -50,6 +60,22 @@ export default function Game() {
   const [spawnRateMultiplier, setSpawnRateMultiplier] = useState(1);
   const facingRef = useRef<'up' | 'down' | 'left' | 'right'>('down');
   const [isGameOver, setIsGameOver] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+  const lastAttackTime = useRef<number>(0);
+  const attackDebounceMs = 50; // 50ms debounce (1/20th of a second)
+
+  // Check if device is mobile
+  useEffect(() => {
+    const checkMobile = () => {
+      const isTouchDevice = ('ontouchstart' in window) || (navigator.maxTouchPoints > 0);
+      const isSmallScreen = window.innerWidth <= 768;
+      setIsMobile(isTouchDevice && isSmallScreen);
+    };
+    
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
 
   // Defines positions and size of obstacles
   const [obstacles] = useState<Obstacle[]>([
@@ -103,6 +129,14 @@ export default function Game() {
         movePlayer();
         moveEnemies();
         handlePlayerCollision();
+        handleHeartCollision();
+        
+        // Randomly spawn hearts
+        if (Math.random() < heartSpawnChance && hearts.length < 3) {
+          const newHeart = spawnHeart();
+          setHearts((prev) => [...prev, newHeart]);
+        }
+        
         if (isSwinging) handleSwordCollision();
       }
 
@@ -178,11 +212,36 @@ export default function Game() {
 
   const resetGame = () => {
     setEnemies([]);
+    setHearts([]);
     setPlayer({ x: 200, y: 200, size: 20, facing: 'down' });
     setScore(0);
     setHealth(3);
     gameStartTime.current = performance.now();
     setIsGameOver(false);
+  };
+
+  const spawnHeart = (): Heart => {
+    let x, y;
+    let attempts = 0;
+    const maxAttempts = 20;
+    
+    // Try to find a spot that's not too close to player or obstacles
+    do {
+      x = Math.random() * (canvasWidth - heartSize);
+      y = Math.random() * (canvasHeight - heartSize);
+      attempts++;
+    } while (
+      attempts < maxAttempts && 
+      (Math.hypot(player.x - x, player.y - y) < 60 || 
+       isCollidingWithObstacle(x, y, heartSize))
+    );
+    
+    return {
+      x,
+      y,
+      size: heartSize,
+      spawnTime: performance.now(),
+    };
   };
 
   const facingAngleMap: Record<'up' | 'down' | 'left' | 'right', number> = {
@@ -389,6 +448,27 @@ export default function Game() {
     });
   };
 
+  const handleHeartCollision = () => {
+    setHearts((prev) => {
+      const remaining: Heart[] = [];
+      
+      for (const heart of prev) {
+        const distance = Math.hypot(player.x - heart.x, player.y - heart.y);
+        const minDist = (player.size + heart.size) / 2;
+        
+        if (distance < minDist) {
+          // Player touched the heart - heal and remove it
+          setHealth((hp) => hp + 1);
+          continue; // Don't include in remaining (heart disappears)
+        }
+        
+        remaining.push(heart);
+      }
+      
+      return remaining;
+    });
+  };
+
   const isCollidingWithObstacle = (x: number, y: number, size: number) => {
     const rect1 = { x, y, width: size, height: size };
 
@@ -430,11 +510,44 @@ export default function Game() {
     // Draw direction arrow
     drawFacingArrow(ctx, player);
     if (isSwinging) drawRotatedSword(ctx, player, swordAngle, swordLength, swordWidth);
+    
+    // Draw hearts
+    for (const heart of hearts) {
+      drawHeart(ctx, heart);
+    }
+    
     for (const enemy of enemies) {
       const isInvuln = enemy.invulnerable && performance.now() - (enemy.spawnTime || 0) < spawnInvulnerableTime;
       ctx.fillStyle = isInvuln ? 'rgba(255,0,0,0.4)' : 'red';
       ctx.fillRect(enemy.x, enemy.y, enemy.size, enemy.size);
     }
+  };
+
+  const drawHeart = (ctx: CanvasRenderingContext2D, heart: Heart) => {
+    const centerX = heart.x + heart.size / 2;
+    const centerY = heart.y + heart.size / 2;
+    const radius = heart.size / 3;
+
+    ctx.fillStyle = '#ff69b4'; // Hot pink color for the heart
+    ctx.beginPath();
+    
+    // Draw heart shape using two circles and a triangle
+    // Left circle
+    ctx.arc(centerX - radius/2, centerY - radius/2, radius/2, 0, Math.PI * 2);
+    ctx.fill();
+    
+    // Right circle  
+    ctx.beginPath();
+    ctx.arc(centerX + radius/2, centerY - radius/2, radius/2, 0, Math.PI * 2);
+    ctx.fill();
+    
+    // Bottom triangle
+    ctx.beginPath();
+    ctx.moveTo(centerX - radius, centerY);
+    ctx.lineTo(centerX + radius, centerY);
+    ctx.lineTo(centerX, centerY + radius);
+    ctx.closePath();
+    ctx.fill();
   };
 
   const drawFacingArrow = (
@@ -543,12 +656,35 @@ export default function Game() {
     ctx.restore();
   };
 
+  // Mobile control functions
+  const handleMobileMove = (direction: 'up' | 'down' | 'left' | 'right') => {
+    pressedKeys.current = {}; // Clear all keys first
+    pressedKeys.current[direction === 'up' ? 'w' : direction === 'down' ? 's' : direction === 'left' ? 'a' : 'd'] = true;
+  };
+
+  const handleMobileStop = () => {
+    pressedKeys.current = {};
+  };
+
+  const handleMobileAttack = () => {
+    const now = performance.now();
+    if (now - lastAttackTime.current < attackDebounceMs) {
+      return; // Ignore if too soon after last attack
+    }
+    lastAttackTime.current = now;
+    swingSword();
+  };
+
   return (
     <div className="container">
       {!hasGameStarted && (
         <div className="start-screen">
           <h1>Untitled Battle Squares</h1>
-          <p>WASD to move, SPACE to attack</p>
+          {isMobile ? (
+            <p>Use the D-pad to move, sword button to attack</p>
+          ) : (
+            <p>WASD to move, SPACE to attack</p>
+          )}
           <button
             onClick={startGame}
             className="px-8 py-3 mt-8 text-white font-bold text-lg tracking-wide rounded-lg shadow-lg bg-gradient-to-r from-purple-500 via-pink-500 to-red-500 hover:from-red-500 hover:via-purple-500 hover:to-pink-500 transition-all duration-300 ease-in-out"
@@ -562,8 +698,74 @@ export default function Game() {
           <p>
             Score: {score} | Health: {health}
           </p>
-          <p>Move: WASD | Sword: SPACE</p>
+          {!isMobile && <p>Move: WASD | Sword: SPACE</p>}
           <canvas ref={canvasRef} width={canvasWidth} height={canvasHeight} />
+          
+          {/* Mobile Controls */}
+          {isMobile && (
+            <div className="mobile-controls">
+              {/* D-Pad */}
+              <div className="dpad-container">
+                <div className="dpad">
+                  <button 
+                    className="dpad-btn dpad-up"
+                    onTouchStart={() => handleMobileMove('up')}
+                    onTouchEnd={handleMobileStop}
+                    onMouseDown={() => handleMobileMove('up')}
+                    onMouseUp={handleMobileStop}
+                    onMouseLeave={handleMobileStop}
+                  >
+                    ↑
+                  </button>
+                  <div className="dpad-middle">
+                    <button 
+                      className="dpad-btn dpad-left"
+                      onTouchStart={() => handleMobileMove('left')}
+                      onTouchEnd={handleMobileStop}
+                      onMouseDown={() => handleMobileMove('left')}
+                      onMouseUp={handleMobileStop}
+                      onMouseLeave={handleMobileStop}
+                    >
+                      ←
+                    </button>
+                    <div className="dpad-center"></div>
+                    <button 
+                      className="dpad-btn dpad-right"
+                      onTouchStart={() => handleMobileMove('right')}
+                      onTouchEnd={handleMobileStop}
+                      onMouseDown={() => handleMobileMove('right')}
+                      onMouseUp={handleMobileStop}
+                      onMouseLeave={handleMobileStop}
+                    >
+                      →
+                    </button>
+                  </div>
+                  <button 
+                    className="dpad-btn dpad-down"
+                    onTouchStart={() => handleMobileMove('down')}
+                    onTouchEnd={handleMobileStop}
+                    onMouseDown={() => handleMobileMove('down')}
+                    onMouseUp={handleMobileStop}
+                    onMouseLeave={handleMobileStop}
+                  >
+                    ↓
+                  </button>
+                </div>
+              </div>
+              
+              {/* Attack Button */}
+              <div className="attack-container">
+                <button 
+                  className="attack-btn"
+                  onTouchStart={handleMobileAttack}
+                  onClick={handleMobileAttack}
+                >
+                  ⚔️
+                </button>
+              </div>
+            </div>
+          )}
+          
           {isGameOver && (
             <div className="game-over-dialog">
               <div className="game-over-content">

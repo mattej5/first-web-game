@@ -46,7 +46,7 @@ export default function ProjectPage() {
         </AccordionDetails>
       </Accordion>
 
-      <Accordion className="mb-6">
+        <Accordion className="mb-6">
             <AccordionSummary
             expandIcon={<ExpandMoreIcon />}
             aria-controls="panel1-content"
