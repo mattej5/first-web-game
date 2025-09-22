@@ -1,0 +1,111 @@
+---
+title: 'stu: AI-Assisted Graduation Planning starts demos this week!'
+publishedAt: '2025-09-21'
+summary: 'Building stu—an advisor-in-the-loop planning tool under the Sandbox organization—to help students generate, customize, and approve graduation plans.'
+---
+
+## About Sandbox (and stu)
+
+**Sandbox** is an organization that helps both students and non-students get their tech startups in gear by offering a practical framework and a network of experts—while enabling students to keep earning university credit for the work they’re doing.
+
+**stu** is our degree-planning software built at Sandbox. You can learn more at **[stuplanning.com](https://stuplanning.com)**.
+
+> All screenshots below are from the **Dev site** with **mock data**.
+
+---
+
+## What is stu?
+
+This semester I’ve been working **full-time between BYU MISM classes** on **stu**, a degree-planning tool that blends structured catalog data with AI and keeps **advisors in the loop**. The goal is simple: help students create a graduation plan in minutes, refine it thoughtfully, and keep everyone aligned as things change.
+
+---
+
+## How the Student Flow Works
+
+1. **Pick programs.** Students choose their **majors and minors**.
+2. **Auto-place fixed courses.** If a class is *fixed* (e.g., “IS 402 in Fall only”), stu **locks it** into the correct term automatically.
+3. **Offer smart options.** For each requirement that allows choice (e.g., “1 of 3 courses”), stu shows the **relevant options** and enforces rules like credits, prerequisites, and terms offered.
+4. **Organize with AI.** Once selections are made, an **AI organizer** lays out an 8-semester plan (12–18 credits/term), spreading **GE and electives** across semesters and respecting sequencing.
+5. **Student tweaks.** Students can **drag, swap, or pin** courses to personalize pacing.
+6. **Submit for review.** One click sends the plan to an **advisor**.
+
+---
+
+## The Advisor Experience
+
+- **Targeted review.** Advisors see the proposed plan and can **leave notes** on specific semesters or requirements.
+- **Approve or request edits.** Advisors can **approve** (the plan becomes the **official graduation plan**) or send it back with recommendations.
+- **Audit-friendly.** Fixed courses and constraints are always visible, so it’s clear *why* something sits where it does.
+
+---
+
+## Under the Hood (Why It Works)
+
+- **Structured requirement model.** Programs are encoded with things like `termsOffered`, `fixed/choice requirements`, `credits`, and `prerequisites`.  
+- **Scheduling rules.** The planner honors credit bands, avoids duplicates, and respects cohort sequences (e.g., **IS 402/403/404/415 in Fall**, **IS 401/413/414/455 in Winter**).  
+- **Advisor-in-the-loop AI.** AI proposes; **humans govern**. That combination hits speed **and** accountability.
+
+---
+
+## Roadmap
+
+- **One-click re-plan with advisor notes.** Students can **resubmit to AI** with the advisor’s recommendations applied automatically—or **edit manually** and resubmit.
+- **Progress tracking.** Combine the official plan with **unofficial transcripts** (tracking approach may change with university requirements) to show pace, risks, and nudges.
+- **Pathfinder.** A career-first exploration tool: students pick **careers they’re curious about**, see majors that lead there, and—if they’re mid-degree—get **optimal switch options** that minimize time to graduation.
+
+---
+
+## Screenshots (Dev, Mock Data)
+
+<figure className="mx-auto w-3/5 text-center">
+  <img 
+    src="/stuV1.0/view-active-grad-plan.png" 
+    alt="View Active Grad Plan"
+    style={{ width: "100%" }}
+  />
+  <figcaption>Students can view their active graduation plans</figcaption>
+</figure>
+
+<figure className="mx-auto w-3/5 text-center">
+  <img 
+    src="/stuV1.0/edit-grad-plan.png" 
+    alt="Edit Active Grad Plan"
+    style={{ width: "100%" }}
+  />
+  <figcaption>Students can edit their active graduation plans and resubmit for approval</figcaption>
+</figure>
+
+<figure className="mx-auto w-3/5 text-center">
+  <img 
+    src="/stuV1.0/create-new-plan.png" 
+    alt="Create a New Plan"
+    style={{ width: "100%" }}
+  />
+  <figcaption>Students can create new graduation plans</figcaption>
+</figure>
+
+<figure className="mx-auto w-3/5 text-center">
+  <img 
+    src="/stuV1.0/approve-grad-plans-list.png" 
+    alt="List of Grad Plans to Approve"
+    style={{ width: "100%" }}
+  />
+  <figcaption>Advisors can view graduation plans for students or programs they are assigned to.</figcaption>
+</figure>
+
+<figure className="mx-auto w-3/5 text-center">
+  <img 
+    src="/stuV1.0/approve-grad-plans-single.png" 
+    alt="Approve Single Graduation Plan"
+    style={{ width: "100%" }}
+  />
+  <figcaption>Advisors can assign revision suggestions and have the student edit them before approving.</figcaption>
+</figure>
+
+---
+
+## Why We’re Building stu at Sandbox
+
+Students change majors. Courses move. Life happens. **stu** aims to keep plans **accurate, adaptable, and transparent**—so students stay on track and advisors spend less time firefighting and more time advising.
+
+Questions or feedback? Visit **[stuplanning.com](https://stuplanning.com)** and reach out—we’d love to hear from you.
