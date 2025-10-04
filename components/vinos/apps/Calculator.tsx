@@ -78,7 +78,14 @@ export default function Calculator() {
     setDisplay(String(parseFloat(display) / 100));
   };
 
-  const Button = ({ value, onClick, className = '', span = false }: any) => (
+  interface ButtonProps {
+    value: string;
+    onClick: () => void;
+    className?: string;
+    span?: boolean;
+  }
+
+  const Button = ({ value, onClick, className = '', span = false }: ButtonProps) => (
     <button
       onClick={(e) => {
         e.preventDefault();
