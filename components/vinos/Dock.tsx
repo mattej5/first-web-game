@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { useWindowManager } from './WindowManager';
-import { MdCalculate, MdMusicNote, MdApps, MdWork, MdPerson, MdArticle, MdHistory, MdHome, MdGames, MdDeveloperBoard } from 'react-icons/md';
+import { MdCalculate, MdMusicNote, MdApps, MdWork, MdPerson, MdArticle, MdHistory, MdHome, MdGames } from 'react-icons/md';
 
 interface DockItem {
   id: string;
