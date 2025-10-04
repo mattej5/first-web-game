@@ -22,10 +22,10 @@ export function BlogPosts() {
             className="flex flex-col space-y-1 mb-4 group"
           >
             <div className="w-full flex flex-col md:flex-row gap-2">
-              <p className="text-neutral-600 dark:text-neutral-400 w-[200px] tabular-nums">
+              <p className="text-gray-600 w-[200px] tabular-nums">
                 {formatDate(post.metadata.publishedAt, false)}
               </p>
-              <p className="text-neutral-900 dark:text-neutral-100 tracking-tight group-hover:underline">
+              <p className="text-gray-900 tracking-tight group-hover:underline">
                 {post.metadata.title}
               </p>
             </div>

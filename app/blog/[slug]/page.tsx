@@ -4,6 +4,7 @@ import { notFound } from 'next/navigation'
 import { getBlogPosts, formatDate } from '../utils'
 import { MDXContent } from '@/components/mdx'
 import BackArrow from '@/components/back-arrow'
+import { TableOfContents } from '@/components/table-of-contents'
 
 export async function generateStaticParams() {
   const posts = getBlogPosts()
@@ -43,7 +44,7 @@ export default async function Blog(
   if (!post) notFound()
 
   return (
-    <section className="max-w-4xl mx-auto px-8 text-lg leading-relaxed">
+    <section className="max-w-4xl mx-auto px-8 text-lg leading-relaxed -m-6 md:-m-8 p-6 md:p-8 bg-black rounded-2xl min-h-full">
       <BackArrow className="mb-6" fallbackHref="/blog" label="Back to posts" />
       <script
         type="application/ld+json"
@@ -64,19 +65,25 @@ export default async function Blog(
           }),
         }}
       />
-      <h1 className="title font-semibold text-3xl tracking-tighter">
+      <h1 className="title font-semibold text-3xl tracking-tighter text-white">
         {post.metadata.title}
       </h1>
       <div className="flex justify-between items-center mt-2 mb-8 text-sm">
-        <p className="text-sm text-neutral-600 dark:text-neutral-400">
+        <p className="text-sm text-gray-300">
           {formatDate(post.metadata.publishedAt)}
         </p>
       </div>
 
       {/* Formatting lives here */}
-      <article className="prose prose-zinc dark:prose-invert max-w-none">
-        <MDXContent source={post.content} />
-      </article>
+      <div className="grid grid-cols-1 lg:grid-cols-[1fr_250px] gap-8">
+        <article className="prose prose-invert max-w-none prose-headings:text-white prose-p:text-gray-100 prose-li:text-gray-100 prose-strong:text-white prose-code:text-gray-100 prose-a:text-blue-400">
+          <MDXContent source={post.content} />
+        </article>
+
+        <aside className="hidden lg:block">
+          <TableOfContents />
+        </aside>
+      </div>
     </section>
   )
 }

@@ -9,7 +9,7 @@ export default function AboutMe() {
       
       <h1 className="text-3xl font-bold mt-4 mb-4">About Me</h1> {/* Increased from text-2xl to text-3xl */}
 
-      <p className="text-gray-400">
+      <p className="text-gray-900">
         I&apos;m a passionate software developer and cloud architect that loves creating the tools that make life easier and more enjoyable.
         As a student entering my first year of the Masters of Information Systems Management program at Brigham Young University,
         I have a strong foundation in the essential technologies that power the web and the world of data. Many of my projects focus on
@@ -19,14 +19,14 @@ export default function AboutMe() {
       </p>
       <br />
 
-      <p className="text-gray-400">
+      <p className="text-gray-900">
         I specialize in building user-friendly interfaces and seamless user
         experiences, with an emphasis in predictive and secure software development. When I&apos;m not coding, you can find me exploring new
         technologies, debugging issues my teammates experience, and interacting with the end users of my software. Fun fact: My favorite distro of Linux is Mint.
       </p>
       <br />
 
-      <p className="text-gray-400 mb-10">
+      <p className="text-gray-900 mb-10">
         Time away from my computer is critical for maintaining my drive, creativity, and problem-solving skills.
         I prioritize time outside spent hiking, biking, or running, but I also love to cook, read, and play multiplayer video games with my family.
         My personal belief is that a well-rounded life leads to a better understanding of the people whose lives I hope to improve through my work,

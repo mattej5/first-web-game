@@ -31,16 +31,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`h-full ${nunito.variable} ${dancing.variable}`}>
-      <body className="flex min-h-screen flex-col font-sans">
-        <SiteHeader />
-
-        {/* main grows to push footer down */}
-        <main className="flex-grow max-w-7xl mx-auto px-6 py-8">
-          {children}
-        </main>
-
-        <SiteFooter />
+    <html lang="en" className={`h-full ${nunito.variable} ${dancing.variable}`} suppressHydrationWarning>
+      <body className="flex min-h-screen flex-col font-sans" suppressHydrationWarning>
+        {children}
       </body>
     </html>
   );

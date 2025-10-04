@@ -9,7 +9,7 @@ export default function ProjectPage() {
   return (
     <div>
       <h1 className="text-2xl font-bold mb-4">Current and Past Projects</h1>
-      <p className="text-gray-400">
+      <p className="text-gray-900">
         Here you can find a selection of my recent projects, showcasing my skills in software development, data engineering, and cloud architecture.
       </p>
       <br />

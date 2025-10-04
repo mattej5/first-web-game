@@ -11,33 +11,33 @@ export default function Home() {
           sx={{ width: 150, height: 150, marginBottom: 3 }}
         />
         
-        <p className="text-xl font-bold text-gray-600 dark:text-gray-300 max-w-2xl">
+        <p className="text-xl font-bold text-gray-900 max-w-2xl">
           Software Engineer & Co-Founder
         </p>
-        <p className="text-gray-300 dark:text-gray-300 max-2xl mt-2">
+        <p className="text-gray-900 max-2xl mt-2">
           You&apos;ve found my portfolio! As a Master&apos;s student in Information Systems at BYU,
           I specialize in predictive analytics, secure software development, and cloud engineering solutions.
           In the age of AI, I love getting close to the people I&apos;m building for to quickly iterate and deliver
           high-impact solutions.
         </p>
-        <p className="text-gray-300 dark:text-gray-300 max-2xl mt-2">
-          Throughout my time at BYU and as a co-founder of <a className="font-semibold text-green-500 hover:text-green-400 transition-colors duration-200" href="https://stuplanning.com/">stu</a>, 
-          I&apos;m honing my skills in building scalable cloud solutions, developing AI-driven applications, 
+        <p className="text-gray-900 max-2xl mt-2">
+          Throughout my time at BYU and as a co-founder of <a className="font-semibold text-green-500 hover:text-green-400 transition-colors duration-200" href="https://stuplanning.com/">stu</a>,
+          I&apos;m honing my skills in building scalable cloud solutions, developing AI-driven applications,
           and bringing the development process closer to the end-users.
         </p>
       </section>
 
       {/* Skills & Expertise Section */}
       <section className="mb-10">
-        <h2 className="text-2xl font-semibold mb-4 text-gray-900 dark:text-gray-100">
+        <h2 className="text-2xl font-semibold mb-4 text-gray-900">
           Expertise
         </h2>
         <div className="grid md:grid-cols-2 gap-6">
           <div>
-            <h3 className="text-lg font-medium mb-2 text-gray-800 dark:text-gray-200">
+            <h3 className="text-lg font-medium mb-2 text-gray-900">
               Technical Skills
             </h3>
-            <ul className="text-gray-700 dark:text-gray-300 space-y-1">
+            <ul className="text-gray-900 space-y-1">
               <li>• Cloud Engineering & Architecture</li>
               <li>• AI & Machine Learning Solutions</li>
               <li>• Full-Stack Development</li>
@@ -45,10 +45,10 @@ export default function Home() {
             </ul>
           </div>
           <div>
-            <h3 className="text-lg font-medium mb-2 text-gray-800 dark:text-gray-200">
+            <h3 className="text-lg font-medium mb-2 text-gray-900">
               Specializations
             </h3>
-            <ul className="text-gray-700 dark:text-gray-300 space-y-1">
+            <ul className="text-gray-900 space-y-1">
               <li>• Predictive Analytics</li>
               <li>• Secure Software Development</li>
               <li>• UX Design & Implementation</li>
@@ -59,11 +59,11 @@ export default function Home() {
       </section>
 
       {/* Call to Action Section */}
-      <section className="bg-gray-50 dark:bg-gray-800 rounded-lg p-6 text-center">
-        <h2 className="text-2xl font-semibold mb-4 text-gray-900 dark:text-gray-100">
+      <section className="bg-gray-50 rounded-lg p-6 text-center">
+        <h2 className="text-2xl font-semibold mb-4 text-gray-900">
           Got a Second?
         </h2>
-        <p className="mb-6 text-gray-700 dark:text-gray-300">
+        <p className="mb-6 text-gray-900">
           Explore a few of my solutions to problems I&apos;ve tackled recently.
         </p>
         <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
