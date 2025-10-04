@@ -19,7 +19,7 @@ export function SiteHeader() {
   useEffect(() => setOpen(false), [pathname]);
 
   return (
-    <header className="w-full border-b bg-gray-200">
+    <header className="w-full border-b border-white/20 bg-white/80 backdrop-blur-md shadow-lg">
       <nav className="max-w-7xl mx-auto flex items-center justify-between px-6 py-4">
         <Link href="/" className="flex items-center space-x-2">
             <Image
@@ -33,18 +33,19 @@ export function SiteHeader() {
         </Link>
 
         {/* Desktop menu */}
-        <ul className="hidden md:flex space-x-6 text-gray-700 font-medium">
-          <li><Link href="/projects" className="hover:text-green-600">Projects</Link></li>
-          <li><Link href="/about" className="hover:text-green-600">About Me</Link></li>
-          <li><Link href="/blog" className="hover:text-green-600">Blog</Link></li>
-          <li><Link href="/history" className="hover:text-green-600">History</Link></li>
+        <ul className="hidden md:flex space-x-6 text-gray-800 font-medium">
+          <li><Link href="/projects" className="hover:text-green-600 transition-colors duration-200">Projects</Link></li>
+          <li><Link href="/about" className="hover:text-green-600 transition-colors duration-200">About Me</Link></li>
+          <li><Link href="/blog" className="hover:text-green-600 transition-colors duration-200">Blog</Link></li>
+          <li><Link href="/history" className="hover:text-green-600 transition-colors duration-200">History</Link></li>
+          <li><Link href="/vinos" className="hover:text-green-600 transition-colors duration-200">VinOS</Link></li>
         </ul>
 
         {/* Mobile hamburger */}
         <button
           type="button"
           onClick={() => setOpen((v) => !v)}
-          className="md:hidden inline-flex items-center justify-center rounded-md p-2 text-gray-700 hover:bg-slate-200 focus:outline-none focus:ring-2 focus:ring-green-600"
+          className="md:hidden inline-flex items-center justify-center rounded-md p-2 text-gray-800 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-green-600 transition-colors duration-200"
           aria-label="Toggle menu"
           aria-expanded={open}
           aria-controls="mobile-menu"
@@ -66,11 +67,12 @@ export function SiteHeader() {
           open ? "max-h-96 opacity-100" : "max-h-0 opacity-0"
         }`}
       >
-        <ul className="flex flex-col gap-2 px-6 pb-4 pt-0 text-gray-700 font-medium bg-slate-300">
-          <li><Link href="/projects" className="block rounded px-2 py-2 hover:bg-slate-200">Projects</Link></li>
-          <li><Link href="/about" className="block rounded px-2 py-2 hover:bg-slate-200">About Me</Link></li>
-          <li><Link href="/blog" className="block rounded px-2 py-2 hover:bg-slate-200">Blog</Link></li>
-          <li><Link href="/history" className="block rounded px-2 py-2 hover:bg-slate-200">History</Link></li>
+        <ul className="flex flex-col gap-2 px-6 pb-4 pt-0 text-gray-800 font-medium bg-white/80 backdrop-blur-sm">
+          <li><Link href="/projects" className="block rounded px-2 py-2 hover:bg-white/70 transition-colors duration-200">Projects</Link></li>
+          <li><Link href="/about" className="block rounded px-2 py-2 hover:bg-white/70 transition-colors duration-200">About Me</Link></li>
+          <li><Link href="/blog" className="block rounded px-2 py-2 hover:bg-white/70 transition-colors duration-200">Blog</Link></li>
+          <li><Link href="/history" className="block rounded px-2 py-2 hover:bg-white/70 transition-colors duration-200">History</Link></li>
+          <li><Link href="/vinos" className="block rounded px-2 py-2 hover:bg-white/70 transition-colors duration-200">VinOS</Link></li>
         </ul>
       </div>
     </header>
