@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import { Nunito } from "next/font/google";
 import "./globals.css";
 import { Dancing_Script } from "next/font/google"
+import { Analytics } from "@vercel/analytics/next"
 
 const dancing = Dancing_Script({
   subsets: ["latin"],
@@ -32,6 +33,7 @@ export default function RootLayout({
       <body className="flex min-h-screen flex-col font-sans" suppressHydrationWarning>
         {children}
       </body>
+      <Analytics />
     </html>
   );
 }
