@@ -100,3 +100,14 @@
   backdrop-filter: blur(20px) saturate(180%);
   -webkit-backdrop-filter: blur(20px) saturate(180%);
 }
+
+.vin-gradient {
+  background-position: 0% 50%;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .vin-gradient {
+    animation: none !important;
+    background-position: 50% 50% !important;
+  }
+}

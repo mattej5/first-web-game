@@ -7,6 +7,7 @@ import Dock from './Dock';
 import StickyNote from './StickyNote';
 import { WindowManagerProvider } from './WindowManager';
 import WindowRenderer from './WindowRenderer';
+import { DraggableHomeButton } from './DraggableHomeButton';
 import '../../app/(vinos-standalone)/vinos/vinos.css';
 
 export default function Desktop() {
@@ -23,14 +24,15 @@ export default function Desktop() {
   return (
     <WindowManagerProvider>
       <div className="relative w-screen h-screen overflow-hidden">
+        <DraggableHomeButton />
         {/* Gradient Background (same as site) */}
         <div
-          className="absolute inset-0 -z-20"
+          className="absolute inset-0 -z-20 vin-gradient"
           style={{
             background: 'linear-gradient(135deg, #1e3a8a 0%, #059669 25%, #10b981 50%, #06b6d4 75%, #0ea5e9 100%)',
             backgroundSize: '400% 400%',
             backgroundAttachment: 'fixed',
-            animation: 'gradientShift 15s ease infinite',
+            animation: 'var(--gradient-animation)',
           }}
         />
 
@@ -39,7 +41,8 @@ export default function Desktop() {
           <div className="relative w-[90%] h-[90%] opacity-20">
             <Image
               src="/VinOS.png"
-              alt="VinOS Logo"
+              alt=""
+              aria-hidden="true"
               fill
               className="object-contain"
               priority
@@ -73,3 +76,4 @@ export default function Desktop() {
     </WindowManagerProvider>
   );
 }
+

@@ -34,14 +34,47 @@ export default function ProjectPage() {
           <Button
             variant="contained"
             sx={{
-              backgroundColor: 'green',
-              '&:hover': { backgroundColor: 'darkgreen' },
+              backgroundColor: '#047857',
+              '&:hover': { backgroundColor: '#065f46' },
             }}
             href="https://stuplanning.com"
             target="_blank"
             rel="noopener noreferrer"
           >
             Visit the stu website
+          </Button>
+        </AccordionDetails>
+      </Accordion>
+
+      <Accordion className="mb-6">
+        <AccordionSummary
+          expandIcon={<ExpandMoreIcon />}
+          aria-controls="panel-lumenarie-content"
+          id="panel-lumenarie-header"
+        >
+          <Typography sx={{ fontWeight: 'bold' }}>
+            Lumenarie Marketplace
+          </Typography>
+        </AccordionSummary>
+        <AccordionDetails>
+          <Typography>
+            A classroom marketplace that helps my wife&apos;s science students earn and spend
+            star-themed rewards while reinforcing collaboration, kindness, and accountability.
+            Teachers get quick dashboards for awarding Lumens, reviewing submissions, and keeping
+            the class economy transparent without extra admin work.
+          </Typography>
+          <br />
+          <Button
+            variant="contained"
+            sx={{
+              backgroundColor: '#047857',
+              '&:hover': { backgroundColor: '#065f46' },
+            }}
+            href="https://lumenarie-marketplace.vinjones.me"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Explore Lumenarie Marketplace
           </Button>
         </AccordionDetails>
       </Accordion>
@@ -63,8 +96,8 @@ export default function ProjectPage() {
                 <br />
                 <Button variant="contained"
                     sx={{
-                    backgroundColor: 'green',
-                    '&:hover': { backgroundColor: 'darkgreen' },
+                    backgroundColor: '#047857',
+                    '&:hover': { backgroundColor: '#065f46' },
                     }} color="primary" href="/blog/automation-for-teachers">
                     See blog post
                 </Button>
@@ -87,8 +120,8 @@ export default function ProjectPage() {
                 <Button 
                     variant="contained"
                     sx={{
-                    backgroundColor: 'green',
-                    '&:hover': { backgroundColor: 'darkgreen' },
+                    backgroundColor: '#047857',
+                    '&:hover': { backgroundColor: '#065f46' },
                     }} color="primary" href="https://drive.google.com/file/d/1jfkryUnuZjf38Rk6u1nunske7avgSXOz/view?usp=drive_link">
                     Request to download the Android App
                 </Button>
@@ -111,8 +144,8 @@ export default function ProjectPage() {
                 <Button 
                     variant="contained"
                     sx={{
-                    backgroundColor: 'green',
-                    '&:hover': { backgroundColor: 'darkgreen' },
+                    backgroundColor: '#047857',
+                    '&:hover': { backgroundColor: '#065f46' },
                     }} color="primary" href="/game">
                     Play Game
                 </Button>
@@ -135,8 +168,8 @@ export default function ProjectPage() {
                 <Button 
                     variant="contained"
                     sx={{
-                    backgroundColor: 'green',
-                    '&:hover': { backgroundColor: 'darkgreen' },
+                    backgroundColor: '#047857',
+                    '&:hover': { backgroundColor: '#065f46' },
                     }} color="primary" href="/blog/intex-I">
                     See Post
                 </Button>
@@ -161,8 +194,8 @@ export default function ProjectPage() {
                     <Button 
                     variant="contained"
                     sx={{
-                    backgroundColor: 'green',
-                    '&:hover': { backgroundColor: 'darkgreen' },
+                    backgroundColor: '#047857',
+                    '&:hover': { backgroundColor: '#065f46' },
                     }} color="primary" href="https://github.com/mattej5/data-migration-accuracy-tool">
                     See Github Repository
                 </Button>
