@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import './styles.css';
 
 interface Entity {
@@ -38,6 +38,151 @@ const spawnInvulnerableTime = 1000;
 const safeSpawnDistance = 80;
 const heartSpawnChance = 0.0008; // ~0.08% chance per frame to spawn a heart
 const heartSize = 15;
+
+const facingAngleMap: Record<'up' | 'down' | 'left' | 'right', number> = {
+  up: -Math.PI / 2,
+  right: 0,
+  down: Math.PI / 2,
+  left: Math.PI,
+};
+
+const rectIntersect = (
+  r1: { x: number; y: number; width: number; height: number },
+  r2: { x: number; y: number; width: number; height: number }
+) => {
+  return (
+    r1.x < r2.x + r2.width &&
+    r1.x + r1.width > r2.x &&
+    r1.y < r2.y + r2.height &&
+    r1.y + r1.height > r2.y
+  );
+};
+
+const drawHeart = (ctx: CanvasRenderingContext2D, heart: Heart) => {
+  const centerX = heart.x + heart.size / 2;
+  const centerY = heart.y + heart.size / 2;
+  const radius = heart.size / 3;
+
+  ctx.fillStyle = '#ff69b4';
+  ctx.beginPath();
+  ctx.arc(centerX - radius / 2, centerY - radius / 2, radius / 2, 0, Math.PI * 2);
+  ctx.fill();
+
+  ctx.beginPath();
+  ctx.arc(centerX + radius / 2, centerY - radius / 2, radius / 2, 0, Math.PI * 2);
+  ctx.fill();
+
+  ctx.beginPath();
+  ctx.moveTo(centerX - radius, centerY);
+  ctx.lineTo(centerX + radius, centerY);
+  ctx.lineTo(centerX, centerY + radius);
+  ctx.closePath();
+  ctx.fill();
+};
+
+const drawFacingArrow = (ctx: CanvasRenderingContext2D, player: Entity) => {
+  const cx = player.x + player.size / 2;
+  const cy = player.y + player.size / 2;
+  const arrowSize = 6;
+
+  ctx.fillStyle = 'black';
+  ctx.beginPath();
+
+  switch (player.facing) {
+    case 'up':
+      ctx.moveTo(cx, cy - player.size / 2 - arrowSize);
+      ctx.lineTo(cx - arrowSize, cy - player.size / 2);
+      ctx.lineTo(cx + arrowSize, cy - player.size / 2);
+      break;
+    case 'down':
+      ctx.moveTo(cx, cy + player.size / 2 + arrowSize);
+      ctx.lineTo(cx - arrowSize, cy + player.size / 2);
+      ctx.lineTo(cx + arrowSize, cy + player.size / 2);
+      break;
+    case 'left':
+      ctx.moveTo(cx - player.size / 2 - arrowSize, cy);
+      ctx.lineTo(cx - player.size / 2, cy - arrowSize);
+      ctx.lineTo(cx - player.size / 2, cy + arrowSize);
+      break;
+    case 'right':
+      ctx.moveTo(cx + player.size / 2 + arrowSize, cy);
+      ctx.lineTo(cx + player.size / 2, cy - arrowSize);
+      ctx.lineTo(cx + player.size / 2, cy + arrowSize);
+      break;
+  }
+
+  ctx.closePath();
+  ctx.fill();
+};
+
+const drawRotatedSword = (
+  ctx: CanvasRenderingContext2D,
+  player: Entity,
+  angle: number,
+  length: number,
+  width: number
+) => {
+  const px = player.x + player.size / 2;
+  const py = player.y + player.size / 2;
+  const offset = player.size / 2;
+
+  ctx.save();
+  ctx.translate(px, py);
+  ctx.rotate(angle);
+  ctx.fillStyle = 'gray';
+  ctx.fillRect(offset, -width / 2, length, width);
+  ctx.restore();
+};
+
+const lineIntersectsLine = (
+  x1: number,
+  y1: number,
+  x2: number,
+  y2: number,
+  x3: number,
+  y3: number,
+  x4: number,
+  y4: number
+) => {
+  const denominator = (y4 - y3) * (x2 - x1) - (x4 - x3) * (y2 - y1);
+
+  if (denominator === 0) return false;
+
+  const ua = ((x4 - x3) * (y1 - y3) - (y4 - y3) * (x1 - x3)) / denominator;
+  const ub = ((x2 - x1) * (y1 - y3) - (y2 - y1) * (x1 - x3)) / denominator;
+
+  return ua >= 0 && ua <= 1 && ub >= 0 && ub <= 1;
+};
+
+const lineIntersectsRect = (
+  x1: number,
+  y1: number,
+  x2: number,
+  y2: number,
+  rx: number,
+  ry: number,
+  rw: number,
+  rh: number
+) => {
+  const left = lineIntersectsLine(x1, y1, x2, y2, rx, ry, rx, ry + rh);
+  const right = lineIntersectsLine(x1, y1, x2, y2, rx + rw, ry, rx + rw, ry + rh);
+  const top = lineIntersectsLine(x1, y1, x2, y2, rx, ry, rx + rw, ry);
+  const bottom = lineIntersectsLine(x1, y1, x2, y2, rx, ry + rh, rx + rw, ry + rh);
+
+  return left || right || top || bottom;
+};
+
+const getSwordLine = (player: Entity, angle: number) => {
+  const px = player.x + player.size / 2;
+  const py = player.y + player.size / 2;
+
+  const startX = px + Math.cos(angle) * (player.size / 2);
+  const startY = py + Math.sin(angle) * (player.size / 2);
+  const endX = px + Math.cos(angle) * (player.size / 2 + swordLength);
+  const endY = py + Math.sin(angle) * (player.size / 2 + swordLength);
+
+  return { startX, startY, endX, endY };
+};
 
 export default function Game() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -83,113 +228,27 @@ export default function Game() {
     { x: 250, y: 200, width: 40, height: 80 },
     { x: 280, y: 320, width: 80, height: 20 },
     { x: 100, y: 300, width: 20, height: 40 },
-  ])
+  ]);
 
-  useEffect(() => {
-    if (!hasGameStarted || isGameOver) return;
+  const heartsCount = hearts.length;
 
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (['w', 'a', 's', 'd'].includes(e.key)) {
-        pressedKeys.current[e.key] = true;
-      }
-      if (e.key === ' ') {
-        swingSword();
-      }
-    };
+  const isCollidingWithObstacle = useCallback(
+    (x: number, y: number, size: number) => {
+      const rect1 = { x, y, width: size, height: size };
 
-    const handleKeyUp = (e: KeyboardEvent) => {
-      pressedKeys.current[e.key] = false;
-    };
+      return obstacles.some((obs) =>
+        rectIntersect(rect1, {
+          x: obs.x,
+          y: obs.y,
+          width: obs.width,
+          height: obs.height,
+        })
+      );
+    },
+    [obstacles]
+  );
 
-    window.addEventListener('keydown', handleKeyDown);
-    window.addEventListener('keyup', handleKeyUp);
-    return () => {
-      window.removeEventListener('keydown', handleKeyDown);
-      window.removeEventListener('keyup', handleKeyUp);
-    };
-  }, [hasGameStarted, isGameOver]);
-
-  useEffect(() => {
-    if (!hasGameStarted || isGameOver) return;
-
-    const intervalId = setInterval(() => {
-      const enemy = spawnEnemyAtCorner();
-      setEnemies((prev) => [...prev, enemy]);
-    }, Math.max(500, enemySpawnDelay / spawnRateMultiplier));
-
-    return () => clearInterval(intervalId);
-  }, [hasGameStarted, spawnRateMultiplier, isGameOver]);
-
-  useEffect(() => {
-    if (!hasGameStarted) return;
-
-    let animationFrameId: number;
-    const update = () => {
-      if (!isGameOver) {
-        movePlayer();
-        moveEnemies();
-        handlePlayerCollision();
-        handleHeartCollision();
-        
-        // Randomly spawn hearts
-        if (Math.random() < heartSpawnChance && hearts.length < 3) {
-          const newHeart = spawnHeart();
-          setHearts((prev) => [...prev, newHeart]);
-        }
-        
-        if (isSwinging) handleSwordCollision();
-      }
-
-      draw();
-      animationFrameId = requestAnimationFrame(update);
-    };
-
-    animationFrameId = requestAnimationFrame(update);
-    return () => cancelAnimationFrame(animationFrameId);
-  }, [hasGameStarted, player, enemies, isSwinging, swordAngle]);
-
-  const startGame = () => {
-    setHasGameStarted(true);
-    resetGame();
-  };
-
-  useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (isGameOver) return;
-
-      if (['w', 'a', 's', 'd'].includes(e.key)) {
-        pressedKeys.current[e.key] = true;
-      }
-      if (e.key === ' ') {
-        swingSword();
-      }
-    };
-
-    const handleKeyUp = (e: KeyboardEvent) => {
-      if (isGameOver) return;
-      pressedKeys.current[e.key] = false;
-    };
-
-    window.addEventListener('keydown', handleKeyDown);
-    window.addEventListener('keyup', handleKeyUp);
-    return () => {
-      window.removeEventListener('keydown', handleKeyDown);
-      window.removeEventListener('keyup', handleKeyUp);
-    };
-  }, [isGameOver]);
-
-  useEffect(() => {
-    if (isGameOver) return; // Don't spawn while game over
-
-    const intervalId = setInterval(() => {
-      const enemy = spawnEnemyAtCorner();
-      setEnemies((prev) => [...prev, enemy]);
-    }, Math.max(500, enemySpawnDelay / spawnRateMultiplier));
-
-    return () => clearInterval(intervalId);
-  }, [spawnRateMultiplier, isGameOver]); // add isGameOver as dependency
-
-  const spawnEnemyAtCorner = (): Entity => {
+  const spawnEnemyAtCorner = useCallback((): Entity => {
     const corners = [
       { x: 0, y: 0 },
       { x: canvasWidth - enemySize, y: 0 },
@@ -208,9 +267,9 @@ export default function Game() {
       invulnerable: true,
       direction: directions[Math.floor(Math.random() * directions.length)],
     };
-  };
+  }, [player]);
 
-  const resetGame = () => {
+  const resetGame = useCallback(() => {
     setEnemies([]);
     setHearts([]);
     setPlayer({ x: 200, y: 200, size: 20, facing: 'down' });
@@ -218,86 +277,66 @@ export default function Game() {
     setHealth(3);
     gameStartTime.current = performance.now();
     setIsGameOver(false);
-  };
+    facingRef.current = 'down';
+  }, []);
 
-  const spawnHeart = (): Heart => {
-    let x, y;
+  const startGame = useCallback(() => {
+    setHasGameStarted(true);
+    resetGame();
+  }, [resetGame]);
+
+  const spawnHeart = useCallback((): Heart => {
+    let x: number;
+    let y: number;
     let attempts = 0;
     const maxAttempts = 20;
-    
-    // Try to find a spot that's not too close to player or obstacles
+
     do {
       x = Math.random() * (canvasWidth - heartSize);
       y = Math.random() * (canvasHeight - heartSize);
       attempts++;
     } while (
-      attempts < maxAttempts && 
-      (Math.hypot(player.x - x, player.y - y) < 60 || 
-       isCollidingWithObstacle(x, y, heartSize))
+      attempts < maxAttempts &&
+      (Math.hypot(player.x - x, player.y - y) < 60 || isCollidingWithObstacle(x, y, heartSize))
     );
-    
+
     return {
       x,
       y,
       size: heartSize,
       spawnTime: performance.now(),
     };
-  };
+  }, [player, isCollidingWithObstacle]);
 
-  const facingAngleMap: Record<'up' | 'down' | 'left' | 'right', number> = {
-    up: -Math.PI / 2,
-    right: 0,
-    down: Math.PI / 2,
-    left: Math.PI,
-  };
-
-  const swingSword = () => {
-    if (swingRef.current !== null) cancelAnimationFrame(swingRef.current);
+  const swingSword = useCallback(() => {
+    if (swingRef.current !== null) {
+      cancelAnimationFrame(swingRef.current);
+    }
 
     setIsSwinging(true);
-      const start = performance.now();
-      const baseAngle = facingAngleMap[facingRef.current];
+    const start = performance.now();
+    const baseAngle = facingAngleMap[facingRef.current];
+    const swingRange = Math.PI;
 
-      const swingRange = Math.PI; // 180 degrees
+    const animate = (time: number) => {
+      const elapsed = time - start;
+      const progress = Math.min(elapsed / swingDuration, 1);
+      const currentAngle = baseAngle - swingRange / 2 + swingRange * progress;
+      setSwordAngle(currentAngle);
 
-      const animate = (time: number) => {
-        const elapsed = time - start;
-        const progress = Math.min(elapsed / swingDuration, 1);
-        const currentAngle = baseAngle - swingRange / 2 + swingRange * progress;
-        setSwordAngle(currentAngle);
-
-        if (progress < 1) {
-          swingRef.current = requestAnimationFrame(animate);
-        } else {
-          setIsSwinging(false);
-          setSwordAngle(0);
-          swingRef.current = null;
-        }
-      };
-
-      swingRef.current = requestAnimationFrame(animate);
-    };
-
-  useEffect(() => {
-    let animationFrameId: number;
-
-    const update = () => {
-      if (!isGameOver) {
-        movePlayer();
-        moveEnemies();
-        handlePlayerCollision();
-        if (isSwinging) handleSwordCollision();
+      if (progress < 1) {
+        swingRef.current = requestAnimationFrame(animate);
+      } else {
+        setIsSwinging(false);
+        setSwordAngle(0);
+        swingRef.current = null;
       }
-
-      draw(); // Always draw, even in Game Over
-      animationFrameId = requestAnimationFrame(update);
     };
 
-    animationFrameId = requestAnimationFrame(update);
-    return () => cancelAnimationFrame(animationFrameId);
-  }, [player, enemies, isSwinging, swordAngle]);
+    swingRef.current = requestAnimationFrame(animate);
+  }, []);
 
-  const movePlayer = () => {
+  const movePlayer = useCallback(() => {
     const speed = 1.1;
     setPlayer((prev) => {
       let newX = prev.x;
@@ -318,10 +357,10 @@ export default function Game() {
         newFacing = 'right';
       }
 
-      facingRef.current = newFacing ?? 'down'; // always update the ref with a defined value
+      facingRef.current = newFacing ?? 'down';
 
       if (isCollidingWithObstacle(newX, newY, prev.size)) {
-        return prev; // Cancel movement
+        return prev;
       }
 
       return {
@@ -331,14 +370,14 @@ export default function Game() {
         facing: newFacing,
       };
     });
-  };
+  }, [isCollidingWithObstacle]);
 
-  const moveEnemies = () => {
+  const moveEnemies = useCallback(() => {
     const elapsedSeconds = (performance.now() - gameStartTime.current) / 1000;
     const currentEnemySpeed = 0.6 + elapsedSeconds * 0.01;
     setEnemies((prev) =>
       prev.map((enemy) => {
-        const shouldChangeDirection = Math.random() < 0.02; // 2% chance per frame to change direction
+        const shouldChangeDirection = Math.random() < 0.02;
         const directions = ['up', 'down', 'left', 'right'] as const;
 
         let direction = enemy.direction;
@@ -366,7 +405,7 @@ export default function Game() {
         }
 
         if (isCollidingWithObstacle(newX, newY, enemy.size)) {
-          return { ...enemy, direction }; // Skip movement if blocked
+          return { ...enemy, direction };
         }
 
         return {
@@ -377,27 +416,28 @@ export default function Game() {
         };
       })
     );
-  };
+  }, [isCollidingWithObstacle]);
 
-  const handlePlayerCollision = () => {
+  const handlePlayerCollision = useCallback(() => {
     setEnemies((prev) => {
       const survivors: Entity[] = [];
       for (const enemy of prev) {
         const distance = Math.hypot(player.x - enemy.x, player.y - enemy.y);
         const minDist = (player.size + enemy.size) / 2;
-        const invuln = enemy.invulnerable && performance.now() - (enemy.spawnTime || 0) < spawnInvulnerableTime;
+        const invuln =
+          enemy.invulnerable && performance.now() - (enemy.spawnTime || 0) < spawnInvulnerableTime;
         if (invuln) {
           survivors.push(enemy);
           continue;
         }
         if (distance < minDist) {
           setHealth((hp) => {
-          const newHp = hp - 1;
-          if (newHp <= 0) {
-            setIsGameOver(true);
-            pressedKeys.current = {}; // Clear active keys to prevent ghost movement
-          }
-          return newHp;
+            const newHp = hp - 1;
+            if (newHp <= 0) {
+              setIsGameOver(true);
+              pressedKeys.current = {};
+            }
+            return newHp;
           });
           continue;
         }
@@ -405,256 +445,168 @@ export default function Game() {
       }
       return survivors;
     });
-  };
+  }, [player]);
 
-  const handleSwordCollision = () => {
+  const handleSwordCollision = useCallback(() => {
     const { startX, startY, endX, endY } = getSwordLine(player, swordAngle);
 
     setEnemies((prev) => {
       const remaining: Entity[] = [];
 
       for (const enemy of prev) {
-        const isInvuln = enemy.invulnerable &&
-          performance.now() - (enemy.spawnTime || 0) < spawnInvulnerableTime;
+        const isInvuln =
+          enemy.invulnerable && performance.now() - (enemy.spawnTime || 0) < spawnInvulnerableTime;
 
         if (isInvuln) {
           remaining.push(enemy);
           continue;
         }
 
-        const hit = lineIntersectsRect(
-          startX, startY,
-          endX, endY,
-          enemy.x, enemy.y,
-          enemy.size, enemy.size
-        );
+        const hit = lineIntersectsRect(startX, startY, endX, endY, enemy.x, enemy.y, enemy.size, enemy.size);
 
         if (hit) {
           setScore((prevScore) => prevScore + 1);
           setSpawnRateMultiplier((m) => m + 0.05);
 
-          // 10% chance to heal
           if (Math.random() < 0.1) {
             setHealth((hp) => hp + 1);
           }
 
-          continue; // enemy dies, don't include in remaining
+          continue;
         }
 
-        remaining.push(enemy); // not hit
+        remaining.push(enemy);
       }
 
       return remaining;
     });
-  };
+  }, [player, swordAngle]);
 
-  const handleHeartCollision = () => {
+  const handleHeartCollision = useCallback(() => {
     setHearts((prev) => {
       const remaining: Heart[] = [];
-      
+
       for (const heart of prev) {
         const distance = Math.hypot(player.x - heart.x, player.y - heart.y);
         const minDist = (player.size + heart.size) / 2;
-        
+
         if (distance < minDist) {
-          // Player touched the heart - heal and remove it
           setHealth((hp) => hp + 1);
-          continue; // Don't include in remaining (heart disappears)
+          continue;
         }
-        
+
         remaining.push(heart);
       }
-      
+
       return remaining;
     });
-  };
+  }, [player]);
 
-  const isCollidingWithObstacle = (x: number, y: number, size: number) => {
-    const rect1 = { x, y, width: size, height: size };
-
-    return obstacles.some((obs) =>
-      rectIntersect(rect1, {
-        x: obs.x,
-        y: obs.y,
-        width: obs.width,
-        height: obs.height,
-      })
-    );
-  };
-
-  const rectIntersect = (
-    r1: { x: number; y: number; width: number; height: number },
-    r2: { x: number; y: number; width: number; height: number }
-  ) => {
-    return (
-      r1.x < r2.x + r2.width &&
-      r1.x + r1.width > r2.x &&
-      r1.y < r2.y + r2.height &&
-      r1.y + r1.height > r2.y
-    );
-  };
-
-  const draw = () => {
+  const draw = useCallback(() => {
     const ctx = canvasRef.current?.getContext('2d');
     if (!ctx) return;
+
     ctx.clearRect(0, 0, canvasWidth, canvasHeight);
     ctx.fillStyle = 'green';
     ctx.fillRect(player.x, player.y, player.size, player.size);
 
-    // Draw obstacles
     ctx.fillStyle = '#444';
     for (const obstacle of obstacles) {
       ctx.fillRect(obstacle.x, obstacle.y, obstacle.width, obstacle.height);
     }
 
-    // Draw direction arrow
     drawFacingArrow(ctx, player);
-    if (isSwinging) drawRotatedSword(ctx, player, swordAngle, swordLength, swordWidth);
-    
-    // Draw hearts
+    if (isSwinging) {
+      drawRotatedSword(ctx, player, swordAngle, swordLength, swordWidth);
+    }
+
     for (const heart of hearts) {
       drawHeart(ctx, heart);
     }
-    
+
     for (const enemy of enemies) {
-      const isInvuln = enemy.invulnerable && performance.now() - (enemy.spawnTime || 0) < spawnInvulnerableTime;
+      const isInvuln =
+        enemy.invulnerable && performance.now() - (enemy.spawnTime || 0) < spawnInvulnerableTime;
       ctx.fillStyle = isInvuln ? 'rgba(255,0,0,0.4)' : 'red';
       ctx.fillRect(enemy.x, enemy.y, enemy.size, enemy.size);
     }
-  };
+  }, [enemies, hearts, isSwinging, obstacles, player, swordAngle]);
 
-  const drawHeart = (ctx: CanvasRenderingContext2D, heart: Heart) => {
-    const centerX = heart.x + heart.size / 2;
-    const centerY = heart.y + heart.size / 2;
-    const radius = heart.size / 3;
+  useEffect(() => {
+    if (!hasGameStarted || isGameOver) return;
 
-    ctx.fillStyle = '#ff69b4'; // Hot pink color for the heart
-    ctx.beginPath();
-    
-    // Draw heart shape using two circles and a triangle
-    // Left circle
-    ctx.arc(centerX - radius/2, centerY - radius/2, radius/2, 0, Math.PI * 2);
-    ctx.fill();
-    
-    // Right circle  
-    ctx.beginPath();
-    ctx.arc(centerX + radius/2, centerY - radius/2, radius/2, 0, Math.PI * 2);
-    ctx.fill();
-    
-    // Bottom triangle
-    ctx.beginPath();
-    ctx.moveTo(centerX - radius, centerY);
-    ctx.lineTo(centerX + radius, centerY);
-    ctx.lineTo(centerX, centerY + radius);
-    ctx.closePath();
-    ctx.fill();
-  };
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (['w', 'a', 's', 'd'].includes(e.key)) {
+        pressedKeys.current[e.key] = true;
+      }
+      if (e.key === ' ') {
+        swingSword();
+      }
+    };
 
-  const drawFacingArrow = (
-    ctx: CanvasRenderingContext2D,
-    player: Entity
-  ) => {
-    const cx = player.x + player.size / 2;
-    const cy = player.y + player.size / 2;
-    const arrowSize = 6;
+    const handleKeyUp = (e: KeyboardEvent) => {
+      pressedKeys.current[e.key] = false;
+    };
 
-    ctx.fillStyle = 'black';
-    ctx.beginPath();
+    window.addEventListener('keydown', handleKeyDown);
+    window.addEventListener('keyup', handleKeyUp);
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+      window.removeEventListener('keyup', handleKeyUp);
+    };
+  }, [hasGameStarted, isGameOver, swingSword]);
 
-    switch (player.facing) {
-      case 'up':
-        ctx.moveTo(cx, cy - player.size / 2 - arrowSize);
-        ctx.lineTo(cx - arrowSize, cy - player.size / 2);
-        ctx.lineTo(cx + arrowSize, cy - player.size / 2);
-        break;
-      case 'down':
-        ctx.moveTo(cx, cy + player.size / 2 + arrowSize);
-        ctx.lineTo(cx - arrowSize, cy + player.size / 2);
-        ctx.lineTo(cx + arrowSize, cy + player.size / 2);
-        break;
-      case 'left':
-        ctx.moveTo(cx - player.size / 2 - arrowSize, cy);
-        ctx.lineTo(cx - player.size / 2, cy - arrowSize);
-        ctx.lineTo(cx - player.size / 2, cy + arrowSize);
-        break;
-      case 'right':
-        ctx.moveTo(cx + player.size / 2 + arrowSize, cy);
-        ctx.lineTo(cx + player.size / 2, cy - arrowSize);
-        ctx.lineTo(cx + player.size / 2, cy + arrowSize);
-        break;
-    }
+  useEffect(() => {
+    if (!hasGameStarted || isGameOver) return;
 
-    ctx.closePath();
-    ctx.fill();
-  };
+    const intervalId = setInterval(() => {
+      const enemy = spawnEnemyAtCorner();
+      setEnemies((prev) => [...prev, enemy]);
+    }, Math.max(500, enemySpawnDelay / spawnRateMultiplier));
 
-  const getSwordLine = (player: Entity, angle: number) => {
-    const px = player.x + player.size / 2;
-    const py = player.y + player.size / 2;
+    return () => clearInterval(intervalId);
+  }, [hasGameStarted, isGameOver, spawnRateMultiplier, spawnEnemyAtCorner]);
 
-    const startX = px + Math.cos(angle) * (player.size / 2);
-    const startY = py + Math.sin(angle) * (player.size / 2);
-    const endX = px + Math.cos(angle) * (player.size / 2 + swordLength);
-    const endY = py + Math.sin(angle) * (player.size / 2 + swordLength);
+  useEffect(() => {
+    if (!hasGameStarted) return;
 
-    return { startX, startY, endX, endY };
-  };
+    let animationFrameId: number;
+    const update = () => {
+      if (!isGameOver) {
+        movePlayer();
+        moveEnemies();
+        handlePlayerCollision();
+        handleHeartCollision();
 
-  const lineIntersectsRect = (
-  x1: number, y1: number,
-  x2: number, y2: number,
-  rx: number, ry: number, rw: number, rh: number
-) => {
-  // Four edges of the rectangle
-  const left = lineIntersectsLine(x1, y1, x2, y2, rx, ry, rx, ry + rh);
-  const right = lineIntersectsLine(x1, y1, x2, y2, rx + rw, ry, rx + rw, ry + rh);
-  const top = lineIntersectsLine(x1, y1, x2, y2, rx, ry, rx + rw, ry);
-  const bottom = lineIntersectsLine(x1, y1, x2, y2, rx, ry + rh, rx + rw, ry + rh);
+        if (Math.random() < heartSpawnChance && heartsCount < 3) {
+          const newHeart = spawnHeart();
+          setHearts((prev) => [...prev, newHeart]);
+        }
 
-  return left || right || top || bottom;
-};
+        if (isSwinging) {
+          handleSwordCollision();
+        }
+      }
 
-  const lineIntersectsLine = (
-    x1: number, y1: number,
-    x2: number, y2: number,
-    x3: number, y3: number,
-    x4: number, y4: number
-  ) => {
-    const denominator =
-      (y4 - y3) * (x2 - x1) -
-      (x4 - x3) * (y2 - y1);
+      draw();
+      animationFrameId = requestAnimationFrame(update);
+    };
 
-    if (denominator === 0) return false;
-
-    const ua =
-      ((x4 - x3) * (y1 - y3) -
-        (y4 - y3) * (x1 - x3)) /
-      denominator;
-    const ub =
-      ((x2 - x1) * (y1 - y3) -
-        (y2 - y1) * (x1 - x3)) /
-      denominator;
-
-    return ua >= 0 && ua <= 1 && ub >= 0 && ub <= 1;
-  };
-
-  const drawRotatedSword = (
-    ctx: CanvasRenderingContext2D,
-    player: Entity,
-    angle: number,
-    swordLength: number,
-    swordWidth: number
-  ) => {
-    const px = player.x + player.size / 2;
-    const py = player.y + player.size / 2;
-    const offset = player.size / 2;
-    ctx.save();
-    ctx.translate(px, py);
-    ctx.rotate(angle);
-    ctx.fillStyle = 'gray';
-    ctx.fillRect(offset, -swordWidth / 2, swordLength, swordWidth);
-    ctx.restore();
-  };
+    animationFrameId = requestAnimationFrame(update);
+    return () => cancelAnimationFrame(animationFrameId);
+  }, [
+    draw,
+    handleHeartCollision,
+    handlePlayerCollision,
+    handleSwordCollision,
+    hasGameStarted,
+    heartsCount,
+    isGameOver,
+    isSwinging,
+    moveEnemies,
+    movePlayer,
+    spawnHeart,
+  ]);
 
   // Mobile control functions
   const handleMobileMove = (direction: 'up' | 'down' | 'left' | 'right') => {

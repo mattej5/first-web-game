@@ -60,6 +60,17 @@ export function WindowManagerProvider({ children }: { children: ReactNode }) {
   const [windows, setWindows] = useState<WindowConfig[]>([]);
   const [nextZIndex, setNextZIndex] = useState(100);
 
+  const bringToFront = useCallback((id: string) => {
+    setWindows((prev) =>
+      prev.map((w) =>
+        w.id === id
+          ? { ...w, zIndex: nextZIndex, isMinimized: false }
+          : w
+      )
+    );
+    setNextZIndex((prev) => prev + 1);
+  }, [nextZIndex]);
+
   const openWindow = useCallback((type: WindowType, route?: string, title?: string) => {
     // For route windows, check if this specific route is already open
     const existingWindow = type === 'route'
@@ -67,7 +78,6 @@ export function WindowManagerProvider({ children }: { children: ReactNode }) {
       : windows.find((w) => w.type === type);
 
     if (existingWindow) {
-      // Bring to front instead of opening new
       bringToFront(existingWindow.id);
       return;
     }
@@ -90,7 +100,7 @@ export function WindowManagerProvider({ children }: { children: ReactNode }) {
 
     setWindows((prev) => [...prev, newWindow]);
     setNextZIndex((prev) => prev + 1);
-  }, [windows, nextZIndex]);
+  }, [bringToFront, nextZIndex, windows]);
 
   const closeWindow = useCallback((id: string) => {
     setWindows((prev) => prev.filter((w) => w.id !== id));
@@ -115,17 +125,6 @@ export function WindowManagerProvider({ children }: { children: ReactNode }) {
       )
     );
   }, []);
-
-  const bringToFront = useCallback((id: string) => {
-    setWindows((prev) =>
-      prev.map((w) =>
-        w.id === id
-          ? { ...w, zIndex: nextZIndex, isMinimized: false }
-          : w
-      )
-    );
-    setNextZIndex((prev) => prev + 1);
-  }, [nextZIndex]);
 
   const updatePosition = useCallback((id: string, x: number, y: number) => {
     setWindows((prev) =>

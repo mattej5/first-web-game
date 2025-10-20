@@ -19,7 +19,7 @@ export default function Window({ config, children, icon }: WindowProps) {
   const [resizeStart, setResizeStart] = useState({ x: 0, y: 0, width: 0, height: 0 });
   const windowRef = useRef<HTMLDivElement>(null);
 
-  const handleMouseDown = (e: React.MouseEvent) => {
+  const handlePointerDown = (e: React.PointerEvent) => {
     if ((e.target as HTMLElement).closest('.window-controls')) return;
     setIsDragging(true);
     setDragStart({
@@ -29,7 +29,7 @@ export default function Window({ config, children, icon }: WindowProps) {
     bringToFront(config.id);
   };
 
-  const handleResizeStart = (e: React.MouseEvent, direction: string) => {
+  const handleResizeStart = (e: React.PointerEvent, direction: string) => {
     e.stopPropagation();
     setIsResizing(true);
     setResizeDirection(direction);
@@ -43,7 +43,7 @@ export default function Window({ config, children, icon }: WindowProps) {
   };
 
   useEffect(() => {
-    const handleMouseMove = (e: MouseEvent) => {
+    const handlePointerMove = (e: PointerEvent) => {
       if (isDragging && !config.isMaximized) {
         const newX = Math.max(0, Math.min(e.clientX - dragStart.x, window.innerWidth - config.size.width));
         const newY = Math.max(40, Math.min(e.clientY - dragStart.y, window.innerHeight - 96 - 40));
@@ -83,20 +83,20 @@ export default function Window({ config, children, icon }: WindowProps) {
       }
     };
 
-    const handleMouseUp = () => {
+    const handlePointerUp = () => {
       setIsDragging(false);
       setIsResizing(false);
       setResizeDirection('');
     };
 
     if (isDragging || isResizing) {
-      document.addEventListener('mousemove', handleMouseMove);
-      document.addEventListener('mouseup', handleMouseUp);
+      document.addEventListener('pointermove', handlePointerMove);
+      document.addEventListener('pointerup', handlePointerUp);
     }
 
     return () => {
-      document.removeEventListener('mousemove', handleMouseMove);
-      document.removeEventListener('mouseup', handleMouseUp);
+      document.removeEventListener('pointermove', handlePointerMove);
+      document.removeEventListener('pointerup', handlePointerUp);
     };
   }, [isDragging, isResizing, dragStart, resizeStart, resizeDirection, config, updatePosition, updateSize]);
 
@@ -125,12 +125,12 @@ export default function Window({ config, children, icon }: WindowProps) {
         isDragging ? 'window-dragging' : ''
       }`}
       style={windowStyle}
-      onMouseDown={() => bringToFront(config.id)}
+      onPointerDown={() => bringToFront(config.id)}
     >
       {/* Title Bar */}
       <div
         className="h-12 bg-white/70 border-b border-gray-200 flex items-center justify-between px-4 cursor-move select-none"
-        onMouseDown={handleMouseDown}
+        onPointerDown={handlePointerDown}
       >
         <div className="flex items-center gap-2">
           {icon && <div className="text-xl">{icon}</div>}
@@ -172,39 +172,63 @@ export default function Window({ config, children, icon }: WindowProps) {
       {!config.isMaximized && (
         <>
           {/* Corners */}
-          <div
-            className="absolute top-0 left-0 w-3 h-3 cursor-nwse-resize resize-handle-nw"
-            onMouseDown={(e) => handleResizeStart(e, 'nw')}
+          <button
+            type="button"
+            aria-label="Resize window north-west"
+            tabIndex={-1}
+            className="absolute top-0 left-0 w-3 h-3 cursor-nwse-resize resize-handle-nw bg-transparent p-0"
+            onPointerDown={(e) => handleResizeStart(e, 'nw')}
           />
-          <div
-            className="absolute top-0 right-0 w-3 h-3 cursor-nesw-resize resize-handle-ne"
-            onMouseDown={(e) => handleResizeStart(e, 'ne')}
+          <button
+            type="button"
+            aria-label="Resize window north-east"
+            tabIndex={-1}
+            className="absolute top-0 right-0 w-3 h-3 cursor-nesw-resize resize-handle-ne bg-transparent p-0"
+            onPointerDown={(e) => handleResizeStart(e, 'ne')}
           />
-          <div
-            className="absolute bottom-0 left-0 w-3 h-3 cursor-nesw-resize resize-handle-sw"
-            onMouseDown={(e) => handleResizeStart(e, 'sw')}
+          <button
+            type="button"
+            aria-label="Resize window south-west"
+            tabIndex={-1}
+            className="absolute bottom-0 left-0 w-3 h-3 cursor-nesw-resize resize-handle-sw bg-transparent p-0"
+            onPointerDown={(e) => handleResizeStart(e, 'sw')}
           />
-          <div
-            className="absolute bottom-0 right-0 w-3 h-3 cursor-nwse-resize resize-handle-se"
-            onMouseDown={(e) => handleResizeStart(e, 'se')}
+          <button
+            type="button"
+            aria-label="Resize window south-east"
+            tabIndex={-1}
+            className="absolute bottom-0 right-0 w-3 h-3 cursor-nwse-resize resize-handle-se bg-transparent p-0"
+            onPointerDown={(e) => handleResizeStart(e, 'se')}
           />
 
           {/* Edges */}
-          <div
-            className="absolute top-0 left-3 right-3 h-1 cursor-ns-resize resize-handle-n"
-            onMouseDown={(e) => handleResizeStart(e, 'n')}
+          <button
+            type="button"
+            aria-label="Resize window north"
+            tabIndex={-1}
+            className="absolute top-0 left-3 right-3 h-1 cursor-ns-resize resize-handle-n bg-transparent p-0"
+            onPointerDown={(e) => handleResizeStart(e, 'n')}
           />
-          <div
-            className="absolute bottom-0 left-3 right-3 h-1 cursor-ns-resize resize-handle-s"
-            onMouseDown={(e) => handleResizeStart(e, 's')}
+          <button
+            type="button"
+            aria-label="Resize window south"
+            tabIndex={-1}
+            className="absolute bottom-0 left-3 right-3 h-1 cursor-ns-resize resize-handle-s bg-transparent p-0"
+            onPointerDown={(e) => handleResizeStart(e, 's')}
           />
-          <div
-            className="absolute left-0 top-3 bottom-3 w-1 cursor-ew-resize resize-handle-w"
-            onMouseDown={(e) => handleResizeStart(e, 'w')}
+          <button
+            type="button"
+            aria-label="Resize window west"
+            tabIndex={-1}
+            className="absolute left-0 top-3 bottom-3 w-1 cursor-ew-resize resize-handle-w bg-transparent p-0"
+            onPointerDown={(e) => handleResizeStart(e, 'w')}
           />
-          <div
-            className="absolute right-0 top-3 bottom-3 w-1 cursor-ew-resize resize-handle-e"
-            onMouseDown={(e) => handleResizeStart(e, 'e')}
+          <button
+            type="button"
+            aria-label="Resize window east"
+            tabIndex={-1}
+            className="absolute right-0 top-3 bottom-3 w-1 cursor-ew-resize resize-handle-e bg-transparent p-0"
+            onPointerDown={(e) => handleResizeStart(e, 'e')}
           />
         </>
       )}
