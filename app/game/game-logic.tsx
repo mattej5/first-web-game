@@ -679,7 +679,7 @@ export default function Game() {
     <div className="container">
       {!hasGameStarted && (
         <div className="start-screen">
-          <h1>Untitled Battle Squares</h1>
+          <h2 className="text-2xl font-bold">Untitled Battle Squares</h2>
           {isMobile ? (
             <p>Use the D-pad to move, sword button to attack</p>
           ) : (

@@ -1,6 +1,6 @@
-import { Avatar } from '@mui/material';
 import { Metadata } from 'next';
 import Link from 'next/link';
+import Image from 'next/image';
 
 export const metadata: Metadata = {
   title: "Vin's Portfolio - Palantir Application",
@@ -14,11 +14,16 @@ export default function PalantirPage() {
         {/* Header */}
         <header className="text-center mb-12">
           <div className="flex justify-center mb-6">
-            <Avatar
-                alt="Vin's Profile Photo"
+            <div className="relative h-36 w-36 rounded-full shadow-xl ring-4 ring-white/70">
+              <Image
                 src="/headshot_IS_square.jpg"
-                sx={{ width: 150, height: 150 }}
-            />
+                alt="Vin Jones smiling"
+                fill
+                sizes="(max-width: 768px) 9rem, 9rem"
+                priority
+                className="rounded-full object-cover"
+              />
+            </div>
           </div>
           <h1 className="text-4xl font-bold text-gray-900 dark:text-gray-100 mb-4">
             Vin
@@ -63,7 +68,7 @@ export default function PalantirPage() {
                   rel="noopener noreferrer"
                   className="text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300 font-medium"
                 >
-                  Visit Site →
+                  Visit Site
                 </a>
               </div>
               <p className="text-gray-700 dark:text-gray-300 mb-4">
@@ -72,7 +77,7 @@ export default function PalantirPage() {
                 implemented real-time data processing, and created scalable cloud infrastructure to serve thousands of users.
               </p>
               <div className="flex flex-wrap gap-2">
-                <span className="bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200 px-3 py-1 rounded-full text-sm">
+                <span className="bg-emerald-100 dark:bg-emerald-900 text-emerald-800 dark:text-emerald-200 px-3 py-1 rounded-full text-sm">
                   Automation
                 </span>
                 <span className="bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 px-3 py-1 rounded-full text-sm">
@@ -94,7 +99,7 @@ export default function PalantirPage() {
                   href="/blog/STU" 
                   className="text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300 font-medium"
                 >
-                  Read More →
+                  Read More
                 </Link>
               </div>
               <p className="text-gray-700 dark:text-gray-300 mb-4">
@@ -123,9 +128,9 @@ export default function PalantirPage() {
                 </h3>
                 <a 
                   href="/game" 
-                  className="text-green-600 hover:text-green-800 dark:text-green-400 dark:hover:text-green-300 font-medium"
+                  className="text-emerald-800 hover:text-emerald-700 dark:text-emerald-300 dark:hover:text-emerald-200 font-medium"
                 >
-                  Play Game →
+                  Play Game
                 </a>
               </div>
               <p className="text-gray-700 dark:text-gray-300 mb-4">
@@ -160,12 +165,12 @@ export default function PalantirPage() {
                   Resume & Portfolio
                 </h3>
                 <div className="space-y-3">
-                  <button className="w-full bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-lg font-medium transition-colors duration-200">
+                  <button className="w-full bg-emerald-700 hover:bg-emerald-600 text-white px-6 py-3 rounded-lg font-medium transition-colors duration-200">
                     Download Resume (PDF)
                   </button>
                   <Link 
                     href="/projects" 
-                    className="block w-full text-center border border-green-600 text-green-600 hover:bg-green-50 dark:hover:bg-green-900 px-6 py-3 rounded-lg font-medium transition-colors duration-200"
+                    className="block w-full text-center border border-emerald-700 text-emerald-800 hover:bg-emerald-50 dark:hover:bg-emerald-900 px-6 py-3 rounded-lg font-medium transition-colors duration-200"
                   >
                     View All Projects
                   </Link>
@@ -180,13 +185,13 @@ export default function PalantirPage() {
                     href="https://github.com/mattej5" 
                     target="_blank" 
                     rel="noopener noreferrer"
-                    className="block w-full text-center bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-lg font-medium transition-colors duration-200"
+                    className="block w-full text-center bg-emerald-700 hover:bg-emerald-600 text-white px-6 py-3 rounded-lg font-medium transition-colors duration-200"
                   >
                     GitHub Profile
                   </a>
                   <Link 
                     href="/blog" 
-                    className="block w-full text-center border border-green-600 text-green-600 hover:bg-green-50 dark:hover:bg-green-900 px-6 py-3 rounded-lg font-medium transition-colors duration-200"
+                    className="block w-full text-center border border-emerald-700 text-emerald-800 hover:bg-emerald-50 dark:hover:bg-emerald-900 px-6 py-3 rounded-lg font-medium transition-colors duration-200"
                   >
                     Technical Blog
                   </Link>
@@ -208,7 +213,7 @@ export default function PalantirPage() {
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-8">
             <a 
               href="mailto:mattej5@byu.edu" 
-              className="bg-green-600 hover:bg-green-700 text-white px-8 py-3 rounded-lg font-medium transition-colors duration-200"
+              className="bg-emerald-700 hover:bg-emerald-600 text-white px-8 py-3 rounded-lg font-medium transition-colors duration-200"
             >
               Send Email
             </a>
@@ -230,3 +235,4 @@ export default function PalantirPage() {
     </div>
   );
 }
+

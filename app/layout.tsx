@@ -2,8 +2,8 @@
 import type { Metadata } from "next";
 import { Nunito } from "next/font/google";
 import "./globals.css";
-import { Dancing_Script } from "next/font/google"
-import { Analytics } from "@vercel/analytics/next"
+import { Dancing_Script } from "next/font/google";
+import { Analytics } from "@vercel/analytics/next";
 
 const dancing = Dancing_Script({
   subsets: ["latin"],
@@ -18,9 +18,36 @@ const nunito = Nunito({
   display: 'swap',
 });
 
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://vinjones.me";
+
 export const metadata: Metadata = {
   title: "Vin's Portfolio",
   description: "Master's student in Information Systems at BYU specializing in predictive analytics, secure software development, and cloud engineering solutions.",
+  metadataBase: new URL(siteUrl),
+  alternates: {
+    canonical: "/",
+  },
+  openGraph: {
+    type: "website",
+    url: siteUrl,
+    title: "Vin's Portfolio",
+    description: "Master's student in Information Systems at BYU specializing in predictive analytics, secure software development, and cloud engineering solutions.",
+    siteName: "Vin Jones Portfolio",
+    images: [
+      {
+        url: `${siteUrl}/headshot_IS_square.jpg`,
+        width: 1200,
+        height: 1200,
+        alt: "Vin Jones smiling",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Vin's Portfolio",
+    description: "Master's student in Information Systems at BYU specializing in predictive analytics, secure software development, and cloud engineering solutions.",
+    images: [`${siteUrl}/headshot_IS_square.jpg`],
+  },
 };
 
 export default function RootLayout({
@@ -37,4 +64,3 @@ export default function RootLayout({
     </html>
   );
 }
-
