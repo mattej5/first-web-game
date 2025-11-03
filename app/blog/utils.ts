@@ -27,7 +27,20 @@ function parseFrontmatter(fileContent: string) {
 }
 
 function getMDXFiles(dir: string) {
-  return fs.readdirSync(dir).filter((file) => path.extname(file) === '.mdx')
+  const entries = fs.readdirSync(dir, { withFileTypes: true })
+  const files: string[] = []
+
+  entries.forEach((entry) => {
+    const entryPath = path.join(dir, entry.name)
+
+    if (entry.isDirectory()) {
+      files.push(...getMDXFiles(entryPath))
+    } else if (entry.isFile() && path.extname(entry.name) === '.mdx') {
+      files.push(entryPath)
+    }
+  })
+
+  return files
 }
 
 function readMDXFile(filePath: string) {
@@ -38,13 +51,17 @@ function readMDXFile(filePath: string) {
 function getMDXData(dir: string) {
   const mdxFiles = getMDXFiles(dir)
   return mdxFiles.map((file) => {
-    const { metadata, content } = readMDXFile(path.join(dir, file))
+    const { metadata, content } = readMDXFile(file)
     const slug = path.basename(file, path.extname(file))
+    const relativePath = path.relative(dir, file)
+    const isNested = relativePath.includes(path.sep)
 
     return {
       metadata,
       slug,
       content,
+      relativePath,
+      isNested,
     }
   })
 }

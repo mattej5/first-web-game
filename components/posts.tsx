@@ -2,7 +2,7 @@ import { getBlogPosts, formatDate } from '@/app/blog/utils'
 import Link from 'next/link'
 
 export function BlogPosts() {
-  const allBlogs = getBlogPosts()
+  const allBlogs = getBlogPosts().filter((post) => !post.isNested)
 
   return (
     <div>

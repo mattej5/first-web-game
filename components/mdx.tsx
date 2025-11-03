@@ -6,6 +6,7 @@ import rehypePrettyCode from "rehype-pretty-code";
 import rehypeExternalLinks from "rehype-external-links";
 import Image from "next/image";
 import Link from "next/link";
+import { StoryChapters } from "@/components/story-chapters";
 
 function MdxImage(props: React.ComponentProps<"img">) {
   // next/image needs dimensions; set sensible defaults (override in MDX if you want)
@@ -34,6 +35,7 @@ function MdxLink({
 const components = {
   img: MdxImage, // if your MDX uses <img>
   a: MdxLink,
+  StoryChapters,
 };
 
 export function MDXContent({ source, extraComponents = {} }: Readonly<{ source: string; extraComponents?: Record<string, React.ComponentType<unknown>> }>) {
