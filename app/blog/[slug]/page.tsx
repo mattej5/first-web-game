@@ -5,6 +5,7 @@ import { getBlogPosts, formatDate } from '../utils'
 import { MDXContent } from '@/components/mdx'
 import BackArrow from '@/components/back-arrow'
 import { TableOfContents } from '@/components/table-of-contents'
+import { PasswordGate } from '@/components/password-gate'
 
 export async function generateStaticParams() {
   const posts = getBlogPosts()
@@ -75,15 +76,24 @@ export default async function Blog(
       </div>
 
       {/* Formatting lives here */}
-      <div className="grid grid-cols-1 lg:grid-cols-[1fr_250px] gap-8">
-        <article className="prose prose-invert max-w-none prose-headings:text-white prose-p:text-gray-100 prose-li:text-gray-100 prose-strong:text-white prose-code:text-gray-100 prose-a:text-blue-400">
-          <MDXContent source={post.content} />
-        </article>
+      <PasswordGate
+        isProtected={Boolean(post.metadata.passwordProtected)}
+        password={post.metadata.password}
+        contactEmail={post.metadata.passwordContactEmail}
+        passwordHint={post.metadata.passwordHint}
+        storageKey={`blog:${post.slug}`}
+        title={post.metadata.title}
+      >
+        <div className="grid grid-cols-1 lg:grid-cols-[1fr_250px] gap-8">
+          <article className="prose prose-invert max-w-none prose-headings:text-white prose-p:text-gray-100 prose-li:text-gray-100 prose-strong:text-white prose-code:text-gray-100 prose-a:text-blue-400">
+            <MDXContent source={post.content} />
+          </article>
 
-        <aside className="hidden lg:block">
-          <TableOfContents />
-        </aside>
-      </div>
+          <aside className="hidden lg:block">
+            <TableOfContents />
+          </aside>
+        </div>
+      </PasswordGate>
     </section>
   )
 }

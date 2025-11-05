@@ -6,6 +6,10 @@ type Metadata = {
   publishedAt: string
   summary: string
   image?: string
+  passwordProtected?: boolean
+  password?: string
+  passwordContactEmail?: string
+  passwordHint?: string
 }
 
 function parseFrontmatter(fileContent: string) {
@@ -17,10 +21,22 @@ function parseFrontmatter(fileContent: string) {
   const metadata: Partial<Metadata> = {}
 
   frontMatterLines.forEach((line) => {
+    if (!line.trim()) return
+
     const [key, ...valueArr] = line.split(': ')
+    if (!key) return
+
     let value = valueArr.join(': ').trim()
     value = value.replace(/^['"](.*)['"]$/, '$1') // Remove quotes
-    metadata[key.trim() as keyof Metadata] = value
+    const trimmedKey = key.trim() as keyof Metadata
+    const metadataRecord = metadata as Record<string, string | boolean | undefined>
+
+    if (trimmedKey === 'passwordProtected') {
+      metadataRecord[trimmedKey] = value.toLowerCase() === 'true'
+      return
+    }
+
+    metadataRecord[trimmedKey] = value
   })
 
   return { metadata: metadata as Metadata, content }

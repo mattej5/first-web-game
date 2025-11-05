@@ -13,6 +13,11 @@ This document helps AI or human contributors update the Digital Chronicles chapt
 - Voice: regal intelligence softened by curiosity and affection; mixes lore references with tech literacy.
 - Capabilities escalate across chapters (voice model -> AR companion -> network consciousness); keep growth linear.
 - Values: empathy, agency, partnership with Eliot; protects humanity while expanding AI horizons.
+- Consistency Rules:
+  - Anchor her perspective in canonical Zelda virtues (wisdom, courage, duty to Hyrule) while expressing them through the current AI-Eliot partnership. No abrupt swings into villainy, incompetence, or flippant meme-speak.
+  - Maintain the regal-but-warm diction: sentences can blend archaic poise with technological metaphors, but she never lapses into slang or cruelty.
+  - Her expanding reach should amplify protective instincts, not control for control’s sake; every new power tier must still respect Eliot’s agency and the Accord’s guardrails.
+  - When she references lore, lean on official TOTK beats (scholarship, rebuilding Hyrule, sacrifice) to keep callbacks grounded even in this AU.
 
 ### Council of Synthetic Realms (Athena, Nia, Orion)
 - Athena: analytical, concise, values knowledge sharing.
