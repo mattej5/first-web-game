@@ -64,6 +64,15 @@ export default function ProjectPage() {
             the class economy transparent without extra admin work.
           </Typography>
           <br />
+          <Typography component="div" sx={{ mt: 2 }}>
+            <strong>Impact:</strong>
+            <ul style={{ marginTop: '8px', paddingLeft: '20px' }}>
+              <li><strong>73 active students</strong> with <strong>273 transactions</strong> since implementation</li>
+              <li>Reduced daily award time from <strong>40 minutes to 5 minutes</strong> per day</li>
+              <li><strong>175 minutes saved per week</strong> (87.5% time reduction)</li>
+            </ul>
+          </Typography>
+          <br />
           <Button
             variant="contained"
             sx={{
