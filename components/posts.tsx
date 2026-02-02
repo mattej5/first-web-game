@@ -1,8 +1,8 @@
-import { getBlogPosts, formatDate } from '@/app/blog/utils'
-import { PostListItem } from './post-list-item'
+import { getBlogPosts, formatDate } from "@/app/blog/utils";
+import { PostListItem } from "./post-list-item";
 
 export function BlogPosts() {
-  const allBlogs = getBlogPosts().filter((post) => !post.isNested)
+  const allBlogs = getBlogPosts().filter((post) => !post.isNested);
 
   return (
     <div>
@@ -11,9 +11,9 @@ export function BlogPosts() {
           if (
             new Date(a.metadata.publishedAt) > new Date(b.metadata.publishedAt)
           ) {
-            return -1
+            return -1;
           }
-          return 1
+          return 1;
         })
         .map((post) => (
           <PostListItem
@@ -25,5 +25,5 @@ export function BlogPosts() {
           />
         ))}
     </div>
-  )
+  );
 }

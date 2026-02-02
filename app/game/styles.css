@@ -215,39 +215,39 @@ input {
     padding: 8px;
     min-height: auto;
   }
-  
+
   canvas {
     margin: 8px auto;
     max-width: 100%;
     height: auto;
     border-width: 1px;
   }
-  
+
   .mobile-controls {
     margin-top: 15px;
     padding: 0 10px;
     max-width: 450px;
   }
-  
+
   .dpad {
     width: 130px;
     height: 130px;
   }
-  
+
   .dpad-btn {
     font-size: 24px;
   }
-  
+
   .attack-btn {
     width: 70px;
     height: 70px;
     font-size: 28px;
   }
-  
+
   .window-body {
     padding: 0.5rem;
   }
-  
+
   .window-header {
     padding: 0.5rem;
     font-size: 1rem;

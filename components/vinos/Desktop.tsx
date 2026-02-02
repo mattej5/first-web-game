@@ -1,14 +1,14 @@
 "use client";
 
-import { useState } from 'react';
-import Image from 'next/image';
-import TopBar from './TopBar';
-import Dock from './Dock';
-import StickyNote from './StickyNote';
-import { WindowManagerProvider } from './WindowManager';
-import WindowRenderer from './WindowRenderer';
-import { DraggableHomeButton } from './DraggableHomeButton';
-import '../../app/(vinos-standalone)/vinos/vinos.css';
+import { useState } from "react";
+import Image from "next/image";
+import TopBar from "./TopBar";
+import Dock from "./Dock";
+import StickyNote from "./StickyNote";
+import { WindowManagerProvider } from "./WindowManager";
+import WindowRenderer from "./WindowRenderer";
+import { DraggableHomeButton } from "./DraggableHomeButton";
+import "../../app/(vinos-standalone)/vinos/vinos.css";
 
 export default function Desktop() {
   const [currentTime, setCurrentTime] = useState(new Date());
@@ -23,22 +23,23 @@ export default function Desktop() {
 
   return (
     <WindowManagerProvider>
-      <div className="relative w-screen h-screen overflow-hidden">
+      <div className="relative h-screen w-screen overflow-hidden">
         <DraggableHomeButton />
         {/* Gradient Background (same as site) */}
         <div
-          className="absolute inset-0 -z-20 vin-gradient"
+          className="vin-gradient absolute inset-0 -z-20"
           style={{
-            background: 'linear-gradient(135deg, #1e3a8a 0%, #059669 25%, #10b981 50%, #06b6d4 75%, #0ea5e9 100%)',
-            backgroundSize: '400% 400%',
-            backgroundAttachment: 'fixed',
-            animation: 'var(--gradient-animation)',
+            background:
+              "linear-gradient(135deg, #1e3a8a 0%, #059669 25%, #10b981 50%, #06b6d4 75%, #0ea5e9 100%)",
+            backgroundSize: "400% 400%",
+            backgroundAttachment: "fixed",
+            animation: "var(--gradient-animation)",
           }}
         />
 
         {/* VinOS.png Overlay */}
         <div className="absolute inset-0 -z-10 flex items-center justify-center">
-          <div className="relative w-[90%] h-[90%] opacity-20">
+          <div className="relative h-[90%] w-[90%] opacity-20">
             <Image
               src="/VinOS.png"
               alt=""
@@ -68,12 +69,17 @@ export default function Desktop() {
       {/* Gradient animation keyframe */}
       <style jsx global>{`
         @keyframes gradientShift {
-          0% { background-position: 0% 50%; }
-          50% { background-position: 100% 50%; }
-          100% { background-position: 0% 50%; }
+          0% {
+            background-position: 0% 50%;
+          }
+          50% {
+            background-position: 100% 50%;
+          }
+          100% {
+            background-position: 0% 50%;
+          }
         }
       `}</style>
     </WindowManagerProvider>
   );
 }
-

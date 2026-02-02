@@ -55,8 +55,10 @@ const LANE_CHANGE_MIN_INTERVAL = 9000;
 const LANE_CHANGE_MAX_INTERVAL = 14000;
 const CRASH_INVULNERABLE_MS = 1200;
 
-const clamp = (value: number, min: number, max: number) => Math.min(max, Math.max(min, value));
-const randBetween = (min: number, max: number) => Math.random() * (max - min) + min;
+const clamp = (value: number, min: number, max: number) =>
+  Math.min(max, Math.max(min, value));
+const randBetween = (min: number, max: number) =>
+  Math.random() * (max - min) + min;
 
 const laneCenter = (laneIndex: number, config: LaneConfig) => {
   const laneWidth = ROAD_WIDTH / config.totalLanes;
@@ -66,7 +68,9 @@ const laneCenter = (laneIndex: number, config: LaneConfig) => {
 
 const pickLane = (config: LaneConfig, direction: CarDirection) => {
   if (direction === "with") {
-    return config.oncomingLanes + Math.floor(Math.random() * config.playerLanes);
+    return (
+      config.oncomingLanes + Math.floor(Math.random() * config.playerLanes)
+    );
   }
   return Math.floor(Math.random() * config.oncomingLanes);
 };
@@ -79,7 +83,11 @@ const laneRange = (config: LaneConfig, direction: CarDirection) => {
 
 class DriveScene extends Phaser.Scene {
   private callbacks: SceneCallbacks;
-  private laneConfig: LaneConfig = { totalLanes: 4, playerLanes: 2, oncomingLanes: 2 };
+  private laneConfig: LaneConfig = {
+    totalLanes: 4,
+    playerLanes: 2,
+    oncomingLanes: 2,
+  };
   private road!: Phaser.GameObjects.Graphics;
   private player!: Phaser.GameObjects.Rectangle;
   private playerLane = 3;
@@ -107,7 +115,13 @@ class DriveScene extends Phaser.Scene {
   create() {
     this.road = this.add.graphics();
     this.playerLane = this.laneConfig.totalLanes - 1;
-    this.player = this.add.rectangle(laneCenter(this.playerLane, this.laneConfig), PLAYER_Y, PLAYER_WIDTH, PLAYER_HEIGHT, 0x34d399);
+    this.player = this.add.rectangle(
+      laneCenter(this.playerLane, this.laneConfig),
+      PLAYER_Y,
+      PLAYER_WIDTH,
+      PLAYER_HEIGHT,
+      0x34d399
+    );
     this.player.setOrigin(0.5, 0);
 
     this.resetToIdle();
@@ -145,7 +159,9 @@ class DriveScene extends Phaser.Scene {
     this.lastSameSpawn = this.runStart;
     this.lastOncomingSpawn = this.runStart;
     this.invulnerableUntil = this.runStart + 600;
-    this.laneSwitchAt = this.runStart + randBetween(LANE_CHANGE_MIN_INTERVAL, LANE_CHANGE_MAX_INTERVAL);
+    this.laneSwitchAt =
+      this.runStart +
+      randBetween(LANE_CHANGE_MIN_INTERVAL, LANE_CHANGE_MAX_INTERVAL);
     this.lastLaneMove = this.runStart;
     this.laneConfig = { totalLanes: 4, playerLanes: 2, oncomingLanes: 2 };
     this.callbacks.onLaneMode("4");
@@ -153,7 +169,9 @@ class DriveScene extends Phaser.Scene {
     this.updatePlayerX();
     this.traffic.forEach((c) => c.rect.destroy());
     this.traffic = [];
-    this.callbacks.onStatus("Pass traffic on your side; you can risk oncoming lanes.");
+    this.callbacks.onStatus(
+      "Pass traffic on your side; you can risk oncoming lanes."
+    );
     this.callbacks.onPlayingChange(true);
     this.drawRoad();
   }
@@ -164,12 +182,19 @@ class DriveScene extends Phaser.Scene {
 
     const deltaSeconds = delta / 1000;
     const elapsedSeconds = (time - this.runStart) / 1000;
-    const ramped = Math.min(BASE_SPEED + elapsedSeconds * SPEED_RAMP_PER_SEC, BASE_SPEED + EXTRA_SPEED_MAX);
+    const ramped = Math.min(
+      BASE_SPEED + elapsedSeconds * SPEED_RAMP_PER_SEC,
+      BASE_SPEED + EXTRA_SPEED_MAX
+    );
 
     let playerSpeed = ramped;
     if (this.boost) playerSpeed += BOOST_SPEED;
     if (this.brake) playerSpeed -= BRAKE_AMOUNT;
-    playerSpeed = clamp(playerSpeed, BASE_SPEED * 0.6, BASE_SPEED + EXTRA_SPEED_MAX + BOOST_SPEED);
+    playerSpeed = clamp(
+      playerSpeed,
+      BASE_SPEED * 0.6,
+      BASE_SPEED + EXTRA_SPEED_MAX + BOOST_SPEED
+    );
 
     if (Math.abs(playerSpeed - this.lastSpeedBroadcast) > 1) {
       this.lastSpeedBroadcast = playerSpeed;
@@ -180,8 +205,14 @@ class DriveScene extends Phaser.Scene {
       this.swapLaneMode(time);
     }
 
-    const sameInterval = Math.max(MIN_SAME_SPAWN_MS, SAME_DIRECTION_SPAWN_MS - elapsedSeconds * 6);
-    const oncomingInterval = Math.max(MIN_ONCOMING_SPAWN_MS, ONCOMING_SPAWN_MS - elapsedSeconds * 4);
+    const sameInterval = Math.max(
+      MIN_SAME_SPAWN_MS,
+      SAME_DIRECTION_SPAWN_MS - elapsedSeconds * 6
+    );
+    const oncomingInterval = Math.max(
+      MIN_ONCOMING_SPAWN_MS,
+      ONCOMING_SPAWN_MS - elapsedSeconds * 4
+    );
 
     if (time - this.lastSameSpawn > sameInterval) {
       this.spawnCar("with", playerSpeed, time);
@@ -208,7 +239,11 @@ class DriveScene extends Phaser.Scene {
     if (now - this.lastLaneMove < LANE_CHANGE_MIN_MS) return;
 
     const delta = direction === "left" ? -1 : 1;
-    const nextLane = clamp(this.playerLane + delta, 0, this.laneConfig.totalLanes - 1);
+    const nextLane = clamp(
+      this.playerLane + delta,
+      0,
+      this.laneConfig.totalLanes - 1
+    );
     this.playerLane = nextLane;
     this.lastLaneMove = now;
     this.updatePlayerX();
@@ -241,21 +276,36 @@ class DriveScene extends Phaser.Scene {
     }
   }
 
-  private spawnCar(direction: CarDirection, playerSpeed: number, timestamp: number) {
+  private spawnCar(
+    direction: CarDirection,
+    playerSpeed: number,
+    timestamp: number
+  ) {
     const config = this.laneConfig;
     if (direction === "against" && config.oncomingLanes <= 0) return;
 
     const laneIndex = pickLane(config, direction);
     const spawnY = -Math.max(CAR_LENGTH, ONCOMING_LENGTH) - Math.random() * 120;
-    const conflict = this.traffic.some((car) => car.laneIndex === laneIndex && Math.abs(car.rect.y - spawnY) < SAFE_SPAWN_GAP);
+    const conflict = this.traffic.some(
+      (car) =>
+        car.laneIndex === laneIndex &&
+        Math.abs(car.rect.y - spawnY) < SAFE_SPAWN_GAP
+    );
     if (conflict) return;
 
-    const relativeRatio = direction === "with" ? randBetween(0.45, 0.75) : randBetween(0.65, 0.95);
+    const relativeRatio =
+      direction === "with" ? randBetween(0.45, 0.75) : randBetween(0.65, 0.95);
     const carSpeed = Math.max(90, playerSpeed * relativeRatio);
 
     const width = CAR_WIDTH;
     const height = direction === "with" ? CAR_LENGTH : ONCOMING_LENGTH;
-    const rect = this.add.rectangle(laneCenter(laneIndex, config), spawnY, width, height, direction === "with" ? 0xcbd5e1 : 0xef4444);
+    const rect = this.add.rectangle(
+      laneCenter(laneIndex, config),
+      spawnY,
+      width,
+      height,
+      direction === "with" ? 0xcbd5e1 : 0xef4444
+    );
     rect.setOrigin(0.5, 0);
 
     this.traffic.push({
@@ -272,7 +322,11 @@ class DriveScene extends Phaser.Scene {
     }
   }
 
-  private updateTraffic(playerSpeed: number, deltaSeconds: number, timestamp: number) {
+  private updateTraffic(
+    playerSpeed: number,
+    deltaSeconds: number,
+    timestamp: number
+  ) {
     const next: TrafficCar[] = [];
     const playerRect = new Phaser.Geom.Rectangle(
       this.player.x - PLAYER_WIDTH / 2,
@@ -285,18 +339,34 @@ class DriveScene extends Phaser.Scene {
 
     this.traffic.forEach((car) => {
       const height = car.direction === "with" ? CAR_LENGTH : ONCOMING_LENGTH;
-      const relativeSpeed = car.direction === "with" ? playerSpeed - car.speed : playerSpeed + car.speed;
+      const relativeSpeed =
+        car.direction === "with"
+          ? playerSpeed - car.speed
+          : playerSpeed + car.speed;
       car.rect.y += relativeSpeed * deltaSeconds;
 
-      const carRect = new Phaser.Geom.Rectangle(car.rect.x - CAR_WIDTH / 2, car.rect.y, CAR_WIDTH, height);
+      const carRect = new Phaser.Geom.Rectangle(
+        car.rect.x - CAR_WIDTH / 2,
+        car.rect.y,
+        CAR_WIDTH,
+        height
+      );
 
-      if (car.direction === "with" && !car.passed && car.rect.y > playerRect.y + playerRect.height) {
+      if (
+        car.direction === "with" &&
+        !car.passed &&
+        car.rect.y > playerRect.y + playerRect.height
+      ) {
         car.passed = true;
         this.score += 1;
         this.callbacks.onScore(this.score);
       }
 
-      if (!crash && timestamp > this.invulnerableUntil && Phaser.Geom.Intersects.RectangleToRectangle(playerRect, carRect)) {
+      if (
+        !crash &&
+        timestamp > this.invulnerableUntil &&
+        Phaser.Geom.Intersects.RectangleToRectangle(playerRect, carRect)
+      ) {
         crash = true;
       }
 
@@ -336,7 +406,10 @@ class DriveScene extends Phaser.Scene {
     this.traffic = [];
     this.lastSameSpawn = timestamp + 400;
     this.lastOncomingSpawn = timestamp + 400;
-    this.playerLane = Math.max(this.laneConfig.oncomingLanes, this.laneConfig.totalLanes - 1);
+    this.playerLane = Math.max(
+      this.laneConfig.oncomingLanes,
+      this.laneConfig.totalLanes - 1
+    );
     this.updatePlayerX();
     this.lastLaneMove = timestamp;
   }
@@ -344,12 +417,16 @@ class DriveScene extends Phaser.Scene {
   private swapLaneMode(timestamp: number) {
     const nextTotal = this.laneConfig.totalLanes === 4 ? 2 : 4;
     this.laneConfig =
-      nextTotal === 4 ? { totalLanes: 4, playerLanes: 2, oncomingLanes: 2 } : { totalLanes: 2, playerLanes: 1, oncomingLanes: 1 };
+      nextTotal === 4
+        ? { totalLanes: 4, playerLanes: 2, oncomingLanes: 2 }
+        : { totalLanes: 2, playerLanes: 1, oncomingLanes: 1 };
     this.callbacks.onLaneMode(nextTotal === 4 ? "4" : "2");
     this.callbacks.onFlash(`${nextTotal} lane stretch`);
     this.realignEntities();
     this.drawRoad();
-    this.laneSwitchAt = timestamp + randBetween(LANE_CHANGE_MIN_INTERVAL, LANE_CHANGE_MAX_INTERVAL);
+    this.laneSwitchAt =
+      timestamp +
+      randBetween(LANE_CHANGE_MIN_INTERVAL, LANE_CHANGE_MAX_INTERVAL);
   }
 
   private realignEntities() {
@@ -388,7 +465,9 @@ export default function DriveGame() {
   const [laneMode, setLaneMode] = useState<"2" | "4">("4");
   const [speedDisplay, setSpeedDisplay] = useState(BASE_SPEED);
   const [flash, setFlash] = useState<string | null>(null);
-  const [status, setStatus] = useState("Tap Start to begin. WASD or Arrow keys to move.");
+  const [status, setStatus] = useState(
+    "Tap Start to begin. WASD or Arrow keys to move."
+  );
   const [isPlaying, setIsPlaying] = useState(false);
   const [isGameOver, setIsGameOver] = useState(false);
 
@@ -462,11 +541,18 @@ export default function DriveGame() {
   const brakeDown = useCallback(() => sceneRef.current?.setBrake(true), []);
   const brakeUp = useCallback(() => sceneRef.current?.setBrake(false), []);
   const shiftLeft = useCallback(() => sceneRef.current?.shiftLane("left"), []);
-  const shiftRight = useCallback(() => sceneRef.current?.shiftLane("right"), []);
+  const shiftRight = useCallback(
+    () => sceneRef.current?.shiftLane("right"),
+    []
+  );
 
   const handleKeyDown = useCallback(
     (event: KeyboardEvent) => {
-      if (["ArrowLeft", "ArrowRight", "ArrowUp", "ArrowDown", " "].includes(event.key)) {
+      if (
+        ["ArrowLeft", "ArrowRight", "ArrowUp", "ArrowDown", " "].includes(
+          event.key
+        )
+      ) {
         event.preventDefault();
       }
 
@@ -515,7 +601,9 @@ export default function DriveGame() {
         </div>
         <div className="stat">
           <span className="stat-label">Lane mode</span>
-          <span className="stat-value">{laneMode === "4" ? "4 lanes" : "2 lanes"}</span>
+          <span className="stat-value">
+            {laneMode === "4" ? "4 lanes" : "2 lanes"}
+          </span>
         </div>
       </div>
 
@@ -526,8 +614,9 @@ export default function DriveGame() {
           <div className="overlay">
             <h3>Ready to drive?</h3>
             <p className="overlay-text">
-              Built with Phaser. WASD or Arrow keys to change lanes and boost. Cars in your lanes move with you - pass
-              them. Oncoming traffic lives on the other side; enter at your own risk.
+              Built with Phaser. WASD or Arrow keys to change lanes and boost.
+              Cars in your lanes move with you - pass them. Oncoming traffic
+              lives on the other side; enter at your own risk.
             </p>
             <button className="primary-btn" onClick={startRun}>
               Start run
@@ -551,10 +640,17 @@ export default function DriveGame() {
       <p className="status">{status}</p>
 
       <div className="controls">
-        <div className="controls-text">Desktop: WASD or Arrow keys. Mobile: use the buttons.</div>
+        <div className="controls-text">
+          Desktop: WASD or Arrow keys. Mobile: use the buttons.
+        </div>
         <div className="controls-grid">
           <div className="dpad">
-            <button className="dpad-btn up" onPointerDown={boostDown} onPointerUp={boostUp} onPointerLeave={boostUp}>
+            <button
+              className="dpad-btn up"
+              onPointerDown={boostDown}
+              onPointerUp={boostUp}
+              onPointerLeave={boostUp}
+            >
               UP
             </button>
             <div className="dpad-middle">
@@ -566,13 +662,18 @@ export default function DriveGame() {
                 &gt;
               </button>
             </div>
-            <button className="dpad-btn down" onPointerDown={brakeDown} onPointerUp={brakeUp} onPointerLeave={brakeUp}>
+            <button
+              className="dpad-btn down"
+              onPointerDown={brakeDown}
+              onPointerUp={brakeUp}
+              onPointerLeave={brakeUp}
+            >
               DN
             </button>
           </div>
           <div className="hint">
-            Boost with up, brake with down. Passing cars on your side adds to your score. Lives: 3 before game over. Lanes
-            speed up over time.
+            Boost with up, brake with down. Passing cars on your side adds to
+            your score. Lives: 3 before game over. Lanes speed up over time.
           </div>
         </div>
       </div>

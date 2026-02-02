@@ -1,8 +1,18 @@
 "use client";
 
-import { useState } from 'react';
-import { useWindowManager } from './WindowManager';
-import { MdCalculate, MdMusicNote, MdApps, MdWork, MdPerson, MdArticle, MdHistory, MdHome, MdGames } from 'react-icons/md';
+import { useState } from "react";
+import { useWindowManager } from "./WindowManager";
+import {
+  MdCalculate,
+  MdMusicNote,
+  MdApps,
+  MdWork,
+  MdPerson,
+  MdArticle,
+  MdHistory,
+  MdHome,
+  MdGames,
+} from "react-icons/md";
 
 interface DockItem {
   id: string;
@@ -18,74 +28,74 @@ export default function Dock() {
 
   const dockItems: DockItem[] = [
     {
-      id: 'home',
-      label: 'Home',
+      id: "home",
+      label: "Home",
       icon: MdHome,
-      action: () => openWindow('route', '/', 'Home'),
-      color: 'from-emerald-500 to-emerald-600',
+      action: () => openWindow("route", "/", "Home"),
+      color: "from-emerald-500 to-emerald-600",
     },
     {
-      id: 'about',
-      label: 'About',
+      id: "about",
+      label: "About",
       icon: MdPerson,
-      action: () => openWindow('route', '/about', 'About Me'),
-      color: 'from-purple-500 to-purple-600',
+      action: () => openWindow("route", "/about", "About Me"),
+      color: "from-purple-500 to-purple-600",
     },
     {
-      id: 'projects',
-      label: 'Projects',
+      id: "projects",
+      label: "Projects",
       icon: MdWork,
-      action: () => openWindow('route', '/projects', 'Projects'),
-      color: 'from-orange-500 to-orange-600',
+      action: () => openWindow("route", "/projects", "Projects"),
+      color: "from-orange-500 to-orange-600",
     },
     {
-      id: 'blog',
-      label: 'Blog',
+      id: "blog",
+      label: "Blog",
       icon: MdArticle,
-      action: () => openWindow('route', '/blog', 'Blog'),
-      color: 'from-cyan-500 to-cyan-600',
+      action: () => openWindow("route", "/blog", "Blog"),
+      color: "from-cyan-500 to-cyan-600",
     },
     {
-      id: 'history',
-      label: 'History',
+      id: "history",
+      label: "History",
       icon: MdHistory,
-      action: () => openWindow('route', '/history', 'History'),
-      color: 'from-indigo-500 to-indigo-600',
+      action: () => openWindow("route", "/history", "History"),
+      color: "from-indigo-500 to-indigo-600",
     },
     {
-      id: 'game',
-      label: 'Game',
+      id: "game",
+      label: "Game",
       icon: MdGames,
-      action: () => openWindow('route', '/game', 'Game'),
-      color: 'from-red-500 to-red-600',
+      action: () => openWindow("route", "/game", "Game"),
+      color: "from-red-500 to-red-600",
     },
     {
-      id: 'divider',
-      label: '',
+      id: "divider",
+      label: "",
       icon: MdApps,
       action: () => {},
-      color: 'from-transparent to-transparent',
+      color: "from-transparent to-transparent",
     },
     {
-      id: 'calculator',
-      label: 'Calculator',
+      id: "calculator",
+      label: "Calculator",
       icon: MdCalculate,
-      action: () => openWindow('calculator'),
-      color: 'from-gray-600 to-gray-700',
+      action: () => openWindow("calculator"),
+      color: "from-gray-600 to-gray-700",
     },
     {
-      id: 'music',
-      label: 'Music',
+      id: "music",
+      label: "Music",
       icon: MdMusicNote,
-      action: () => openWindow('music'),
-      color: 'from-pink-500 to-pink-600',
+      action: () => openWindow("music"),
+      color: "from-pink-500 to-pink-600",
     },
     {
-      id: 'navigation',
-      label: 'Apps',
+      id: "navigation",
+      label: "Apps",
       icon: MdApps,
-      action: () => openWindow('navigation'),
-      color: 'from-blue-500 to-blue-600',
+      action: () => openWindow("navigation"),
+      color: "from-blue-500 to-blue-600",
     },
   ];
 
@@ -108,8 +118,8 @@ export default function Dock() {
   };
 
   return (
-    <div className="fixed bottom-4 left-1/2 transform -translate-x-1/2 z-50">
-      <div className="bg-white/70 backdrop-blur-lg rounded-2xl px-4 py-3 shadow-2xl dock-container border border-white/30">
+    <div className="fixed bottom-4 left-1/2 z-50 -translate-x-1/2 transform">
+      <div className="dock-container rounded-2xl border border-white/30 bg-white/70 px-4 py-3 shadow-2xl backdrop-blur-lg">
         <div className="flex items-end gap-5">
           {dockItems.map((item, index) => {
             const Icon = item.icon;
@@ -117,9 +127,9 @@ export default function Dock() {
             const translateY = getIconTranslateY(index);
 
             // Render divider
-            if (item.id === 'divider') {
+            if (item.id === "divider") {
               return (
-                <div key={item.id} className="w-px h-14 bg-gray-300/50 mx-2" />
+                <div key={item.id} className="mx-2 h-14 w-px bg-gray-300/50" />
               );
             }
 
@@ -133,16 +143,16 @@ export default function Dock() {
                 {/* Icon Button */}
                 <button
                   onClick={item.action}
-                  className={`relative w-16 h-16 bg-gradient-to-br ${item.color} rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center dock-icon`}
+                  className={`relative h-16 w-16 bg-gradient-to-br ${item.color} dock-icon flex items-center justify-center rounded-2xl shadow-lg transition-all duration-300 hover:shadow-xl`}
                   style={{
                     transform: `scale(${scale}) translateY(${translateY}px)`,
                   }}
                 >
-                  <Icon className="text-white text-3xl" />
+                  <Icon className="text-3xl text-white" />
                 </button>
 
                 {/* Label */}
-                <span className="text-xs text-gray-800 font-medium whitespace-nowrap">
+                <span className="text-xs font-medium whitespace-nowrap text-gray-800">
                   {item.label}
                 </span>
               </div>

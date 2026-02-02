@@ -8,7 +8,7 @@ export default function RouteFrame({ route }: RouteFrameProps) {
   return (
     <iframe
       src={route}
-      className="w-full h-full border-none"
+      className="h-full w-full border-none"
       title={`Route: ${route}`}
     />
   );

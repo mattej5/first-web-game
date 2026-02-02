@@ -1,4 +1,4 @@
-import DriveGame from "./drive-game";
+import DriveGameLazy from "./drive-game-lazy";
 
 export const metadata = {
   title: "Overtake Drive | Vin Jones",
@@ -8,18 +8,19 @@ export const metadata = {
 
 export default function DrivePage() {
   return (
-    <div className="flex flex-col items-center p-3 sm:p-6 font-[family-name:var(--font-geist-sans)]">
+    <div className="flex flex-col items-center p-3 font-[family-name:var(--font-geist-sans)] sm:p-6">
       <div className="game-window mt-3 sm:mt-5">
         <header className="window-header mb-2 sm:mb-4">
-          <h1 className="m-0 text-lg sm:text-xl font-bold text-center">
+          <h1 className="m-0 text-center text-lg font-bold sm:text-xl">
             Overtake Drive
           </h1>
-          <p className="m-0 mt-1 text-xs sm:text-sm text-gray-300 text-center">
-            Built with the Phaser game engine inside Next.js. Survive lane changes, pass traffic, and dodge oncoming cars.
+          <p className="m-0 mt-1 text-center text-xs text-gray-300 sm:text-sm">
+            Built with the Phaser game engine inside Next.js. Survive lane
+            changes, pass traffic, and dodge oncoming cars.
           </p>
         </header>
         <div className="window-body">
-          <DriveGame />
+          <DriveGameLazy />
         </div>
       </div>
     </div>

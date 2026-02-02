@@ -45,9 +45,9 @@ export default function Home() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteJsonLd) }}
       />
-      <div className="max-w-4xl mx-auto px-8 text-lg leading-relaxed">
+      <div className="mx-auto max-w-4xl px-8 text-lg leading-relaxed">
         {/* Hero Section */}
-        <section className="flex flex-col items-center text-center mb-12">
+        <section className="mb-12 flex flex-col items-center text-center">
           <div className="relative mb-6 h-36 w-36 rounded-full shadow-xl ring-4 ring-white/70">
             <Image
               src="/headshot_IS_square.jpg"
@@ -61,30 +61,38 @@ export default function Home() {
           <h1 className="mt-6 text-4xl font-bold text-gray-900">
             Vin Jones, Software Engineer & Co-Founder
           </h1>
-          <p className="text-gray-900 max-2xl mt-2">
-            You&apos;ve found my portfolio! As a Master&apos;s student in Information Systems at BYU,
-            I specialize in predictive analytics, secure software development, and cloud engineering solutions.
-            In the age of AI, I love getting close to the people I&apos;m building for to quickly iterate and deliver
-            high-impact solutions.
+          <p className="max-2xl mt-2 text-gray-900">
+            You&apos;ve found my portfolio! As a Master&apos;s student in
+            Information Systems at BYU, I specialize in predictive analytics,
+            secure software development, and cloud engineering solutions. In the
+            age of AI, I love getting close to the people I&apos;m building for
+            to quickly iterate and deliver high-impact solutions.
           </p>
-          <p className="text-gray-900 max-2xl mt-2">
-            Throughout my time at BYU and as a co-founder of <a className="font-semibold text-emerald-800 hover:text-emerald-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-900 transition-colors duration-200" href="https://stuplanning.com/">stu</a>,
-            I&apos;m honing my skills in building scalable cloud solutions, developing AI-driven applications,
-            and bringing the development process closer to the end-users.
+          <p className="max-2xl mt-2 text-gray-900">
+            Throughout my time at BYU and as a co-founder of{" "}
+            <a
+              className="font-semibold text-emerald-800 transition-colors duration-200 hover:text-emerald-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-900"
+              href="https://stuplanning.com/"
+            >
+              stu
+            </a>
+            , I&apos;m honing my skills in building scalable cloud solutions,
+            developing AI-driven applications, and bringing the development
+            process closer to the end-users.
           </p>
         </section>
 
         {/* Skills & Expertise Section */}
         <section className="mb-10">
-          <h2 className="text-2xl font-semibold mb-4 text-gray-900">
+          <h2 className="mb-4 text-2xl font-semibold text-gray-900">
             Expertise
           </h2>
-          <div className="grid md:grid-cols-2 gap-6">
+          <div className="grid gap-6 md:grid-cols-2">
             <div>
-              <h3 className="text-lg font-medium mb-2 text-gray-900">
+              <h3 className="mb-2 text-lg font-medium text-gray-900">
                 Technical Skills
               </h3>
-              <ul className="text-gray-900 space-y-1 list-disc list-inside marker:text-emerald-700">
+              <ul className="list-inside list-disc space-y-1 text-gray-900 marker:text-emerald-700">
                 <li>Cloud Engineering & Architecture</li>
                 <li>AI & Machine Learning Solutions</li>
                 <li>Full-Stack Development</li>
@@ -92,10 +100,10 @@ export default function Home() {
               </ul>
             </div>
             <div>
-              <h3 className="text-lg font-medium mb-2 text-gray-900">
+              <h3 className="mb-2 text-lg font-medium text-gray-900">
                 Specializations
               </h3>
-              <ul className="text-gray-900 space-y-1 list-disc list-inside marker:text-emerald-700">
+              <ul className="list-inside list-disc space-y-1 text-gray-900 marker:text-emerald-700">
                 <li>Predictive Analytics</li>
                 <li>Secure Software Development</li>
                 <li>UX Design & Implementation</li>
@@ -106,23 +114,24 @@ export default function Home() {
         </section>
 
         {/* Call to Action Section */}
-        <section className="bg-gray-50 rounded-lg p-6 text-center">
-          <h2 className="text-2xl font-semibold mb-4 text-gray-900">
+        <section className="rounded-lg bg-gray-50 p-6 text-center">
+          <h2 className="mb-4 text-2xl font-semibold text-gray-900">
             Got a Second?
           </h2>
           <p className="mb-6 text-gray-900">
-            Explore a few of my solutions to problems I&apos;ve tackled recently.
+            Explore a few of my solutions to problems I&apos;ve tackled
+            recently.
           </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+          <div className="flex flex-col items-center justify-center gap-4 sm:flex-row">
             <a
               href="/projects"
-              className="bg-emerald-700 hover:bg-emerald-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-emerald-900 text-white px-6 py-3 rounded-lg font-medium transition-colors duration-200"
+              className="rounded-lg bg-emerald-700 px-6 py-3 font-medium text-white transition-colors duration-200 hover:bg-emerald-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-emerald-900"
             >
               View My Projects
             </a>
             <span className="text-slate-600">or</span>
             <a
-              className="arcade-font text-emerald-800 hover:text-emerald-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-emerald-900 font-medium transition-colors duration-200"
+              className="arcade-font font-medium text-emerald-800 transition-colors duration-200 hover:text-emerald-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-emerald-900"
               href="/game"
             >
               Try Untitled Battle Squares

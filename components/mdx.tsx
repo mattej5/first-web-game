@@ -27,9 +27,21 @@ function MdxLink({
   href = "",
   children,
   ...rest
-}: React.AnchorHTMLAttributes<HTMLAnchorElement> & { href?: string; children?: React.ReactNode }) {
-  if (href.startsWith("/")) return <Link href={href} {...rest}>{children}</Link>;
-  return <a href={href} target="_blank" rel="noopener noreferrer" {...rest}>{children}</a>;
+}: React.AnchorHTMLAttributes<HTMLAnchorElement> & {
+  href?: string;
+  children?: React.ReactNode;
+}) {
+  if (href.startsWith("/"))
+    return (
+      <Link href={href} {...rest}>
+        {children}
+      </Link>
+    );
+  return (
+    <a href={href} target="_blank" rel="noopener noreferrer" {...rest}>
+      {children}
+    </a>
+  );
 }
 
 const components = {
@@ -38,7 +50,13 @@ const components = {
   StoryChapters,
 };
 
-export function MDXContent({ source, extraComponents = {} }: Readonly<{ source: string; extraComponents?: Record<string, React.ComponentType<unknown>> }>) {
+export function MDXContent({
+  source,
+  extraComponents = {},
+}: Readonly<{
+  source: string;
+  extraComponents?: Record<string, React.ComponentType<unknown>>;
+}>) {
   return (
     <MDXRemote
       source={source}
@@ -49,8 +67,14 @@ export function MDXContent({ source, extraComponents = {} }: Readonly<{ source: 
           remarkPlugins: [remarkGfm],
           rehypePlugins: [
             rehypeSlug,
-            [rehypePrettyCode, { theme: { dark: "github-dark", light: "github-light" } }],
-            [rehypeExternalLinks, { target: "_blank", rel: ["noopener", "noreferrer"] }],
+            [
+              rehypePrettyCode,
+              { theme: { dark: "github-dark", light: "github-light" } },
+            ],
+            [
+              rehypeExternalLinks,
+              { target: "_blank", rel: ["noopener", "noreferrer"] },
+            ],
           ],
         },
       }}

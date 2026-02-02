@@ -1,7 +1,7 @@
-'use client';
+"use client";
 
-import { useCallback, useEffect, useRef, useState } from 'react';
-import './styles.css';
+import { useCallback, useEffect, useRef, useState } from "react";
+import "./styles.css";
 
 interface Entity {
   x: number;
@@ -9,8 +9,8 @@ interface Entity {
   size: number;
   spawnTime?: number;
   invulnerable?: boolean;
-  direction?: 'up' | 'down' | 'left' | 'right';
-  facing?: 'up' | 'down' | 'left' | 'right'; // NEW
+  direction?: "up" | "down" | "left" | "right";
+  facing?: "up" | "down" | "left" | "right"; // NEW
 }
 
 interface Obstacle {
@@ -39,7 +39,7 @@ const safeSpawnDistance = 80;
 const heartSpawnChance = 0.0008; // ~0.08% chance per frame to spawn a heart
 const heartSize = 15;
 
-const facingAngleMap: Record<'up' | 'down' | 'left' | 'right', number> = {
+const facingAngleMap: Record<"up" | "down" | "left" | "right", number> = {
   up: -Math.PI / 2,
   right: 0,
   down: Math.PI / 2,
@@ -63,13 +63,25 @@ const drawHeart = (ctx: CanvasRenderingContext2D, heart: Heart) => {
   const centerY = heart.y + heart.size / 2;
   const radius = heart.size / 3;
 
-  ctx.fillStyle = '#ff69b4';
+  ctx.fillStyle = "#ff69b4";
   ctx.beginPath();
-  ctx.arc(centerX - radius / 2, centerY - radius / 2, radius / 2, 0, Math.PI * 2);
+  ctx.arc(
+    centerX - radius / 2,
+    centerY - radius / 2,
+    radius / 2,
+    0,
+    Math.PI * 2
+  );
   ctx.fill();
 
   ctx.beginPath();
-  ctx.arc(centerX + radius / 2, centerY - radius / 2, radius / 2, 0, Math.PI * 2);
+  ctx.arc(
+    centerX + radius / 2,
+    centerY - radius / 2,
+    radius / 2,
+    0,
+    Math.PI * 2
+  );
   ctx.fill();
 
   ctx.beginPath();
@@ -85,26 +97,26 @@ const drawFacingArrow = (ctx: CanvasRenderingContext2D, player: Entity) => {
   const cy = player.y + player.size / 2;
   const arrowSize = 6;
 
-  ctx.fillStyle = 'black';
+  ctx.fillStyle = "black";
   ctx.beginPath();
 
   switch (player.facing) {
-    case 'up':
+    case "up":
       ctx.moveTo(cx, cy - player.size / 2 - arrowSize);
       ctx.lineTo(cx - arrowSize, cy - player.size / 2);
       ctx.lineTo(cx + arrowSize, cy - player.size / 2);
       break;
-    case 'down':
+    case "down":
       ctx.moveTo(cx, cy + player.size / 2 + arrowSize);
       ctx.lineTo(cx - arrowSize, cy + player.size / 2);
       ctx.lineTo(cx + arrowSize, cy + player.size / 2);
       break;
-    case 'left':
+    case "left":
       ctx.moveTo(cx - player.size / 2 - arrowSize, cy);
       ctx.lineTo(cx - player.size / 2, cy - arrowSize);
       ctx.lineTo(cx - player.size / 2, cy + arrowSize);
       break;
-    case 'right':
+    case "right":
       ctx.moveTo(cx + player.size / 2 + arrowSize, cy);
       ctx.lineTo(cx + player.size / 2, cy - arrowSize);
       ctx.lineTo(cx + player.size / 2, cy + arrowSize);
@@ -129,7 +141,7 @@ const drawRotatedSword = (
   ctx.save();
   ctx.translate(px, py);
   ctx.rotate(angle);
-  ctx.fillStyle = 'gray';
+  ctx.fillStyle = "gray";
   ctx.fillRect(offset, -width / 2, length, width);
   ctx.restore();
 };
@@ -165,9 +177,27 @@ const lineIntersectsRect = (
   rh: number
 ) => {
   const left = lineIntersectsLine(x1, y1, x2, y2, rx, ry, rx, ry + rh);
-  const right = lineIntersectsLine(x1, y1, x2, y2, rx + rw, ry, rx + rw, ry + rh);
+  const right = lineIntersectsLine(
+    x1,
+    y1,
+    x2,
+    y2,
+    rx + rw,
+    ry,
+    rx + rw,
+    ry + rh
+  );
   const top = lineIntersectsLine(x1, y1, x2, y2, rx, ry, rx + rw, ry);
-  const bottom = lineIntersectsLine(x1, y1, x2, y2, rx, ry + rh, rx + rw, ry + rh);
+  const bottom = lineIntersectsLine(
+    x1,
+    y1,
+    x2,
+    y2,
+    rx,
+    ry + rh,
+    rx + rw,
+    ry + rh
+  );
 
   return left || right || top || bottom;
 };
@@ -190,7 +220,7 @@ export default function Game() {
     x: 200,
     y: 200,
     size: 20,
-    facing: 'down', // default direction
+    facing: "down", // default direction
   });
   const [enemies, setEnemies] = useState<Entity[]>([]);
   const [hearts, setHearts] = useState<Heart[]>([]);
@@ -203,7 +233,7 @@ export default function Game() {
   const pressedKeys = useRef<Record<string, boolean>>({});
   const swingRef = useRef<number | null>(null);
   const [spawnRateMultiplier, setSpawnRateMultiplier] = useState(1);
-  const facingRef = useRef<'up' | 'down' | 'left' | 'right'>('down');
+  const facingRef = useRef<"up" | "down" | "left" | "right">("down");
   const [isGameOver, setIsGameOver] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
   const lastAttackTime = useRef<number>(0);
@@ -212,14 +242,15 @@ export default function Game() {
   // Check if device is mobile
   useEffect(() => {
     const checkMobile = () => {
-      const isTouchDevice = ('ontouchstart' in window) || (navigator.maxTouchPoints > 0);
+      const isTouchDevice =
+        "ontouchstart" in window || navigator.maxTouchPoints > 0;
       const isSmallScreen = window.innerWidth <= 768;
       setIsMobile(isTouchDevice && isSmallScreen);
     };
-    
+
     checkMobile();
-    window.addEventListener('resize', checkMobile);
-    return () => window.removeEventListener('resize', checkMobile);
+    window.addEventListener("resize", checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
   }, []);
 
   // Defines positions and size of obstacles
@@ -256,10 +287,12 @@ export default function Game() {
       { x: canvasWidth - enemySize, y: canvasHeight - enemySize },
     ];
     let corner = corners[Math.floor(Math.random() * corners.length)];
-    while (Math.hypot(player.x - corner.x, player.y - corner.y) < safeSpawnDistance) {
+    while (
+      Math.hypot(player.x - corner.x, player.y - corner.y) < safeSpawnDistance
+    ) {
       corner = corners[Math.floor(Math.random() * corners.length)];
     }
-    const directions = ['up', 'down', 'left', 'right'] as const;
+    const directions = ["up", "down", "left", "right"] as const;
     return {
       ...corner,
       size: enemySize,
@@ -272,12 +305,12 @@ export default function Game() {
   const resetGame = useCallback(() => {
     setEnemies([]);
     setHearts([]);
-    setPlayer({ x: 200, y: 200, size: 20, facing: 'down' });
+    setPlayer({ x: 200, y: 200, size: 20, facing: "down" });
     setScore(0);
     setHealth(3);
     gameStartTime.current = performance.now();
     setIsGameOver(false);
-    facingRef.current = 'down';
+    facingRef.current = "down";
   }, []);
 
   const startGame = useCallback(() => {
@@ -297,7 +330,8 @@ export default function Game() {
       attempts++;
     } while (
       attempts < maxAttempts &&
-      (Math.hypot(player.x - x, player.y - y) < 60 || isCollidingWithObstacle(x, y, heartSize))
+      (Math.hypot(player.x - x, player.y - y) < 60 ||
+        isCollidingWithObstacle(x, y, heartSize))
     );
 
     return {
@@ -343,21 +377,21 @@ export default function Game() {
       let newY = prev.y;
       let newFacing = prev.facing;
 
-      if (pressedKeys.current['w']) {
+      if (pressedKeys.current["w"]) {
         newY -= speed;
-        newFacing = 'up';
-      } else if (pressedKeys.current['s']) {
+        newFacing = "up";
+      } else if (pressedKeys.current["s"]) {
         newY += speed;
-        newFacing = 'down';
-      } else if (pressedKeys.current['a']) {
+        newFacing = "down";
+      } else if (pressedKeys.current["a"]) {
         newX -= speed;
-        newFacing = 'left';
-      } else if (pressedKeys.current['d']) {
+        newFacing = "left";
+      } else if (pressedKeys.current["d"]) {
         newX += speed;
-        newFacing = 'right';
+        newFacing = "right";
       }
 
-      facingRef.current = newFacing ?? 'down';
+      facingRef.current = newFacing ?? "down";
 
       if (isCollidingWithObstacle(newX, newY, prev.size)) {
         return prev;
@@ -378,7 +412,7 @@ export default function Game() {
     setEnemies((prev) =>
       prev.map((enemy) => {
         const shouldChangeDirection = Math.random() < 0.02;
-        const directions = ['up', 'down', 'left', 'right'] as const;
+        const directions = ["up", "down", "left", "right"] as const;
 
         let direction = enemy.direction;
 
@@ -390,16 +424,16 @@ export default function Game() {
         let newY = enemy.y;
 
         switch (direction) {
-          case 'up':
+          case "up":
             newY -= currentEnemySpeed;
             break;
-          case 'down':
+          case "down":
             newY += currentEnemySpeed;
             break;
-          case 'left':
+          case "left":
             newX -= currentEnemySpeed;
             break;
-          case 'right':
+          case "right":
             newX += currentEnemySpeed;
             break;
         }
@@ -425,7 +459,8 @@ export default function Game() {
         const distance = Math.hypot(player.x - enemy.x, player.y - enemy.y);
         const minDist = (player.size + enemy.size) / 2;
         const invuln =
-          enemy.invulnerable && performance.now() - (enemy.spawnTime || 0) < spawnInvulnerableTime;
+          enemy.invulnerable &&
+          performance.now() - (enemy.spawnTime || 0) < spawnInvulnerableTime;
         if (invuln) {
           survivors.push(enemy);
           continue;
@@ -455,14 +490,24 @@ export default function Game() {
 
       for (const enemy of prev) {
         const isInvuln =
-          enemy.invulnerable && performance.now() - (enemy.spawnTime || 0) < spawnInvulnerableTime;
+          enemy.invulnerable &&
+          performance.now() - (enemy.spawnTime || 0) < spawnInvulnerableTime;
 
         if (isInvuln) {
           remaining.push(enemy);
           continue;
         }
 
-        const hit = lineIntersectsRect(startX, startY, endX, endY, enemy.x, enemy.y, enemy.size, enemy.size);
+        const hit = lineIntersectsRect(
+          startX,
+          startY,
+          endX,
+          endY,
+          enemy.x,
+          enemy.y,
+          enemy.size,
+          enemy.size
+        );
 
         if (hit) {
           setScore((prevScore) => prevScore + 1);
@@ -503,14 +548,14 @@ export default function Game() {
   }, [player]);
 
   const draw = useCallback(() => {
-    const ctx = canvasRef.current?.getContext('2d');
+    const ctx = canvasRef.current?.getContext("2d");
     if (!ctx) return;
 
     ctx.clearRect(0, 0, canvasWidth, canvasHeight);
-    ctx.fillStyle = 'green';
+    ctx.fillStyle = "green";
     ctx.fillRect(player.x, player.y, player.size, player.size);
 
-    ctx.fillStyle = '#444';
+    ctx.fillStyle = "#444";
     for (const obstacle of obstacles) {
       ctx.fillRect(obstacle.x, obstacle.y, obstacle.width, obstacle.height);
     }
@@ -526,8 +571,9 @@ export default function Game() {
 
     for (const enemy of enemies) {
       const isInvuln =
-        enemy.invulnerable && performance.now() - (enemy.spawnTime || 0) < spawnInvulnerableTime;
-      ctx.fillStyle = isInvuln ? 'rgba(255,0,0,0.4)' : 'red';
+        enemy.invulnerable &&
+        performance.now() - (enemy.spawnTime || 0) < spawnInvulnerableTime;
+      ctx.fillStyle = isInvuln ? "rgba(255,0,0,0.4)" : "red";
       ctx.fillRect(enemy.x, enemy.y, enemy.size, enemy.size);
     }
   }, [enemies, hearts, isSwinging, obstacles, player, swordAngle]);
@@ -536,10 +582,10 @@ export default function Game() {
     if (!hasGameStarted || isGameOver) return;
 
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (['w', 'a', 's', 'd'].includes(e.key)) {
+      if (["w", "a", "s", "d"].includes(e.key)) {
         pressedKeys.current[e.key] = true;
       }
-      if (e.key === ' ') {
+      if (e.key === " ") {
         swingSword();
       }
     };
@@ -548,21 +594,24 @@ export default function Game() {
       pressedKeys.current[e.key] = false;
     };
 
-    window.addEventListener('keydown', handleKeyDown);
-    window.addEventListener('keyup', handleKeyUp);
+    window.addEventListener("keydown", handleKeyDown);
+    window.addEventListener("keyup", handleKeyUp);
     return () => {
-      window.removeEventListener('keydown', handleKeyDown);
-      window.removeEventListener('keyup', handleKeyUp);
+      window.removeEventListener("keydown", handleKeyDown);
+      window.removeEventListener("keyup", handleKeyUp);
     };
   }, [hasGameStarted, isGameOver, swingSword]);
 
   useEffect(() => {
     if (!hasGameStarted || isGameOver) return;
 
-    const intervalId = setInterval(() => {
-      const enemy = spawnEnemyAtCorner();
-      setEnemies((prev) => [...prev, enemy]);
-    }, Math.max(500, enemySpawnDelay / spawnRateMultiplier));
+    const intervalId = setInterval(
+      () => {
+        const enemy = spawnEnemyAtCorner();
+        setEnemies((prev) => [...prev, enemy]);
+      },
+      Math.max(500, enemySpawnDelay / spawnRateMultiplier)
+    );
 
     return () => clearInterval(intervalId);
   }, [hasGameStarted, isGameOver, spawnRateMultiplier, spawnEnemyAtCorner]);
@@ -609,9 +658,17 @@ export default function Game() {
   ]);
 
   // Mobile control functions
-  const handleMobileMove = (direction: 'up' | 'down' | 'left' | 'right') => {
+  const handleMobileMove = (direction: "up" | "down" | "left" | "right") => {
     pressedKeys.current = {}; // Clear all keys first
-    pressedKeys.current[direction === 'up' ? 'w' : direction === 'down' ? 's' : direction === 'left' ? 'a' : 'd'] = true;
+    pressedKeys.current[
+      direction === "up"
+        ? "w"
+        : direction === "down"
+          ? "s"
+          : direction === "left"
+            ? "a"
+            : "d"
+    ] = true;
   };
 
   const handleMobileStop = () => {
@@ -639,7 +696,7 @@ export default function Game() {
           )}
           <button
             onClick={startGame}
-            className="px-8 py-3 mt-8 text-white font-bold text-lg tracking-wide rounded-lg shadow-lg bg-gradient-to-r from-purple-500 via-pink-500 to-red-500 hover:from-red-500 hover:via-purple-500 hover:to-pink-500 transition-all duration-300 ease-in-out"
+            className="mt-8 rounded-lg bg-gradient-to-r from-purple-500 via-pink-500 to-red-500 px-8 py-3 text-lg font-bold tracking-wide text-white shadow-lg transition-all duration-300 ease-in-out hover:from-red-500 hover:via-purple-500 hover:to-pink-500"
           >
             Start Game
           </button>
@@ -652,51 +709,51 @@ export default function Game() {
           </p>
           {!isMobile && <p>Move: WASD | Sword: SPACE</p>}
           <canvas ref={canvasRef} width={canvasWidth} height={canvasHeight} />
-          
+
           {/* Mobile Controls */}
           {isMobile && (
             <div className="mobile-controls">
               {/* D-Pad */}
               <div className="dpad-container">
                 <div className="dpad">
-                  <button 
+                  <button
                     className="dpad-btn dpad-up"
-                    onTouchStart={() => handleMobileMove('up')}
+                    onTouchStart={() => handleMobileMove("up")}
                     onTouchEnd={handleMobileStop}
-                    onMouseDown={() => handleMobileMove('up')}
+                    onMouseDown={() => handleMobileMove("up")}
                     onMouseUp={handleMobileStop}
                     onMouseLeave={handleMobileStop}
                   >
                     ↑
                   </button>
                   <div className="dpad-middle">
-                    <button 
+                    <button
                       className="dpad-btn dpad-left"
-                      onTouchStart={() => handleMobileMove('left')}
+                      onTouchStart={() => handleMobileMove("left")}
                       onTouchEnd={handleMobileStop}
-                      onMouseDown={() => handleMobileMove('left')}
+                      onMouseDown={() => handleMobileMove("left")}
                       onMouseUp={handleMobileStop}
                       onMouseLeave={handleMobileStop}
                     >
                       ←
                     </button>
                     <div className="dpad-center"></div>
-                    <button 
+                    <button
                       className="dpad-btn dpad-right"
-                      onTouchStart={() => handleMobileMove('right')}
+                      onTouchStart={() => handleMobileMove("right")}
                       onTouchEnd={handleMobileStop}
-                      onMouseDown={() => handleMobileMove('right')}
+                      onMouseDown={() => handleMobileMove("right")}
                       onMouseUp={handleMobileStop}
                       onMouseLeave={handleMobileStop}
                     >
                       →
                     </button>
                   </div>
-                  <button 
+                  <button
                     className="dpad-btn dpad-down"
-                    onTouchStart={() => handleMobileMove('down')}
+                    onTouchStart={() => handleMobileMove("down")}
                     onTouchEnd={handleMobileStop}
-                    onMouseDown={() => handleMobileMove('down')}
+                    onMouseDown={() => handleMobileMove("down")}
                     onMouseUp={handleMobileStop}
                     onMouseLeave={handleMobileStop}
                   >
@@ -704,10 +761,10 @@ export default function Game() {
                   </button>
                 </div>
               </div>
-              
+
               {/* Attack Button */}
               <div className="attack-container">
-                <button 
+                <button
                   className="attack-btn"
                   onTouchStart={handleMobileAttack}
                   onClick={handleMobileAttack}
@@ -717,16 +774,17 @@ export default function Game() {
               </div>
             </div>
           )}
-          
+
           {isGameOver && (
             <div className="game-over-dialog">
               <div className="game-over-content">
                 <h2>Game Over</h2>
                 <p>Score: {score}</p>
-                <button 
+                <button
                   onClick={resetGame}
-                  className="px-8 py-3 mt-8 text-white font-bold text-lg tracking-wide rounded-lg shadow-lg bg-gradient-to-r from-purple-500 via-pink-500 to-red-500 hover:from-red-500 hover:via-purple-500 hover:to-pink-500 transition-all duration-300 ease-in-out"
-                >Retry
+                  className="mt-8 rounded-lg bg-gradient-to-r from-purple-500 via-pink-500 to-red-500 px-8 py-3 text-lg font-bold tracking-wide text-white shadow-lg transition-all duration-300 ease-in-out hover:from-red-500 hover:via-purple-500 hover:to-pink-500"
+                >
+                  Retry
                 </button>
               </div>
             </div>

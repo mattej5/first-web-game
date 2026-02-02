@@ -1,20 +1,20 @@
-import { MDXContent } from '@/components/mdx'
-import { getBlogPosts } from '@/app/blog/utils'
+import { MDXContent } from "@/components/mdx";
+import { getBlogPosts } from "@/app/blog/utils";
 
 type StoryChaptersProps = {
-  slugs: string[]
-}
+  slugs: string[];
+};
 
 export function StoryChapters({ slugs }: Readonly<StoryChaptersProps>) {
-  const posts = getBlogPosts()
-  const postsBySlug = new Map(posts.map((post) => [post.slug, post]))
+  const posts = getBlogPosts();
+  const postsBySlug = new Map(posts.map((post) => [post.slug, post]));
 
   return (
     <div className="space-y-16">
       {slugs.map((slug) => {
-        const post = postsBySlug.get(slug)
+        const post = postsBySlug.get(slug);
         if (!post) {
-          return null
+          return null;
         }
 
         return (
@@ -24,8 +24,8 @@ export function StoryChapters({ slugs }: Readonly<StoryChaptersProps>) {
             </h2>
             <MDXContent source={post.content} />
           </section>
-        )
+        );
       })}
     </div>
-  )
+  );
 }

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState } from "react";
 
 interface Heading {
   id: string;
@@ -10,27 +10,27 @@ interface Heading {
 
 export function TableOfContents() {
   const [headings, setHeadings] = useState<Heading[]>([]);
-  const [activeId, setActiveId] = useState<string>('');
+  const [activeId, setActiveId] = useState<string>("");
 
   useEffect(() => {
     // Extract all headings from the article
-    const article = document.querySelector('article');
+    const article = document.querySelector("article");
     if (!article) return;
 
-    const headingElements = article.querySelectorAll('h1, h2, h3, h4, h5, h6');
+    const headingElements = article.querySelectorAll("h1, h2, h3, h4, h5, h6");
     const headingData: Heading[] = [];
 
     headingElements.forEach((heading) => {
       const level = parseInt(heading.tagName[1]);
-      const text = heading.textContent || '';
+      const text = heading.textContent || "";
 
       // Create ID from text if it doesn't have one
       let id = heading.id;
       if (!id) {
         id = text
           .toLowerCase()
-          .replace(/[^a-z0-9]+/g, '-')
-          .replace(/(^-|-$)/g, '');
+          .replace(/[^a-z0-9]+/g, "-")
+          .replace(/(^-|-$)/g, "");
         heading.id = id;
       }
 
@@ -48,7 +48,7 @@ export function TableOfContents() {
           }
         });
       },
-      { rootMargin: '-100px 0px -66%' }
+      { rootMargin: "-100px 0px -66%" }
     );
 
     headingElements.forEach((heading) => observer.observe(heading));
@@ -59,8 +59,8 @@ export function TableOfContents() {
   if (headings.length === 0) return null;
 
   return (
-    <nav className="sticky top-8 bg-gray-900/50 backdrop-blur-sm rounded-lg p-4 border border-gray-700">
-      <h2 className="text-white font-semibold mb-3 text-sm uppercase tracking-wide">
+    <nav className="sticky top-8 rounded-lg border border-gray-700 bg-gray-900/50 p-4 backdrop-blur-sm">
+      <h2 className="mb-3 text-sm font-semibold tracking-wide text-white uppercase">
         Table of Contents
       </h2>
       <ul className="space-y-2 text-sm">
@@ -73,14 +73,14 @@ export function TableOfContents() {
               href={`#${heading.id}`}
               className={`block py-1 transition-colors duration-200 hover:text-green-400 ${
                 activeId === heading.id
-                  ? 'text-green-400 font-medium'
-                  : 'text-gray-400'
+                  ? "font-medium text-green-400"
+                  : "text-gray-400"
               }`}
               onClick={(e) => {
                 e.preventDefault();
                 document.getElementById(heading.id)?.scrollIntoView({
-                  behavior: 'smooth',
-                  block: 'start',
+                  behavior: "smooth",
+                  block: "start",
                 });
               }}
             >
