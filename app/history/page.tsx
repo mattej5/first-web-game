@@ -8,6 +8,21 @@ export default function HistoryPage() {
       techStack: ["AngularJS", ".NET", "TFVC", "DevOps"],
     },
     {
+      title: "Co-Founder & Lead Developer",
+      companyOrSchool: "STU - Recruiting",
+      date: "February 2024 - Present",
+      type: "work",
+      techStack: [
+        "Next.js",
+        "Supabase",
+        "Docker",
+        "Kubernetes",
+        "Vercel",
+        "Mastra",
+        "OpenAI AI SDK",
+      ],
+    },
+    {
       title: "Lead Developer & Cloud Engineer",
       companyOrSchool: "STU - Upgrading Academia",
       date: "February 2024 - Present",
@@ -17,7 +32,7 @@ export default function HistoryPage() {
     {
       title: "Student Software Engineer",
       companyOrSchool: "BYU Life Sciences IT",
-      date: "February 2025 - Present",
+      date: "February 2025 - November 2026",
       type: "work",
       techStack: [
         "Web Development",
@@ -37,6 +52,13 @@ export default function HistoryPage() {
       companyOrSchool: "Brigham Young University - Marriott School of Business",
       date: "Expected: April 2027",
       type: "education",
+    },
+    {
+      title: "Data Engineering Pipeline Project",
+      companyOrSchool: "Brigham Young University - Marriott School of Business",
+      date: "April 2026",
+      type: "education",
+      techStack: ["Python", "Prefect", "Snowflake", "Docker"],
     },
     {
       title: "INTEX I",

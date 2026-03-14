@@ -57,7 +57,7 @@ export default async function Blog({
   if (!post) notFound();
 
   return (
-    <section className="-m-6 mx-auto min-h-full max-w-4xl rounded-2xl bg-black p-6 px-8 text-lg leading-relaxed md:-m-8 md:p-8">
+    <section className="-m-6 mx-auto min-h-full max-w-4xl rounded-2xl bg-black p-6 px-8 text-lg leading-relaxed md:-m-8 md:p-8 lg:max-w-none">
       <BackArrow className="mb-6" fallbackHref="/blog" label="Back to posts" />
       <script
         type="application/ld+json"

@@ -6,7 +6,7 @@ const personJsonLd = {
   "@context": "https://schema.org",
   "@type": "Person",
   name: "Vin Jones",
-  jobTitle: "Software Engineer & Co-Founder",
+  jobTitle: "AI Engineer & Co-Founder",
   url: siteUrl,
   image: `${siteUrl}/headshot_IS_square.jpg`,
   sameAs: [
@@ -59,11 +59,11 @@ export default function Home() {
             />
           </div>
           <h1 className="mt-6 text-4xl font-bold text-gray-900">
-            Vin Jones, Software Engineer & Co-Founder
+            Vin Jones, AI Engineer & Co-Founder
           </h1>
           <p className="max-2xl mt-2 text-gray-900">
             You&apos;ve found my portfolio! As a Master&apos;s student in
-            Information Systems at BYU, I specialize in predictive analytics,
+            Information Systems at BYU, I specialize in agentic applications,,
             secure software development, and cloud engineering solutions. In the
             age of AI, I love getting close to the people I&apos;m building for
             to quickly iterate and deliver high-impact solutions.

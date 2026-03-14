@@ -89,7 +89,7 @@ export function PostListItem({
           </p>
         </div>
         {typeof views === "number" && (
-          <span className="text-right text-sm text-gray-500">
+          <span className="text-sm text-gray-500 md:ml-auto md:shrink-0 md:text-right">
             {views} view{views === 1 ? "" : "s"}
           </span>
         )}

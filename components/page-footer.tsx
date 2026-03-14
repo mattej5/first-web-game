@@ -5,7 +5,7 @@ import { FaEnvelope, FaGithub, FaLinkedin } from "react-icons/fa";
 
 export function SiteFooter() {
   return (
-    <div className="w-full border-t border-white/20 bg-white/80 shadow-lg backdrop-blur-md">
+    <div className="w-full rounded-[1.75rem] border border-white/30 bg-white/70 shadow-lg backdrop-blur-md">
       <div className="mx-auto flex max-w-7xl flex-col items-center justify-between space-y-4 px-6 py-4 md:flex-row md:space-y-0">
         <p className="text-sm text-gray-800">
           Copyright {new Date().getFullYear()} Vin Jones. All rights reserved.

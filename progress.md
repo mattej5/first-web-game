@@ -1,0 +1,38 @@
+Original prompt: Awesome first step. Let's fix the bug for how the sword swings since the sword doesn't follow an arc path around the player but just spins in front of the player. Additionally, let's focus on the design of the sword. Can we make it more sword like?
+
+- 2026-03-07: Starting sword animation/model refinement in `/app/game/game-logic.tsx` to move from in-place spin to orbiting slash arc.
+- TODO: Run Playwright loop and inspect screenshots/state after sword changes.
+- 2026-03-07: Reworked sword model from single box mesh into a multi-part sword rig (blade, edge, tip, guard, grip, pommel).
+- 2026-03-07: Reworked slash animation from in-place sword spin to pivot-based orbital arc around player center using `swordPivot` + eased sweep.
+- 2026-03-07: Added broader attack key compatibility (`' '`, `Space`, `space`, `Spacebar`, `spacebar`, `j`, `k`) and edge-triggered held-key handling to improve reliability.
+- 2026-03-07: Validation: `npm run lint` passes. Ran Playwright client loops (no console error files generated) and manual browser check confirmed sword appears during slash with new silhouette and arc path.
+- TODO: If desired, tune slash arc width/timing constants (`startSweep`, `endSweep`, `ATTACK_DURATION`) for tighter NES feel.
+- 2026-03-07: Fixed horizontal sword-side bug by mirroring sweep direction when facing left/right (`shouldMirrorSweep` in `syncPlayerMesh`).
+- 2026-03-07: Lint check passes after fix.
+- 2026-03-07: User manually verified left/right sword-side alignment in the running app.
+- 2026-03-07: Redesigned player avatar with stronger directional cues (face plate, eyes, crest, cape, layered tunic) so facing direction is readable without sword movement.
+- 2026-03-07: User manually verified the new facing readability in-app.
+- 2026-03-07: Increased avatar size by 2x using `avatarVisualGroup.scale.setScalar(2)` so only character visuals are enlarged.
+- 2026-03-07: Increased player hitbox by 2x (`PLAYER_RADIUS` from `0.48` to `0.96`).
+- 2026-03-07: Adjusted sword pivot height (`y: 1`) to align with the larger avatar body.
+- 2026-03-07: Lint check passes after avatar/hitbox scaling.
+- 2026-03-07: Tuned scale pass: reduced avatar visual scale by 25% (`2` -> `1.5`) and reduced hitbox radius by 25% (`PLAYER_RADIUS` `0.96` -> `0.72`).
+- 2026-03-07: Increased sword size by 50% via `swordRig.scale.setScalar(1.5)`; adjusted sword pivot height from `1` to `0.75` to match new avatar size.
+- 2026-03-07: Lint check passes after scale tuning.
+- 2026-03-07: Increased sword size further (`swordRig.scale` `1.5` -> `2`) and expanded sword hitbox (`ATTACK_RANGE` `2.25` -> `3.4`, `ATTACK_ARC_RADIANS` `0.8π` -> `1.05π`).
+- 2026-03-07: Added swing-only right arm group (`swordArmGroup`) that appears/animates only during attacks.
+- 2026-03-07: Added shield silhouette on avatar front-left overlap (rim, face, emblem meshes) for stronger character read.
+- 2026-03-07: Validation: `npm run lint` passes; Playwright run produced screenshot/state with no error files at `output/web-game/sword-arm-shield-check`.
+- 2026-03-07: Linked sword hitbox to sword visual scale via `ATTACK_RANGE = BASE_SWORD_REACH * SWORD_VISUAL_SCALE` so the attack range tracks sword sizing.
+- 2026-03-07: Set `SWORD_VISUAL_SCALE` to `1` (50% down from previous `2`) while keeping hitbox in sync (`BASE_SWORD_REACH = 2.35`).
+- 2026-03-07: Increased shield size to `3x` (`shieldGroup.scale.setScalar(3)`) and reinforced front-left anchoring each frame in `syncPlayerMesh`.
+- 2026-03-07: Lint check passes.
+- 2026-03-07: Reduced shield scale by half (`3` -> `1.5`).
+- 2026-03-07: Implemented shield side-movement during attack using sinusoidal blend across attack progress; shield now shifts from front-left toward side-left during swing and returns after.
+- 2026-03-07: Lint check passes after shield movement update.
+- 2026-03-13: Updated `/app/game/game-logic.tsx` so the arena now supports a `paused` mode toggled by `Esc`, including resume via `Esc`, `Enter`, `Space`, or the overlay button.
+- 2026-03-13: Adjusted melee registration to use sword reach plus enemy body padding (`ATTACK_CONTACT_PADDING`) instead of requiring the enemy center to be inside the sword radius.
+- 2026-03-13: Added shield projectile deflection while the player is not actively swinging; beams are cleared before damage resolution when they enter the shield radius.
+- 2026-03-13: Fixed a compile issue from shield-radius constant ordering (`ENEMY_BEAM_RADIUS` initialization order).
+- 2026-03-13: Validation: `npm run lint` passes.
+- TODO: Run the Playwright loop against `/game` once a local dev server is reachable from the agent environment; validate shield deflection under projectile pressure, melee range feel, and `Esc` pause/resume flow end-to-end.

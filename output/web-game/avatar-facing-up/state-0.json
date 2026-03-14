@@ -1,0 +1,25 @@
+{
+  "coordinateSystem": "origin at arena center (0,0). x increases right. z increases down toward the bottom of the screen.",
+  "mode": "playing",
+  "player": {
+    "x": 0,
+    "z": -1.2,
+    "facing": "up",
+    "hp": 5,
+    "maxHp": 5,
+    "invulnerable": false,
+    "attacking": false,
+    "attackCooldown": 0
+  },
+  "enemies": [],
+  "hearts": [],
+  "walls": [
+    { "x": 0, "z": -4, "width": 6, "depth": 1.4 },
+    { "x": -9.2, "z": 2.2, "width": 2.8, "depth": 7.2 },
+    { "x": 9.4, "z": 6.1, "width": 4.6, "depth": 1.9 },
+    { "x": 5.8, "z": -8.8, "width": 7.8, "depth": 1.8 },
+    { "x": -3.4, "z": 8.7, "width": 6.2, "depth": 1.6 }
+  ],
+  "score": 0,
+  "wave": 1
+}

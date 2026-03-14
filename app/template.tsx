@@ -21,21 +21,23 @@ export default function Template({ children }: { children: React.ReactNode }) {
       >
         Skip to main content
       </a>
-      <header className="flex-shrink-0">
+      <div className="flex min-h-screen">
         <SiteHeader />
-      </header>
-      <main
-        id="main-content"
-        tabIndex={-1}
-        className="mx-auto max-w-7xl flex-grow px-6 py-8"
-      >
-        <div className="rounded-2xl bg-white/80 p-6 shadow-xl backdrop-blur-sm md:p-8">
-          {children}
+        <div className="flex min-w-0 flex-1 flex-col">
+          <main
+            id="main-content"
+            tabIndex={-1}
+            className="mx-auto w-full max-w-7xl flex-grow px-4 py-6 pb-28 sm:px-6 md:py-8 lg:px-8 lg:pb-8"
+          >
+            <div className="rounded-[2rem] border border-white/35 bg-white/82 p-6 shadow-2xl backdrop-blur-md md:p-8">
+              {children}
+            </div>
+          </main>
+          <footer className="px-4 pb-28 sm:px-6 lg:px-8 lg:pb-8">
+            <SiteFooter />
+          </footer>
         </div>
-      </main>
-      <footer className="flex-shrink-0">
-        <SiteFooter />
-      </footer>
+      </div>
     </>
   );
 }
