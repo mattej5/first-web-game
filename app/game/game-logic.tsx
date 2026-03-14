@@ -1368,7 +1368,7 @@ export default function Game() {
           applyPlayerHit();
           removeBeam(beam);
 
-          if (modeRef.current === "gameOver") {
+          if ((modeRef.current as GameMode) === "gameOver") {
             break;
           }
         }

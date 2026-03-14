@@ -67,15 +67,11 @@ define(["./workbox-3c9d0171"], function (e) {
           url: "/Moab_Wedding-592.jpg",
           revision: "777e62d94ec61e78efc4fc6532abecb1",
         },
+        {
+          url: "/Palantir Resume.pdf",
+          revision: "3b818caff57017b9eceec559e2825448",
+        },
         { url: "/VinOS.png", revision: "9017edf50c9a60fed4fae9636815806f" },
-        {
-          url: "/_next/static/C8eEjIBiXep4i1itGiKVA/_buildManifest.js",
-          revision: "03439caf0d6f1b40f0571481bca96a69",
-        },
-        {
-          url: "/_next/static/C8eEjIBiXep4i1itGiKVA/_ssgManifest.js",
-          revision: "b6652df95db52feb4daf4eca35380933",
-        },
         {
           url: "/_next/static/chunks/0b9ec2c9.5cf8ccbc07a5ad15.js",
           revision: "5cf8ccbc07a5ad15",
@@ -107,6 +103,10 @@ define(["./workbox-3c9d0171"], function (e) {
         {
           url: "/_next/static/chunks/6cf54382-8fdb83ec98be01dd.js",
           revision: "8fdb83ec98be01dd",
+        },
+        {
+          url: "/_next/static/chunks/74c6194b-2e9b7776db25a10f.js",
+          revision: "2e9b7776db25a10f",
         },
         {
           url: "/_next/static/chunks/809-375d9878a9112f8d.js",
@@ -145,16 +145,16 @@ define(["./workbox-3c9d0171"], function (e) {
           revision: "85b9bb1864ca2f87",
         },
         {
-          url: "/_next/static/chunks/app/blog/page-9b2215681dab7b9f.js",
-          revision: "9b2215681dab7b9f",
+          url: "/_next/static/chunks/app/blog/page-f2b7398f9965e0f8.js",
+          revision: "f2b7398f9965e0f8",
         },
         {
           url: "/_next/static/chunks/app/drive/page-c75383b8b6896abb.js",
           revision: "c75383b8b6896abb",
         },
         {
-          url: "/_next/static/chunks/app/game/page-bb84ef2e5994d414.js",
-          revision: "bb84ef2e5994d414",
+          url: "/_next/static/chunks/app/game/page-da86fbddc69dd3e3.js",
+          revision: "da86fbddc69dd3e3",
         },
         {
           url: "/_next/static/chunks/app/history/page-f437f79a07f71a9e.js",
@@ -189,16 +189,20 @@ define(["./workbox-3c9d0171"], function (e) {
           revision: "f437f79a07f71a9e",
         },
         {
-          url: "/_next/static/chunks/app/template-a0bef01e6ba19a02.js",
-          revision: "a0bef01e6ba19a02",
+          url: "/_next/static/chunks/app/template-cd62eb14362a9939.js",
+          revision: "cd62eb14362a9939",
+        },
+        {
+          url: "/_next/static/chunks/e9a6067a-d77a61b4f90d62ff.js",
+          revision: "d77a61b4f90d62ff",
         },
         {
           url: "/_next/static/chunks/ececdbdf-3eb5234621e49703.js",
           revision: "3eb5234621e49703",
         },
         {
-          url: "/_next/static/chunks/fa5fb511-24437fbfbca65e0d.js",
-          revision: "24437fbfbca65e0d",
+          url: "/_next/static/chunks/fa5fb511-8969ef6e7d95ad74.js",
+          revision: "8969ef6e7d95ad74",
         },
         {
           url: "/_next/static/chunks/framework-f1e861048df000d0.js",
@@ -237,16 +241,24 @@ define(["./workbox-3c9d0171"], function (e) {
           revision: "2d830316ce32d000",
         },
         {
+          url: "/_next/static/css/314f68a24cc9e462.css",
+          revision: "314f68a24cc9e462",
+        },
+        {
           url: "/_next/static/css/5b8c6768d6b327f9.css",
           revision: "5b8c6768d6b327f9",
         },
         {
-          url: "/_next/static/css/ca3b64a8977f758c.css",
-          revision: "ca3b64a8977f758c",
+          url: "/_next/static/css/6a1d38d0f06722a9.css",
+          revision: "6a1d38d0f06722a9",
         },
         {
-          url: "/_next/static/css/f947e6fefe525823.css",
-          revision: "f947e6fefe525823",
+          url: "/_next/static/ful2i-jOvrt8GvzQ0O_Dh/_buildManifest.js",
+          revision: "03439caf0d6f1b40f0571481bca96a69",
+        },
+        {
+          url: "/_next/static/ful2i-jOvrt8GvzQ0O_Dh/_ssgManifest.js",
+          revision: "b6652df95db52feb4daf4eca35380933",
         },
         {
           url: "/_next/static/media/0e9d289c6eb42bf7-s.p.woff2",
