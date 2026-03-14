@@ -2,10 +2,10 @@ import { MDXContent } from "@/components/mdx";
 import { getBlogPosts } from "@/app/blog/utils";
 
 type StoryChaptersProps = {
-  slugs: string[];
+  slugs?: string[];
 };
 
-export function StoryChapters({ slugs }: Readonly<StoryChaptersProps>) {
+export function StoryChapters({ slugs = [] }: Readonly<StoryChaptersProps>) {
   const posts = getBlogPosts();
   const postsBySlug = new Map(posts.map((post) => [post.slug, post]));
 
