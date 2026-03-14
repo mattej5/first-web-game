@@ -8086,7 +8086,7 @@ snapshots:
       "@tybys/wasm-util": 0.10.1
     optional: true
 
-  "@next/env@15.5.3": {}
+  '@next/env@15.5.9': {}
 
   "@next/eslint-plugin-next@15.5.3":
     dependencies:
