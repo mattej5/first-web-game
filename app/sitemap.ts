@@ -1,6 +1,7 @@
 import { getBlogPosts } from "./blog/utils";
 
-export const baseUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://vinjones.me";
+export const baseUrl =
+  process.env.NEXT_PUBLIC_SITE_URL ?? "https://vinjones.me";
 
 const staticRoutes = [
   "",

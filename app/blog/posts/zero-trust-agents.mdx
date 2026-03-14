@@ -1,0 +1,31 @@
+---
+title: "Zero Trust Architecture for Autonomous Agents"
+publishedAt: "2026-02-14"
+summary: "Friction is usually the enemy of UX. But with Autonomous AI Agents, it’s actually a strong line of defense."
+image: "/zero-trust-agents/cover.png"
+---
+
+Friction is usually the enemy of UX. But with Autonomous AI Agents, it’s actually a strong line of defense.
+
+As the potential 'blast radius' of AI increases, we need to stop prioritizing speed and start prioritizing continuous re-authentication. Here’s why 'Zero Trust' is the only way forward for agents...
+
+The TL;DR for those short on time: 
+> **Keep the Human in the Loop.** In the event of a compromised agent, a proper HITL architecture means YOU are the kill switch.
+
+Still here? Share this with your dev team (or your coding agent) before your next security audit.
+
+We often have Zero Trust architecture marketed to us. Many agent frameworks prioritize capability over built-in Zero Trust enforcement, which places the burden of security on the operator. Without centralized observability, agent behavior becomes murky at best. Here's a quick checklist of things to keep in mind:
+
+### Just-in-Time (JIT) Authentication
+Require the AI to authenticate for each tool, every time. This creates immutable logs and treats every call as a potential breach.
+
+### Tool Registry
+Operating without a tool registry significantly increases the attack surface. OpenClaw allows anyone to make a skill for anything, and if you give it to your agent it can use that skill whenever it wants, even if it makes you incredibly vulnerable. Agents should only use the tools you've vetted, and a tool registry can help with that. Tool calls should also produce immutable logs.
+
+### AI Gateways
+These act as your policy enforcement layer, protecting the Agent Runtime from a potentially "poisoned" policy engine or user.
+
+### End-to-End Observability
+This is where those logs come in. You need the ability to either throttle the system or hit the kill switch in real-time.
+
+AI is a major force multiplier in your day-to-day, so make governance scale with it.

@@ -2,17 +2,16 @@ import Game from "./game-logic";
 
 export default function Home() {
   return (
-    <div className="flex flex-col items-center p-2 sm:p-4 font-[family-name:var(--font-geist-sans)]">
-      <div className="game-window mt-2 sm:mt-4">
-        <header className="window-header mb-2 sm:mb-4">
-          <h1 className="m-0 text-lg sm:text-xl font-bold text-center">
-            Untitled Battle Squares
-          </h1>
-        </header>
-        <div className="window-body">
-          <Game />
-        </div>
+    <div className="arena-page-wrap">
+      <div className="arena-page-header">
+        <p className="arena-kicker">Portfolio Game Prototype</p>
+        <h1>Battle Arena of the Triforce</h1>
+        <p>
+          A Next.js route running a Three.js combat arena inspired by NES-era
+          top-down action.
+        </p>
       </div>
+      <Game />
     </div>
   );
 }

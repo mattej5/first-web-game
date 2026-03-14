@@ -1,6 +1,6 @@
 "use client";
 
-import { usePathname } from 'next/navigation';
+import { usePathname } from "next/navigation";
 import { SiteHeader } from "@/components/page-header";
 import { SiteFooter } from "@/components/page-footer";
 
@@ -8,7 +8,7 @@ export default function Template({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
 
   // Don't wrap VinOS page
-  if (pathname === '/vinos') {
+  if (pathname === "/vinos") {
     return <>{children}</>;
   }
 
@@ -17,25 +17,27 @@ export default function Template({ children }: { children: React.ReactNode }) {
     <>
       <a
         href="#main-content"
-        className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-[100] focus:rounded-md focus:bg-white focus:px-4 focus:py-2 focus:text-gray-900 focus:shadow-lg focus:outline-none"
+        className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-[100] focus:rounded-md focus:bg-white focus:px-4 focus:py-2 focus:text-gray-900 focus:shadow-lg focus:outline-none"
       >
         Skip to main content
       </a>
-      <header className="flex-shrink-0">
+      <div className="flex min-h-screen">
         <SiteHeader />
-      </header>
-      <main
-        id="main-content"
-        tabIndex={-1}
-        className="flex-grow max-w-7xl mx-auto px-6 py-8"
-      >
-        <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-xl p-6 md:p-8">
-          {children}
+        <div className="flex min-w-0 flex-1 flex-col">
+          <main
+            id="main-content"
+            tabIndex={-1}
+            className="mx-auto w-full max-w-7xl flex-grow px-4 py-6 pb-28 sm:px-6 md:py-8 lg:px-8 lg:pb-8"
+          >
+            <div className="rounded-[2rem] border border-white/35 bg-white/82 p-6 shadow-2xl backdrop-blur-md md:p-8">
+              {children}
+            </div>
+          </main>
+          <footer className="px-4 pb-28 sm:px-6 lg:px-8 lg:pb-8">
+            <SiteFooter />
+          </footer>
         </div>
-      </main>
-      <footer className="flex-shrink-0">
-        <SiteFooter />
-      </footer>
+      </div>
     </>
   );
 }

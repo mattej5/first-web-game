@@ -76,9 +76,7 @@ export function DraggableHomeButton() {
     endDrag(event, shouldNavigate);
   };
 
-  const handlePointerCancel = (
-    event: ReactPointerEvent<HTMLButtonElement>
-  ) => {
+  const handlePointerCancel = (event: ReactPointerEvent<HTMLButtonElement>) => {
     endDrag(event, false);
   };
 
@@ -90,8 +88,8 @@ export function DraggableHomeButton() {
       onPointerMove={handlePointerMove}
       onPointerUp={handlePointerUp}
       onPointerCancel={handlePointerCancel}
-      className={`draggable-home-button absolute z-50 flex h-14 w-14 items-center justify-center rounded-full shadow-lg transition-transform focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 focus:ring-offset-slate-900 ${
-        isDragging ? "cursor-grabbing scale-95" : "cursor-grab hover:scale-105"
+      className={`draggable-home-button absolute z-50 flex h-14 w-14 items-center justify-center rounded-full shadow-lg transition-transform focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-slate-900 focus:outline-none ${
+        isDragging ? "scale-95 cursor-grabbing" : "cursor-grab hover:scale-105"
       }`}
       style={{ top: position.y, left: position.x }}
     >

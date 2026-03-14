@@ -28,7 +28,14 @@ body {
   font-family: Arial, Helvetica, sans-serif;
   margin: 0;
   font-family: var(--font-geist-sans), sans-serif;
-  background: linear-gradient(135deg, #1e3a8a 0%, #059669 25%, #10b981 50%, #06b6d4 75%, #0ea5e9 100%);
+  background: linear-gradient(
+    135deg,
+    #1e3a8a 0%,
+    #059669 25%,
+    #10b981 50%,
+    #06b6d4 75%,
+    #0ea5e9 100%
+  );
   background-size: 400% 400%;
   background-attachment: fixed;
   animation: var(--gradient-animation);
@@ -36,9 +43,15 @@ body {
 }
 
 @keyframes gradientShift {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {

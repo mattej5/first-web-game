@@ -1,25 +1,25 @@
-'use client';
+"use client";
 
-import { useRouter } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 
 type Props = {
   className?: string;
-  fallbackHref?: string;   // where to go if there's no history
+  fallbackHref?: string; // where to go if there's no history
   label?: string;
 };
 
 export default function BackArrow({
-  className = '',
-  fallbackHref = '/blog',
-  label = 'Back',
+  className = "",
+  fallbackHref = "/blog",
+  label = "Back",
 }: Readonly<Props>) {
   const router = useRouter();
   const [canGoBack, setCanGoBack] = useState(false);
 
   useEffect(() => {
     // If user landed directly on this page, history length is usually 1
-    setCanGoBack(typeof window !== 'undefined' && window.history.length > 1);
+    setCanGoBack(typeof window !== "undefined" && window.history.length > 1);
   }, []);
 
   const onClick = (e: React.MouseEvent) => {
@@ -33,10 +33,7 @@ export default function BackArrow({
       href={fallbackHref}
       onClick={onClick}
       aria-label={label}
-      className={`group inline-flex items-center gap-2 text-sm
-                  text-neutral-600 dark:text-neutral-400
-                  hover:text-neutral-900 dark:hover:text-neutral-100
-                  ${className}`}
+      className={`group inline-flex items-center gap-2 text-sm text-neutral-600 hover:text-neutral-900 dark:text-neutral-400 dark:hover:text-neutral-100 ${className}`}
     >
       <svg
         className="h-5 w-5 transition-transform group-hover:-translate-x-0.5"

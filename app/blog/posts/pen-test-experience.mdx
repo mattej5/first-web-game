@@ -12,27 +12,27 @@ Deliverable: a thorough, reproducible **penetration testing report** with risk r
 
 ## What I Set Out to Deliver
 
-- **Clear scope & rules of engagement:** what’s in, what’s out, test windows, and stop conditions.  
-- **Reproducible findings:** screenshot + hash + context; no “trust me.”  
-- **Proven impact:** controlled exploitation to demonstrate risk, not create it.  
-- **Business mapping:** what each issue means for data, operations, and reputation.  
+- **Clear scope & rules of engagement:** what’s in, what’s out, test windows, and stop conditions.
+- **Reproducible findings:** screenshot + hash + context; no “trust me.”
+- **Proven impact:** controlled exploitation to demonstrate risk, not create it.
+- **Business mapping:** what each issue means for data, operations, and reputation.
 - **Remediation you can actually do:** prioritized fixes, validation steps, and owners.
 
 ## Scope & Guardrails
 
-- **In-scope asset:** single Ubuntu server (lab).  
-- **Allowed techniques:** network recon, authenticated/unauthenticated service checks, safe exploitation in isolation, local enumeration, password hygiene auditing.  
-- **Disallowed:** data exfiltration beyond minimal proof, lateral movement (except to show possible ways I can do it), DoS, persistence.  
+- **In-scope asset:** single Ubuntu server (lab).
+- **Allowed techniques:** network recon, authenticated/unauthenticated service checks, safe exploitation in isolation, local enumeration, password hygiene auditing.
+- **Disallowed:** data exfiltration beyond minimal proof, lateral movement (except to show possible ways I can do it), DoS, persistence.
 - **Safety:** snapshots, read-only where possible, immediate cleanup, logged timestamps.
 
 ## Method at a Glance
 
-1. **Recon & Mapping:** service inventory with Nmap; verify banners and versions.  
-2. **Vulnerability Discovery:** scanner corroboration (Nessus) + manual validation.  
-3. **Exploitation (Scoped):** demonstrate impact on select, confirmed issues (e.g., legacy FTP module exposure, residual backdoor behavior, PHP CGI misconfig).  
-4. **Post-Exploitation:** minimal-footprint enumeration, privilege escalation checks, data-access boundaries.  
-5. **Credential Hygiene:** password policy audit, hash review, weak/guessable patterns.  
-6. **Evidence & Reporting:** screenshots, commands, hashes, timestamps, and clear repro steps.  
+1. **Recon & Mapping:** service inventory with Nmap; verify banners and versions.
+2. **Vulnerability Discovery:** scanner corroboration (Nessus) + manual validation.
+3. **Exploitation (Scoped):** demonstrate impact on select, confirmed issues (e.g., legacy FTP module exposure, residual backdoor behavior, PHP CGI misconfig).
+4. **Post-Exploitation:** minimal-footprint enumeration, privilege escalation checks, data-access boundaries.
+5. **Credential Hygiene:** password policy audit, hash review, weak/guessable patterns.
+6. **Evidence & Reporting:** screenshots, commands, hashes, timestamps, and clear repro steps.
 
 ## Recon: Turning the Network into a Map
 
@@ -40,16 +40,17 @@ Goal: make unknowns boring.
 I built a service map (ports, protocols, versions), flagged anomalies, and identified **trust boundaries** (what talks to what, and why). Findings fed the test plan—**no exploitation without a rationale**.
 
 **What I captured:**
-- Port/service matrix (with version confidence levels)  
-- Host fingerprints and OS hints  
+
+- Port/service matrix (with version confidence levels)
+- Host fingerprints and OS hints
 - First-pass risk flags (old FTP daemon, legacy web handler)
 
 ## Vulnerability Discovery: Corroborate, Don’t Guess
 
 Scanners are **advisors**, not oracles. I cross-checked results against manual probes to avoid false positives. Three classes of issues made the shortlist for proof:
 
-- **Legacy FTP module exposure (e.g., copy/write misuse):** file-system impact risk.  
-- **Residual backdoor behavior:** signs of a bind-style shell/backdoor leftover; investigated scope and viability.  
+- **Legacy FTP module exposure (e.g., copy/write misuse):** file-system impact risk.
+- **Residual backdoor behavior:** signs of a bind-style shell/backdoor leftover; investigated scope and viability.
 - **PHP CGI misconfiguration:** request handling that could enable unintended code paths.
 
 For each candidate, I logged: affected service, preconditions, data at risk, and safe proof path.
@@ -59,16 +60,17 @@ For each candidate, I logged: affected service, preconditions, data at risk, and
 Purpose: **show impact**, not show off. I used a private, isolated workflow to demonstrate one carefully-chosen path per issue—just enough to convince an engineer and a risk owner. Proofs stayed minimal: environment details, the smallest reproducible action, and the **exact guardrails** I used.
 
 **Safeguards I enforced:**
-- Snapshots and **no persistence**  
-- Only the data needed to prove the finding  
+
+- Snapshots and **no persistence**
+- Only the data needed to prove the finding
 - Immediate rollback and artifact cleanup
 
 ## Post-Exploitation & Privilege Escalation (Minimal Footprint)
 
 Once a low-priv foothold was demonstrated, I kept it surgical:
 
-- Enumerated OS/kernel, groups, PATH, SUID/SGID, scheduled tasks, and service configs.  
-- Checked for **misconfig ladders** (world-writable paths, stale sudo rules, weak service ownership).  
+- Enumerated OS/kernel, groups, PATH, SUID/SGID, scheduled tasks, and service configs.
+- Checked for **misconfig ladders** (world-writable paths, stale sudo rules, weak service ownership).
 - Documented a **plausible** path to elevated access where applicable, with impact statements (not step-by-step weaponization).
 
 ## Credential & Password Hygiene
@@ -79,47 +81,47 @@ I reviewed hashing algorithms, rotation signals, and basic policy strength indic
 
 Every finding included:
 
-- **Context:** where I was, what preconditions existed  
-- **Exact inputs:** commands/requests (redacted as needed)  
-- **Outputs:** screenshots + hashes + timestamps  
+- **Context:** where I was, what preconditions existed
+- **Exact inputs:** commands/requests (redacted as needed)
+- **Outputs:** screenshots + hashes + timestamps
 - **Cleanup:** how I reverted or neutralized the test
 
 ## Risk Ratings & Business Impact
 
 I used consistent language so engineering and leadership could agree on “why this matters.”
 
-- **Backdoor behavior (bind-style shell):** *Critical* — integrity/control risk; immediate containment & forensic follow-up.  
-- **FTP module exposure (file copy/write misuse):** *High* — path to file tampering or credential exposure; disable module or harden config.  
-- **PHP CGI misconfig:** *Medium–High* — request-routing pitfalls with potential code execution; standardize handler config and update.
+- **Backdoor behavior (bind-style shell):** _Critical_ — integrity/control risk; immediate containment & forensic follow-up.
+- **FTP module exposure (file copy/write misuse):** _High_ — path to file tampering or credential exposure; disable module or harden config.
+- **PHP CGI misconfig:** _Medium–High_ — request-routing pitfalls with potential code execution; standardize handler config and update.
 
 Each item mapped to **CVSS-style reasoning**, affected assets, and **time-to-fix** estimates.
 
 ## Remediation (Prioritized & Practical)
 
-1. **Contain & verify integrity** where backdoor behavior is suspected (service binaries, timers, unknown listeners).  
-2. **Harden or remove legacy modules**; least-privileged service accounts; write-protect sensitive paths.  
-3. **Normalize web handler configs**; pin versions; add request filtering and provenance checks.  
-4. **Credential policy tune-up:** stronger defaults, rate limits, unique admin paths, and alerting.  
+1. **Contain & verify integrity** where backdoor behavior is suspected (service binaries, timers, unknown listeners).
+2. **Harden or remove legacy modules**; least-privileged service accounts; write-protect sensitive paths.
+3. **Normalize web handler configs**; pin versions; add request filtering and provenance checks.
+4. **Credential policy tune-up:** stronger defaults, rate limits, unique admin paths, and alerting.
 5. **Validation plan:** after each fix, re-run the smallest proof to confirm closure.
 
 ## Report Structure That Shipped
 
-- **Executive Summary:** three sentences, one table.  
-- **Methodology:** what I tested and what I avoided.  
-- **Findings:** one page per issue (impact → proof → evidence → remediation).  
+- **Executive Summary:** three sentences, one table.
+- **Methodology:** what I tested and what I avoided.
+- **Findings:** one page per issue (impact → proof → evidence → remediation).
 - **Appendix:** raw artifacts, hashes, timelines, and cleanup notes.
 
 ## Lessons I’m Keeping
 
-- **Write the report as you test.** Don’t save documentation for Friday.  
-- **Validate early, escalate carefully.** One clean proof beats five messy demos.  
-- **Scope protects everyone.** Guardrails make it safe to learn and to fix.  
+- **Write the report as you test.** Don’t save documentation for Friday.
+- **Validate early, escalate carefully.** One clean proof beats five messy demos.
+- **Scope protects everyone.** Guardrails make it safe to learn and to fix.
 - **Make engineers the hero.** Findings are only good if they’re fixable.
 
 ## What’s Next
 
-- Automate artifact hashing and timestamps during capture.  
-- Reusable finding templates and severity guardrails.  
+- Automate artifact hashing and timestamps during capture.
+- Reusable finding templates and severity guardrails.
 - Add lightweight purple-team validations so fixes get verified continuously.
 
 ## Why This Matters

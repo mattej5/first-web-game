@@ -3,98 +3,165 @@
 import Link from "next/link";
 import { Dancing_Script } from "next/font/google";
 import Image from "next/image";
-import { useEffect, useRef, useState } from "react";
 import { usePathname } from "next/navigation";
+import { NAVIGATION_LINKS } from "@/lib/navigation";
+import { FaEnvelope, FaGithub, FaLinkedin } from "react-icons/fa";
 
 const dancing = Dancing_Script({
   subsets: ["latin"],
-  weight: ["400", "700"], // pick the weights you want
+  weight: ["400", "700"],
 });
 
 export function SiteHeader() {
-  const [open, setOpen] = useState(false);
   const pathname = usePathname();
-  const toggleButtonRef = useRef<HTMLButtonElement>(null);
+  const mobileLinks = NAVIGATION_LINKS.filter(
+    (link) => link.href !== "/" && link.includeInMobile !== false
+  );
 
-  // Close menu when Escape is pressed
-  useEffect(() => {
-    if (!open) return;
+  const isActive = (href: string) => {
+    if (href === "/") {
+      return pathname === "/";
+    }
 
-    const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.key === "Escape") {
-        setOpen(false);
-        toggleButtonRef.current?.focus();
-      }
-    };
-
-    window.addEventListener("keydown", handleKeyDown);
-    return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [open]);
-
-  // Close the mobile menu on route change
-  useEffect(() => setOpen(false), [pathname]);
+    return pathname === href || pathname.startsWith(`${href}/`);
+  };
 
   return (
-    <div className="w-full border-b border-white/20 bg-white/80 backdrop-blur-md shadow-lg">
-      <nav className="max-w-7xl mx-auto flex items-center justify-between px-6 py-4">
+    <>
+      <aside className="sticky top-0 hidden h-screen w-72 shrink-0 border-r border-white/20 bg-white/72 p-6 shadow-2xl backdrop-blur-xl lg:flex lg:flex-col">
         <Link
           href="/"
-          className="flex items-center space-x-2 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-emerald-700 rounded-md transition-shadow"
+          className="rounded-3xl border border-emerald-900/10 bg-white/75 p-4 shadow-sm transition-transform hover:-translate-y-0.5 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-emerald-700"
         >
+          <div className="flex items-center gap-3">
             <Image
-                src="/happy_android_no_bg.png"        // or whatever you named the file in /public
-                alt="Vin Jones Logo"
-                width={40}                // adjust size as needed
-                height={40}
-                className="rounded-md"
+              src="/happy_android_no_bg.png"
+              alt="Vin Jones Logo"
+              width={44}
+              height={44}
+              className="rounded-xl"
             />
-            <div className={`text-2xl font-bold text-gray-800 ${dancing.className}`}>Vin Jones</div>
+            <div>
+              <div
+                className={`text-2xl font-bold text-slate-900 ${dancing.className}`}
+              >
+                Vin Jones
+              </div>
+            </div>
+          </div>
         </Link>
 
-        {/* Desktop menu */}
-        <ul className="hidden md:flex space-x-6 text-gray-800 font-medium">
-          <li><Link href="/projects" className="hover:text-emerald-700 transition-colors duration-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-emerald-700 rounded-md px-1">Projects</Link></li>
-          <li><Link href="/about" className="hover:text-emerald-700 transition-colors duration-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-emerald-700 rounded-md px-1">About Me</Link></li>
-          <li><Link href="/blog" className="hover:text-emerald-700 transition-colors duration-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-emerald-700 rounded-md px-1">Blog</Link></li>
-          <li><Link href="/history" className="hover:text-emerald-700 transition-colors duration-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-emerald-700 rounded-md px-1">History</Link></li>
-          <li><Link href="/vinos" className="hover:text-emerald-700 transition-colors duration-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-emerald-700 rounded-md px-1">VinOS</Link></li>
-        </ul>
+        <nav className="mt-8" aria-label="Primary">
+          <ul className="space-y-2">
+            {NAVIGATION_LINKS.map((link) => {
+              const Icon = link.icon;
+              const active = isActive(link.href);
 
-        {/* Mobile hamburger */}
-        <button
-          type="button"
-          ref={toggleButtonRef}
-          onClick={() => setOpen((v) => !v)}
-          className="md:hidden inline-flex items-center justify-center rounded-md p-2 text-gray-800 hover:bg-gray-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-emerald-700 transition-colors duration-200"
-          aria-label="Toggle menu"
-          aria-expanded={open}
-          aria-controls="mobile-menu"
+              return (
+                <li key={link.href}>
+                  <Link
+                    href={link.href}
+                    aria-current={active ? "page" : undefined}
+                    className={`flex items-center gap-3 rounded-2xl px-4 py-3 text-sm font-semibold transition-all focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-emerald-700 ${
+                      active
+                        ? "bg-emerald-900 text-white shadow-lg shadow-emerald-950/20"
+                        : "text-slate-700 hover:bg-white/80 hover:text-emerald-800"
+                    }`}
+                  >
+                    <Icon
+                      className={`h-4 w-4 ${active ? "text-emerald-200" : ""}`}
+                    />
+                    <span>{link.label}</span>
+                  </Link>
+                </li>
+              );
+            })}
+          </ul>
+        </nav>
+      </aside>
+
+      <div className="px-4 pt-4 sm:px-6 lg:hidden">
+        <Link
+          href="/"
+          className="flex items-center gap-3 rounded-[1.75rem] border border-white/40 bg-white/72 px-4 py-3 shadow-lg backdrop-blur-xl focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-emerald-700"
         >
-          {/* Icon: hamburger / close */}
-          <svg className={`h-6 w-6 ${open ? "hidden" : "block"}`} viewBox="0 0 24 24" fill="none" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 7h16M4 12h16M4 17h16"/>
-          </svg>
-          <svg className={`h-6 w-6 ${open ? "block" : "hidden"}`} viewBox="0 0 24 24" fill="none" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"/>
-          </svg>
-        </button>
-      </nav>
-
-      {/* Mobile dropdown panel */}
-      <div
-        id="mobile-menu"
-        className={`md:hidden overflow-hidden transition-[max-height,opacity] duration-300 ease-out ${
-          open ? "max-h-96 opacity-100" : "max-h-0 opacity-0"
-        }`}
-      >
-        <ul className="flex flex-col gap-2 px-6 pb-4 pt-0 text-gray-800 font-medium bg-white/80 backdrop-blur-sm">
-          <li><Link href="/projects" className="block rounded px-2 py-2 hover:bg-white/70 transition-colors duration-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-700">Projects</Link></li>
-          <li><Link href="/about" className="block rounded px-2 py-2 hover:bg-white/70 transition-colors duration-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-700">About Me</Link></li>
-          <li><Link href="/blog" className="block rounded px-2 py-2 hover:bg-white/70 transition-colors duration-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-700">Blog</Link></li>
-          <li><Link href="/history" className="block rounded px-2 py-2 hover:bg-white/70 transition-colors duration-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-700">History</Link></li>
-          <li><Link href="/vinos" className="block rounded px-2 py-2 hover:bg-white/70 transition-colors duration-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-700">VinOS</Link></li>
-        </ul>
+          <Image
+            src="/happy_android_no_bg.png"
+            alt="Vin Jones Logo"
+            width={38}
+            height={38}
+            className="rounded-lg"
+          />
+          <div className="min-w-0">
+            <div
+              className={`truncate text-xl font-bold text-slate-900 ${dancing.className}`}
+            >
+              Vin Jones
+            </div>
+            <p className="truncate text-sm text-slate-600">
+              Builder, engineer, and product-minded problem solver.
+            </p>
+          </div>
+        </Link>
+        <div className="mt-3 flex items-center justify-center gap-3">
+          <Link
+            href="https://github.com/mattej5"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="rounded-full border border-white/50 bg-white/72 p-3 text-slate-800 shadow-lg backdrop-blur-xl transition-colors hover:text-emerald-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-700"
+            aria-label="GitHub profile"
+          >
+            <FaGithub size={18} />
+          </Link>
+          <Link
+            href="https://www.linkedin.com/in/vin-matt-jones/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="rounded-full border border-white/50 bg-white/72 p-3 text-slate-800 shadow-lg backdrop-blur-xl transition-colors hover:text-emerald-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-700"
+            aria-label="LinkedIn profile"
+          >
+            <FaLinkedin size={18} />
+          </Link>
+          <Link
+            href="mailto:matthew.jones6288@gmail.com?subject=Website%20Inquiry&body=Hi%20Vin%2C"
+            className="rounded-full border border-white/50 bg-white/72 p-3 text-slate-800 shadow-lg backdrop-blur-xl transition-colors hover:text-emerald-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-700"
+            aria-label="Send email"
+          >
+            <FaEnvelope size={18} />
+          </Link>
+        </div>
       </div>
-    </div>
+
+      <nav
+        aria-label="Primary"
+        className="fixed inset-x-0 bottom-4 z-50 mx-auto w-[min(92vw,30rem)] rounded-[2rem] border border-white/55 bg-slate-950/88 px-3 py-2 shadow-2xl shadow-slate-950/30 backdrop-blur-xl lg:hidden"
+      >
+        <ul className="flex items-center justify-between gap-1">
+          {mobileLinks.map((link) => (
+            <li key={link.href} className="min-w-0 flex-1">
+              {(() => {
+                const Icon = link.icon;
+                const active = isActive(link.href);
+
+                return (
+                  <Link
+                    href={link.href}
+                    aria-current={active ? "page" : undefined}
+                    className={`flex min-w-0 flex-col items-center justify-center gap-1 rounded-2xl px-2 py-2 text-[0.68rem] font-medium transition-all focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-400 ${
+                      active
+                        ? "bg-white text-slate-950 shadow-lg"
+                        : "text-slate-300 hover:bg-white/10 hover:text-white"
+                    }`}
+                  >
+                    <Icon className="h-4 w-4 shrink-0" />
+                    <span className="truncate">{link.label}</span>
+                  </Link>
+                );
+              })()}
+            </li>
+          ))}
+        </ul>
+      </nav>
+    </>
   );
 }

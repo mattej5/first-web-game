@@ -1,0 +1,216 @@
+---
+title: "Why We Pivoted Stu from Planning to Recruiting"
+publishedAt: "2026-03-13"
+summary: "Stu began as a student planning product. We pivoted when we realized the deeper problem was not planning, but the lack of alignment infrastructure between employers and early talent."
+---
+
+When we started building Stu, the idea seemed straightforward.
+
+Students are asked to make high-stakes career decisions with fragmented information. They choose classes without knowing how those choices connect to actual roles. They build resumes by guessing which experiences matter. They accumulate projects, internships, clubs, and coursework, but often have no clear system for understanding how those experiences compound into employable capability.
+
+Stu began as an attempt to solve that problem. We wanted to build a student planning platform that helped people map academic and career paths, track experiences, structure resumes and credentials, and better understand how their activities connected to future opportunities.
+
+That was the original product.
+
+It is no longer the product we are building.
+
+Over time, development and research exposed something more important: planning was not the real bottleneck. The deeper problem was alignment. Students do not know what employers actually value, and employers do not have good systems for evaluating early talent consistently across universities, majors, resumes, portfolios, and uneven experience histories.
+
+That realization led us to pivot Stu from a planning product into a recruiting platform.
+
+## The Original Vision
+
+The first version of Stu was built around a simple assumption: if students had better planning tools, they would make better decisions.
+
+That assumption was not wrong, but it was incomplete.
+
+The product was designed to help students answer questions like:
+
+- What experiences should I prioritize?
+- How do my classes, projects, and extracurriculars support a career direction?
+- What am I missing if I want to become a strong candidate?
+- How do I turn a scattered set of activities into a coherent professional story?
+
+From a product perspective, this led naturally to planning features: structured profiles, experience tracking, resume support, and tools for connecting present activity to future goals.
+
+From an engineering perspective, it was also a tractable first problem. Planning systems are easier to define because the user is the student, the data model is relatively local, and the interface can be framed as personal organization.
+
+But the more we worked in that space, the more a pattern emerged: students were not primarily failing because they lacked a planner.
+
+They were failing because the market they were planning for was opaque.
+
+## What We Learned
+
+The more we looked at student workflows, the more we saw that planning quality was downstream of signal quality.
+
+Students were being asked to optimize for hiring systems they could not see clearly. They were making decisions based on partial proxies:
+
+- job postings with vague requirements
+- advice from peers with different backgrounds
+- institutional guidance that was often generic
+- resume conventions that reward presentation more than substance
+- prestige signals that stand in for actual evaluation
+
+A planning product can help users organize effort, but it cannot fully solve uncertainty about what effort will matter.
+
+That matters because students do not experience career preparation as a clean sequence of decisions. They experience it as an attempt to infer employer preferences from noisy external systems. If those systems are poorly aligned, better planning only marginally improves outcomes.
+
+We also learned something from the employer side.
+
+Employers, especially those hiring early talent, are not operating with clean evaluation primitives either. They are often comparing candidates through inconsistent, lossy artifacts:
+
+- resumes with uneven formatting and detail
+- portfolios that vary widely in structure and quality
+- transcripts that say little about applied ability
+- referrals that are useful but non-scalable
+- university brand as a shortcut for missing information
+
+That creates a matching problem on both sides. Students are forced to guess what matters. Employers are forced to guess what they are looking at.
+
+At that point, the planning layer started to look less like the core system and more like an upstream data source.
+
+## The Real Problem
+
+The real problem is early talent evaluation.
+
+Early-career hiring is structurally difficult because the candidates usually do not have long job histories. That means employers rely on indirect evidence: coursework, internships, side projects, research, leadership, writing, portfolios, certifications, and various forms of self-description.
+
+But those signals arrive in incompatible formats.
+
+A student at one university may have a strong record encoded in a transcript and capstone. Another may have learned mostly through open-source work, freelance projects, and internships. Another may have strong technical depth but weak resume writing. Another may have compelling artifacts but no institutional prestige.
+
+Most hiring systems flatten all of this into a resume review process that was never designed to represent capability with much fidelity.
+
+That is the bottleneck we kept running into.
+
+The problem is not that students cannot plan. The problem is that the market has poor infrastructure for representing and evaluating emerging talent.
+
+## The Insight
+
+The key insight behind the pivot was this:
+
+Employers do not actually need better resumes. They need normalized signals about capability.
+
+That changes the product direction significantly.
+
+If the market problem is weak alignment between employer requirements and student evidence, then the important system is not a planner. It is a translation layer.
+
+That translation layer needs to do a few things well:
+
+- represent student ability in a structured way
+- ingest many forms of student evidence
+- normalize artifacts that are currently incomparable
+- map employer-defined needs into interpretable matching signals
+- preserve growth over time instead of reducing candidates to a static snapshot
+
+Once we framed the problem that way, the product became much clearer.
+
+Stu should not primarily be a student planning tool.
+
+It should be a capability and alignment system for early talent hiring.
+
+## The Pivot: Stu Recruiting
+
+Stu is now becoming Stu Recruiting.
+
+The new direction is focused on early talent alignment rather than student planning.
+
+The core idea is simple:
+
+Employers define the capabilities they care about. Stu translates student activity and artifacts into normalized capability vectors so candidates can be compared using real signals instead of prestige proxies and resume heuristics.
+
+This changes the product from a student-centric planning workflow to an employer-facing talent intelligence platform.
+
+The student still matters, but the center of gravity shifts. Instead of asking, "How should a student plan better?" the system asks, "How can we represent emerging capability in a way that employers can actually use?"
+
+That is a more difficult problem, but it is also the one that seems worth solving.
+
+## How It Works
+
+The architecture behind Stu Recruiting is built around a few core concepts.
+
+### Capability Vectors
+
+A capability vector is a structured representation of what a student can do.
+
+Instead of treating a candidate as a resume plus a set of anecdotes, we model them as a profile of capabilities derived from evidence. That evidence can include projects, coursework, internships, certifications, portfolios, written artifacts, leadership experiences, and other forms of demonstrated work.
+
+The important point is not that every dimension can be measured perfectly. It is that the representation is explicit, structured, and revisable.
+
+A resume is mostly unstructured narrative. A capability vector is an attempt to create an interpretable model of ability.
+
+### Artifact Normalization
+
+Student work appears in many forms, and those forms are hard to compare directly.
+
+A course project, GitHub repository, internship description, design portfolio, research abstract, and club leadership role all encode useful information, but they do so unevenly. Artifact normalization is the process of translating those heterogeneous inputs into comparable signals.
+
+This does not mean pretending every artifact is the same. It means extracting useful structure from different artifact types so the system can reason across them.
+
+For example, two students may both demonstrate systems thinking, implementation depth, communication ability, or sustained execution, but through very different artifacts. Normalization is what makes those patterns legible.
+
+### Longitudinal Profiles
+
+Most hiring systems evaluate candidates as static snapshots.
+
+That is especially limiting for early talent, where growth rate may matter as much as current polish. A student who has rapidly improved across several projects may be a stronger signal than one polished resume suggests. Longitudinal profiles let us track capability development over time rather than only recording a terminal state.
+
+This creates a more faithful representation of emerging talent. It also creates a better substrate for advising, evaluation, and recruiting workflows.
+
+### Alignment Models
+
+If capability vectors represent candidates, alignment models represent employer demand.
+
+An employer may care about different combinations of traits depending on role, team, and stage. A startup hiring a generalist engineer is looking for a different profile than a large organization hiring for a narrowly defined program. Alignment models translate employer requirements into structured matching signals.
+
+This matters because most hiring criteria are currently under-specified. Job descriptions often mix hard requirements, preferences, cultural language, and vague proxy terms. An alignment model forces greater precision. It asks: what capabilities actually matter here, and what evidence should count?
+
+That is a better foundation than filtering resumes by keywords.
+
+### AI Agents
+
+AI agents are not the product by themselves, but they are a plausible interface layer for recruiting workflows.
+
+If the underlying system has structured candidate profiles, normalized artifacts, and employer-side alignment models, then agents can help orchestrate tasks such as candidate summarization, signal extraction, role calibration, pipeline review, and follow-up analysis.
+
+The important caveat is that agents are only useful if they operate on a better data substrate than the average resume stack. Otherwise they simply automate weak heuristics. The value is not "AI in hiring" as a slogan. The value is combining structured representations with agentic workflows that are actually grounded in meaningful signals.
+
+## Technical Direction
+
+From an implementation standpoint, this pivot pushes the system toward a more explicit data and modeling architecture.
+
+The stack still includes familiar pieces like Next.js and TypeScript, but the center of the system becomes structured pipelines rather than primarily frontend planning workflows.
+
+That means investing in:
+
+- data models for capabilities, artifacts, and profile history
+- ingestion and normalization pipelines for heterogeneous student evidence
+- scoring and alignment systems that remain interpretable
+- interfaces for employers to define and refine hiring signals
+- AI-assisted workflow layers built on top of structured recruiting data
+
+This is a different technical posture than where we started. It moves the product closer to hiring infrastructure than student productivity software.
+
+## What This Enables
+
+If this works, Stu Recruiting enables a better early talent market in a few concrete ways.
+
+Students can be evaluated with more fidelity than a resume alone allows. Employers can define what they care about more explicitly. Hiring teams can compare candidates using structured evidence rather than leaning so heavily on pedigree, formatting, or intuition. Capability growth can matter, not just presentation quality.
+
+It also creates the possibility of a healthier talent pipeline.
+
+Right now, many strong candidates are filtered out because their signals are difficult to read. At the same time, employers spend time reviewing applications without reliable ways to compare them. Better alignment infrastructure does not eliminate judgment, but it can improve the quality of the inputs that judgment depends on.
+
+That seems materially more useful than helping someone maintain a better planning dashboard.
+
+## Closing Thoughts
+
+A pivot is often described as a change in market strategy. In practice, it is usually a correction in problem definition.
+
+Stu started with a real problem, but not the deepest one. Planning matters, but planning is upstream of something harder: how emerging talent gets represented, interpreted, and matched to opportunity.
+
+What changed was not our interest in helping students. What changed was our understanding of where the actual constraint lives.
+
+We now think the more important system is one that helps employers and early talent meet on clearer, more structured ground.
+
+That is what Stu Recruiting is becoming.

@@ -1,8 +1,8 @@
-import { getBlogPosts, formatDate } from '@/app/blog/utils'
-import Link from 'next/link'
+import { getBlogPosts, formatDate } from "@/app/blog/utils";
+import { PostListItem } from "./post-list-item";
 
 export function BlogPosts() {
-  const allBlogs = getBlogPosts()
+  const allBlogs = getBlogPosts().filter((post) => !post.isNested);
 
   return (
     <div>
@@ -11,26 +11,19 @@ export function BlogPosts() {
           if (
             new Date(a.metadata.publishedAt) > new Date(b.metadata.publishedAt)
           ) {
-            return -1
+            return -1;
           }
-          return 1
+          return 1;
         })
         .map((post) => (
-          <Link
+          <PostListItem
             key={post.slug}
+            slug={post.slug}
             href={`/blog/${post.slug}`}
-            className="flex flex-col space-y-1 mb-4 group"
-          >
-            <div className="w-full flex flex-col md:flex-row gap-2">
-              <p className="text-gray-600 w-[200px] tabular-nums">
-                {formatDate(post.metadata.publishedAt, false)}
-              </p>
-              <p className="text-gray-900 tracking-tight group-hover:underline">
-                {post.metadata.title}
-              </p>
-            </div>
-          </Link>
+            dateLabel={formatDate(post.metadata.publishedAt, false)}
+            title={post.metadata.title}
+          />
         ))}
     </div>
-  )
+  );
 }
