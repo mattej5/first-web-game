@@ -19,6 +19,39 @@ export default function ProjectPage() {
       <Accordion className="mb-6">
         <AccordionSummary
           expandIcon={<ExpandMoreIcon />}
+          aria-controls="panel-agent-3d-content"
+          id="panel-agent-3d-header"
+        >
+          <Typography sx={{ fontWeight: "bold" }}>
+            Agent in a 3D Playground
+          </Typography>
+        </AccordionSummary>
+        <AccordionDetails>
+          <Typography>
+            An interactive agent playground built using Next.js and Three.js.
+            The playground features a 3D office workspace where an AI agent
+            navigates between three desks (Planning, Writing, Critique) to
+            recursively write a book.
+          </Typography>
+          <br />
+          <Button
+            variant="contained"
+            sx={{
+              backgroundColor: "#047857",
+              "&:hover": { backgroundColor: "#065f46" },
+            }}
+            href="https://www.loom.com/share/ff38ea5b69c34ce0a9f19522c9af04e3"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Watch Demo on Loom
+          </Button>
+        </AccordionDetails>
+      </Accordion>
+
+      <Accordion className="mb-6">
+        <AccordionSummary
+          expandIcon={<ExpandMoreIcon />}
           aria-controls="panel1-content"
           id="panel1-header"
         >
