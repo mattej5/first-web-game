@@ -1,6 +1,25 @@
 export default function HistoryPage() {
   const historyData = [
     {
+      title: "Growth Management Intern",
+      companyOrSchool: "Leland",
+      date: "April 2026 - Present",
+      type: "work",
+    },
+    {
+      title: "Sandbox (sb05 cohort)",
+      companyOrSchool: "Brigham Young University",
+      date: "April 2025 - April 2026",
+      type: "education",
+      techStack: ["AI Building", "Tech Sales", "Build in Public", "Supabase"],
+    },
+    {
+      title: "SCRUM certification",
+      companyOrSchool: "Certification",
+      date: "February 2025",
+      type: "education",
+    },
+    {
       title: "Software Engineering Intern - Digital Engineering Consulting",
       companyOrSchool: "EY",
       date: "Summer 2025",
@@ -8,9 +27,9 @@ export default function HistoryPage() {
       techStack: ["AngularJS", ".NET", "TFVC", "DevOps"],
     },
     {
-      title: "Co-Founder & Lead Developer",
+      title: "Student Founder",
       companyOrSchool: "STU - Recruiting",
-      date: "February 2024 - Present",
+      date: "February 2026 - Present",
       type: "work",
       techStack: [
         "Next.js",
@@ -25,7 +44,7 @@ export default function HistoryPage() {
     {
       title: "Lead Developer & Cloud Engineer",
       companyOrSchool: "STU - Upgrading Academia",
-      date: "February 2024 - Present",
+      date: "February 2024 - February 2026",
       type: "work",
       techStack: ["Next.js", ".NET", "Docker", "Kubernetes"],
     },
@@ -94,11 +113,11 @@ export default function HistoryPage() {
   ];
 
   return (
-    <div className="min-h-screen px-6 py-10">
-      <h1 className="mb-6 text-center text-3xl font-bold">
+    <div className="min-h-screen px-4 md:px-6 py-10 md:py-16">
+      <h1 className="mb-8 md:mb-12 text-center text-3xl md:text-4xl font-bold">
         Work & Education History
       </h1>
-      <div className="mx-auto grid max-w-4xl grid-cols-2 gap-6">
+      <div className="mx-auto grid max-w-4xl grid-cols-1 md:grid-cols-2 gap-10 md:gap-8">
         {/* Left Column - Work Experience */}
         <div>
           <h2 className="mb-4 border-b pb-2 text-xl font-semibold">

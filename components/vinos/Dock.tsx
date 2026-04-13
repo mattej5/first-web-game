@@ -118,9 +118,13 @@ export default function Dock() {
   };
 
   return (
-    <div className="fixed bottom-4 left-1/2 z-50 -translate-x-1/2 transform">
-      <div className="dock-container rounded-2xl border border-white/30 bg-white/70 px-4 py-3 shadow-2xl backdrop-blur-lg">
-        <div className="flex items-end gap-5">
+    <div className="fixed bottom-4 left-1/2 z-50 w-[95vw] max-w-max -translate-x-1/2 transform sm:w-auto">
+      <div 
+        className="dock-container overflow-x-auto pt-6 px-4 pb-3 rounded-2xl border border-white/30 bg-white/70 shadow-2xl backdrop-blur-lg"
+        style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
+      >
+        <style jsx>{`.dock-container::-webkit-scrollbar { display: none; }`}</style>
+        <div className="flex items-end gap-3 md:gap-5 min-w-max px-2 mx-auto">
           {dockItems.map((item, index) => {
             const Icon = item.icon;
             const scale = getIconScale(index);
@@ -129,7 +133,7 @@ export default function Dock() {
             // Render divider
             if (item.id === "divider") {
               return (
-                <div key={item.id} className="mx-2 h-14 w-px bg-gray-300/50" />
+                <div key={item.id} className="mx-1 md:mx-2 h-10 md:h-14 w-px bg-gray-300/50" />
               );
             }
 
@@ -143,12 +147,12 @@ export default function Dock() {
                 {/* Icon Button */}
                 <button
                   onClick={item.action}
-                  className={`relative h-16 w-16 bg-gradient-to-br ${item.color} dock-icon flex items-center justify-center rounded-2xl shadow-lg transition-all duration-300 hover:shadow-xl`}
+                  className={`relative h-12 w-12 sm:h-14 sm:w-14 md:h-16 md:w-16 bg-gradient-to-br ${item.color} dock-icon flex items-center justify-center rounded-2xl shadow-lg transition-all duration-300 hover:shadow-xl`}
                   style={{
                     transform: `scale(${scale}) translateY(${translateY}px)`,
                   }}
                 >
-                  <Icon className="text-3xl text-white" />
+                  <Icon className="text-2xl md:text-3xl text-white" />
                 </button>
 
                 {/* Label */}

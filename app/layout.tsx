@@ -1,5 +1,5 @@
 // app/layout.tsx
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Nunito } from "next/font/google";
 import "./globals.css";
 import { Dancing_Script } from "next/font/google";
@@ -51,6 +51,12 @@ export const metadata: Metadata = {
       "Master's student in Information Systems at BYU specializing in predictive analytics, secure software development, and cloud engineering solutions.",
     images: [`${siteUrl}/headshot_IS_square.jpg`],
   },
+};
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 1,
 };
 
 export default function RootLayout({

@@ -21,9 +21,9 @@ export default function Template({ children }: { children: React.ReactNode }) {
       >
         Skip to main content
       </a>
-      <div className="flex min-h-screen">
+      <div className="flex flex-col lg:flex-row min-h-screen w-full relative">
         <SiteHeader />
-        <div className="flex min-w-0 flex-1 flex-col">
+        <div className="flex min-w-0 flex-1 flex-col overflow-x-hidden">
           <main
             id="main-content"
             tabIndex={-1}

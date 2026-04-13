@@ -10,42 +10,36 @@ export default function AboutMe() {
       <h1 className="text-3xl font-bold">About Me</h1>
 
       <p className="text-gray-900">
-        I&apos;m a passionate software developer and cloud architect that loves
-        creating the tools that make life easier and more enjoyable. As a
-        student entering my first year of the Masters of Information Systems
-        Management program at Brigham Young University, I have a strong
-        foundation in the essential technologies that power the web and the
-        world of data. Many of my projects focus on effective and secure data
-        management, ensuring that your information is secure and accessible.
-        Having worked in a variety of roles, I bring a well-rounded skillset to
-        my projects, from front-end development to back-end systems. I also
-        focus on creating intuitive user interfaces, data pipelines and
-        visualizations, and robust cloud-based solutions that scale with your
-        needs without breaking the bank.
+        I am a software engineer and cloud architect with a passion for building
+        reliable, secure, and highly scalable systems. As a Master&apos;s student
+        in Information Systems Management at BYU, my technical focus spans from
+        intuitive front-end interfaces to robust back-end data pipelines. For
+        me, development goes beyond just writing code—it&apos;s about understanding
+        complex constraints, prioritizing data integrity, and designing
+        architectural boundaries that ensure information remains accessible and
+        secure.
       </p>
 
       <p className="text-gray-900">
-        I specialize in building user-friendly interfaces and seamless user
-        experiences, with an emphasis in predictive and secure software
-        development. When I&apos;m not coding, you can find me exploring new
-        technologies, debugging issues my teammates experience, and interacting
-        with the end users of my software. Fun fact: My favorite distro of Linux
-        is Mint.
+        Currently, I&apos;m applying these methodologies to build Stu Recruiting, a
+        platform that integrates with Applicant Tracking Systems to transform
+        conventional resumes into structured, evidence-backed candidate profiles.
+        Designing for the hiring space forces strict constraints, requiring
+        rigorous employer data isolation and an uncompromising approach to
+        interpretability. Rather than using AI as a black box to rank applicants,
+        the system solves for data quality—normalizing unstructured inputs into
+        verifiable capabilities. I treat robust data modeling as the bedrock
+        requirement before any assistive intelligence can be reliably applied.
       </p>
 
       <p className="pb-10 text-gray-900">
         Time away from my computer is critical for maintaining my drive,
-        creativity, and problem-solving skills. I prioritize time outside spent
-        hiking, biking, or running, but I also love to cook, read, and play
-        multiplayer video games with my family. My personal belief is that a
-        well-rounded life leads to a better understanding of the people whose
-        lives I hope to improve through my work, so I&apos;m always looking for
-        new experiences and challenges to take me out of my comfort zone. My
-        vision is to spearhead the development of innovative solutions that
-        utilize technology that improves productivity while prioritizing the
-        well-being of users. I believe that technology and data can be a force
-        for good, and I strive to create solutions that empower individuals to
-        lead happier, healthier lives.
+        creativity, and problem-solving skills. Whether I&apos;m exploring new
+        technologies (my favorite Linux distro is Mint), hiking, biking,
+        reading, or playing multiplayer video games with my family, I value the
+        balance that life outside of code brings. I consistently find that
+        understanding real-world complexities is what ultimately drives more
+        resilient, empathetic, and pragmatic software design.
       </p>
     </div>
   );
