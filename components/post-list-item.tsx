@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback } from "react";
 
 type PostListItemProps = {
   slug: string;
@@ -10,90 +10,49 @@ type PostListItemProps = {
   title: string;
 };
 
-const API_ROUTE = "/api/post-clicks";
-
 export function PostListItem({
   slug,
   href,
   dateLabel,
   title,
 }: PostListItemProps) {
-  const [views, setViews] = useState<number | null>(null);
-
-  useEffect(() => {
-    let isActive = true;
-    const controller = new AbortController();
-
-    fetch(`${API_ROUTE}?slug=${encodeURIComponent(slug)}`, {
-      signal: controller.signal,
-    })
-      .then((res) => (res.ok ? res.json() : Promise.reject()))
-      .then((data) => {
-        if (!isActive) return;
-        setViews(typeof data.count === "number" ? data.count : 0);
-      })
-      .catch(() => {
-        if (!isActive) return;
-        setViews(0);
-      });
-
-    return () => {
-      isActive = false;
-      controller.abort();
-    };
-  }, [slug]);
-
   const handleClick = useCallback(() => {
-    setViews((prev) => (typeof prev === "number" ? prev + 1 : prev));
-
     const payload = JSON.stringify({ slug });
-    const sendRequest = () =>
-      fetch(API_ROUTE, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: payload,
-        keepalive: true,
-      }).catch((error) => {
-        console.error("Failed to record view", error);
-      });
-
     if (
       typeof navigator !== "undefined" &&
       typeof navigator.sendBeacon === "function"
     ) {
-      const success = navigator.sendBeacon(
-        API_ROUTE,
+      navigator.sendBeacon(
+        "/api/post-clicks",
         new Blob([payload], { type: "application/json" })
       );
-      if (!success) {
-        void sendRequest();
-      }
-    } else {
-      void sendRequest();
     }
   }, [slug]);
 
   return (
     <Link
       href={href}
-      className="group mb-4 flex flex-col space-y-1"
       onClick={handleClick}
+      className="group flex items-center justify-between border-b border-white/8 py-4 transition-colors first:border-t first:border-t-white/8 hover:border-white/15"
     >
-      <div className="flex w-full flex-col gap-2 md:flex-row md:items-center">
-        <div className="flex min-w-0 flex-1 flex-col gap-2 md:flex-row md:items-center">
-          <span className="w-[200px] text-gray-600 tabular-nums">
-            {dateLabel}
-          </span>
-          <p className="flex-1 tracking-tight text-gray-900 group-hover:underline">
-            {title}
-          </p>
-        </div>
-        {typeof views === "number" && (
-          <span className="text-sm text-gray-500 md:ml-auto md:shrink-0 md:text-right">
-            {views} view{views === 1 ? "" : "s"}
-          </span>
-        )}
+      <div className="flex min-w-0 flex-1 items-center gap-6">
+        <span className="w-32 shrink-0 font-mono text-xs text-white/30">
+          {dateLabel}
+        </span>
+        <span className="min-w-0 truncate text-sm text-white/70 transition-colors group-hover:text-[#a5e446]">
+          {title}
+        </span>
       </div>
+      <svg
+        className="ml-4 h-3.5 w-3.5 shrink-0 text-white/20 transition-all group-hover:translate-x-0.5 group-hover:text-[#a5e446]"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="2"
+        aria-hidden="true"
+      >
+        <path d="M9 18l6-6-6-6" />
+      </svg>
     </Link>
   );
 }

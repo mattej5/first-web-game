@@ -2,7 +2,7 @@
   width: min(980px, 96vw);
   margin: 0 auto;
   padding: 16px 0 32px;
-  color: #ebe6d2;
+  color: #ffffff;
 }
 
 .arena-page-header {
@@ -16,20 +16,21 @@
   letter-spacing: 0.14em;
   text-transform: uppercase;
   font-size: 0.72rem;
-  color: #2c3a46;
+  font-family: "SF Mono", "Fira Code", "Cascadia Code", monospace;
+  color: #a5e446;
 }
 
 .arena-page-header h1 {
   margin: 6px 0 6px;
   font-size: clamp(1.4rem, 4.5vw, 2.2rem);
   line-height: 1.12;
-  color: #121826;
+  color: #ffffff;
 }
 
 .arena-page-header p {
   margin: 0;
   font-size: 0.98rem;
-  color: #2a3744;
+  color: rgba(255, 255, 255, 0.6);
 }
 
 .arena-shell {
@@ -93,17 +94,21 @@
 
 .arena-button {
   margin-top: 14px;
-  border: 1px solid #f2d78f;
-  border-radius: 8px;
-  background: linear-gradient(180deg, #d8ba5a, #9f7f2f);
-  color: #161515;
+  border: none;
+  border-radius: 6px;
+  background: #a5e446;
+  color: #000000;
+  font-family: "SF Mono", "Fira Code", "Cascadia Code", monospace;
+  font-size: 0.75rem;
   font-weight: 700;
-  padding: 10px 18px;
+  letter-spacing: 0.05em;
+  padding: 10px 20px;
   cursor: pointer;
+  transition: opacity 0.15s;
 }
 
 .arena-button:hover {
-  filter: brightness(1.08);
+  opacity: 0.88;
 }
 
 .arena-hud {

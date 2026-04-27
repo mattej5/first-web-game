@@ -19,6 +19,7 @@ export default function BackArrow({
 
   useEffect(() => {
     // If user landed directly on this page, history length is usually 1
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setCanGoBack(typeof window !== "undefined" && window.history.length > 1);
   }, []);
 
@@ -33,7 +34,7 @@ export default function BackArrow({
       href={fallbackHref}
       onClick={onClick}
       aria-label={label}
-      className={`group inline-flex items-center gap-2 text-sm text-neutral-600 hover:text-neutral-900 dark:text-neutral-400 dark:hover:text-neutral-100 ${className}`}
+      className={`group inline-flex items-center gap-2 font-mono text-xs text-white/40 transition-colors hover:text-[#a5e446] ${className}`}
     >
       <svg
         className="h-5 w-5 transition-transform group-hover:-translate-x-0.5"

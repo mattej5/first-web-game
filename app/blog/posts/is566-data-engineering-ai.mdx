@@ -1,0 +1,59 @@
+---
+title: 'Building a Data Pipeline with AI: What Actually Happened'
+publishedAt: '2026-04-26'
+summary: 'A candid look at using Claude and other LLMs to build a multi-source ETL pipeline with Prefect, dbt, and Snowflake — including where AI got it wrong and what I had to fix.'
+---
+
+For my IS-566 data engineering final project, I built a multi-source ETL pipeline from scratch: Prefect 2.x for orchestration, dbt for transformation, Snowflake as the destination. The pipeline pulled from the Adventure Works REST API using watermark-based incremental loads, staged CSVs, ran `COPY INTO`, and cleaned up after itself. I also built an MCP server that exposed the dbt models to AI agents for natural-language querying.
+
+I used AI tools throughout — GitHub Copilot for the Prefect flows, Claude for architecture decisions and the MCP server, and a multi-model approach for evaluation. This is what actually happened.
+
+## The PRD-First Approach
+
+The biggest lesson wasn't about any specific tool — it was about how you structure the work before you hand it to an AI.
+
+I spent a full day writing a product requirements document before I wrote a single line of code. Then I expanded that PRD into detailed implementation specs — not just "build a pipeline" but the exact stage names, table conventions, file naming patterns, and expected API behavior. When the spec was clear, the agent could validate its own work against it. Running a follow-up prompt like "does this implementation match the requirements?" caught problems faster than me reviewing acceptance criteria manually.
+
+That turned out to be more useful than I expected. The agent didn't get confused between milestone 1 and milestone 3 details because the scope was tightly defined upfront. Spending a day on requirements saved me multiple debugging sessions later.
+
+## The 90% Win: Prefect Flows
+
+This is where I got the most obvious return on using an AI agent.
+
+I gave Copilot the completed PRD and the API documentation, then asked it to build the full ingestion flow — fetch, transform, upload to stage, `COPY INTO`, cleanup. It produced a complete module that matched the PRD structure and fit the existing repo layout. The scaffolding that would have taken me 3–4 hours to write manually took 1–2 hours including review and debugging.
+
+Boilerplate-heavy orchestration code is exactly what LLMs do well. The task structure, the error handling skeleton, the Snowflake staging pattern — none of that required creative judgment. It was just a lot of typing. The agent handled that; I focused on making sure the behavior was actually correct.
+
+The agent wrote about 90% of the final Prefect flow. I wrote or modified the other 10%.
+
+## Where It Got It Wrong
+
+Here's the honest part.
+
+**The Python runtime assumption.** The agent generated code targeting the latest Python version — which was 3.14 at the time. Prefect 2.x doesn't support 3.14. The flow logic itself was fine, but the first validation run failed immediately on import because the default `uv` interpreter was too new. The error wasn't in anything the agent wrote; the agent just assumed a runtime without checking what Prefect 2.x actually supports. I had to diagnose the mismatch, switch to `uv run --python 3.12`, and re-validate. Twenty minutes of debugging something that had nothing to do with the code.
+
+**The `COPY INTO` syntax.** The initial Snowflake load steps failed due to SQL syntax details and some environment/config mismatches. The agent's first pass at the `COPY INTO` construction was close but not quite right — it required a few targeted corrections once I could see the actual error from containerized flow runs.
+
+The pattern across both failures was the same: the agent is fast and confident. It doesn't hedge. It writes code that looks completely reasonable until you actually run it in your specific environment. The skepticism has to come from you.
+
+I also evaluated the work using multiple models — having a separate model whose only job was checking "does this match the requirements?" caught alignment issues that the builder model missed. One model to build, one to audit.
+
+## The MCP Server
+
+The most interesting part of the project was building an MCP server that exposed the dbt models to AI agents.
+
+The idea: once the pipeline runs and dbt builds the staging and intermediate models, an agent should be able to ask natural-language questions against the data — "which campaigns drove the highest conversion by country?" — without someone manually writing SQL each time. The MCP server makes that possible by giving the agent a structured interface to the data lineage.
+
+Writing clear YAML descriptions for each dbt model mattered a lot here, but not for the reason I expected. It wasn't primarily that the agent needed the documentation to work — it was that writing the documentation forced me to be precise about what each model actually represented. The docs had to be current and deployed, too. A stale manifest is invisible to MCP. "Good docs" and "docs that are actually deployed" are different things.
+
+One operational pattern that worked: when an agentic session got stuck on a bug, restarting the conversation with the requirements at the top worked better than continuing to debug in the same thread. Fresh context and a reminder to compare the spec to what was actually built made things move again faster than iterating on a confused agent.
+
+## What I'd Tell Someone Starting This
+
+AI-assisted data engineering isn't about speed. It's about workflow discipline.
+
+PRD first — give it a full day. Expand the specs before you ask the agent to build anything. Pin your Python runtime before you validate anything. Have one model build and a second model audit. If the agent gets stuck, restart with the requirements in focus.
+
+The agent doesn't know your environment. It doesn't know that Prefect 2.x has a Python ceiling, or that your Snowflake stage uses a specific naming convention, or that the stale manifest won't reflect your latest schema changes. You have to bring that context. The agent brings speed; you bring judgment about what's actually true in your setup.
+
+That's the actual workflow that worked. Not "AI replaced the engineering" — "AI changed what the engineering work is."

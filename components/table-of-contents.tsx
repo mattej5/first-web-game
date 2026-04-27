@@ -37,6 +37,7 @@ export function TableOfContents() {
       headingData.push({ id, text, level });
     });
 
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setHeadings(headingData);
 
     // Intersection Observer for active heading
@@ -59,9 +60,9 @@ export function TableOfContents() {
   if (headings.length === 0) return null;
 
   return (
-    <nav className="sticky top-8 rounded-lg border border-gray-700 bg-gray-900/50 p-4 backdrop-blur-sm">
-      <h2 className="mb-3 text-sm font-semibold tracking-wide text-white uppercase">
-        Table of Contents
+    <nav className="rounded-lg border border-white/10 bg-white/[0.04] p-4 backdrop-blur-sm">
+      <h2 className="mb-3 font-mono text-xs tracking-widest text-[#a5e446] uppercase">
+        On this page
       </h2>
       <ul className="space-y-2 text-sm">
         {headings.map((heading) => (
@@ -71,10 +72,10 @@ export function TableOfContents() {
           >
             <a
               href={`#${heading.id}`}
-              className={`block py-1 transition-colors duration-200 hover:text-green-400 ${
+              className={`block py-1 transition-colors duration-200 hover:text-[#a5e446] ${
                 activeId === heading.id
-                  ? "font-medium text-green-400"
-                  : "text-gray-400"
+                  ? "font-medium text-[#a5e446]"
+                  : "text-white/40"
               }`}
               onClick={(e) => {
                 e.preventDefault();

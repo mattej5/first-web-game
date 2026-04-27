@@ -5,6 +5,7 @@ export default function HistoryPage() {
       companyOrSchool: "Leland",
       date: "April 2026 - Present",
       type: "work",
+      techStack: ["Claude", "Codex", "Gemini", "n8n"],
     },
     {
       title: "Sandbox (sb05 cohort)",
@@ -113,11 +114,11 @@ export default function HistoryPage() {
   ];
 
   return (
-    <div className="min-h-screen px-4 md:px-6 py-10 md:py-16">
-      <h1 className="mb-8 md:mb-12 text-center text-3xl md:text-4xl font-bold">
+    <div className="min-h-screen px-4 py-10 md:px-6 md:py-16">
+      <h1 className="mb-8 text-center text-3xl font-bold md:mb-12 md:text-4xl">
         Work & Education History
       </h1>
-      <div className="mx-auto grid max-w-4xl grid-cols-1 md:grid-cols-2 gap-10 md:gap-8">
+      <div className="mx-auto grid max-w-4xl grid-cols-1 gap-10 md:grid-cols-2 md:gap-8">
         {/* Left Column - Work Experience */}
         <div>
           <h2 className="mb-4 border-b pb-2 text-xl font-semibold">

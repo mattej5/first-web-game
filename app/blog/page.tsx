@@ -7,8 +7,11 @@ export const metadata = {
 
 export default function Page() {
   return (
-    <section className="mx-auto max-w-4xl px-8 text-lg leading-relaxed">
-      <h1 className="mb-8 text-3xl font-semibold tracking-tighter">
+    <section className="mx-auto max-w-4xl px-4 py-4">
+      <span className="mb-4 block font-mono text-xs tracking-widest text-[#a5e446] uppercase">
+        Writing
+      </span>
+      <h1 className="mb-10 text-4xl font-semibold tracking-tight text-white">
         Blog Posts
       </h1>
       <BlogPosts />

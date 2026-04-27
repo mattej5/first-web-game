@@ -82,7 +82,7 @@ export default async function Blog({
         {post.metadata.title}
       </h1>
       <div className="mt-2 mb-8 flex items-center justify-between text-sm">
-        <p className="text-sm text-gray-300">
+        <p className="font-mono text-xs text-white/40">
           {formatDate(post.metadata.publishedAt)}
         </p>
       </div>
@@ -97,11 +97,11 @@ export default async function Blog({
         title={post.metadata.title}
       >
         <div className="grid grid-cols-1 gap-8 lg:grid-cols-[1fr_250px]">
-          <article className="prose prose-invert prose-headings:text-white prose-p:text-gray-100 prose-li:text-gray-100 prose-strong:text-white prose-code:text-gray-100 prose-a:text-blue-400 max-w-none">
+          <article className="prose prose-invert prose-headings:text-white prose-p:text-gray-100 prose-li:text-gray-100 prose-strong:text-white prose-code:text-gray-100 prose-a:text-[#a5e446] prose-a:no-underline hover:prose-a:underline max-w-none">
             <MDXContent source={post.content} />
           </article>
 
-          <aside className="hidden lg:block">
+          <aside className="sticky top-8 hidden self-start lg:block">
             <TableOfContents />
           </aside>
         </div>
