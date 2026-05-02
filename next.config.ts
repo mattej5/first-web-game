@@ -10,6 +10,9 @@ const withPWA = withPWAInit({
 const projectRoot = path.resolve(process.cwd());
 
 const nextConfig: NextConfig = {
+  images: {
+    remotePatterns: [{ protocol: "https", hostname: "brightspotcdn.byu.edu" }],
+  },
   webpack(config) {
     // pnpm walks up the directory tree and finds /Users/vinjones/package.json,
     // causing tailwindcss to be resolved from the home directory instead of

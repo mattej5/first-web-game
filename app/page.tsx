@@ -1,5 +1,6 @@
 import Image from "next/image";
 import { GridCanvas } from "@/components/grid-canvas";
+import { NodeDiagram } from "@/components/node-diagram";
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://vinjones.me";
 
@@ -44,6 +45,13 @@ const specializations = [
 ];
 
 const experience = [
+  {
+    name: "BYU",
+    src: "https://brightspotcdn.byu.edu/e4/0a/b679ee0a41d9b1675fc78cd03239/byu-logo-white-small.svg",
+    width: 80,
+    height: 38,
+    unoptimized: true,
+  },
   { name: "EY", src: "/logos/ey-logo.jpg", width: 56, height: 40 },
   { name: "Leland", src: "/logos/leland.avif", width: 100, height: 32 },
   { name: "Sandbox", src: "/logos/sandbox.jpeg", width: 56, height: 56 },
@@ -96,96 +104,128 @@ export default function Home() {
           }}
         />
 
-        <div className="relative z-[2] mx-auto max-w-4xl px-6">
-          <div className="mb-6">
-            <Image
-              src="/headshot_IS_square.jpg"
-              alt="Vin Jones"
-              width={72}
-              height={72}
-              className="rounded-full object-cover ring-1 ring-white/10"
-            />
+        <div className="relative z-[2] mx-auto flex max-w-4xl items-center gap-12 px-6">
+          {/* ── Left: text content ── */}
+          <div className="flex-1">
+            <div className="mb-6">
+              <Image
+                src="/headshot_IS_square.jpg"
+                alt="Vin Jones"
+                width={72}
+                height={72}
+                className="rounded-full object-cover ring-1 ring-white/10"
+              />
+            </div>
+            <span
+              className="mb-5 block text-[#A5E446]"
+              style={{
+                fontFamily: metaFont,
+                fontSize: "11px",
+                letterSpacing: "0.1em",
+                textTransform: "uppercase",
+              }}
+            >
+              AI Engineer · Co-Founder
+            </span>
+
+            <h1
+              className="text-white"
+              style={{
+                fontFamily: "system-ui, -apple-system, 'Segoe UI', sans-serif",
+                fontSize: "clamp(40px, 5.5vw, 72px)",
+                fontWeight: 700,
+                letterSpacing: "-0.02em",
+                lineHeight: 1.05,
+                marginBottom: "24px",
+              }}
+            >
+              Vin Jones
+            </h1>
+
+            <p className="mb-3 max-w-lg text-[17px] leading-[1.65] text-white/60">
+              Master&apos;s student in Information Systems at BYU, focused on AI
+              efficiency, predictive analytics, and secure systems — including
+              locally-hosted AI.
+            </p>
+            <p className="mb-4 max-w-lg text-[17px] leading-[1.65] text-white/60">
+              At{" "}
+              <a
+                href="https://leland.com/"
+                className="text-[#A5E446] transition-opacity duration-150 hover:opacity-75"
+                style={{ textDecoration: "none" }}
+              >
+                Leland
+              </a>{" "}
+              building curriculum and infrastructure that makes AI accessible to
+              everyone, from everyday users to engineering teams. Previously
+              co-founded{" "}
+              <a
+                href="https://stuplanning.com/"
+                className="text-[#A5E446] transition-opacity duration-150 hover:opacity-75"
+                style={{ textDecoration: "none" }}
+              >
+                stu
+              </a>
+              .
+            </p>
+            <p className="mb-12 max-w-lg text-[15px] leading-[1.65] text-white/40">
+              Currently building{" "}
+              <a
+                href="https://mattej5.github.io/remora-landing"
+                className="text-white/60 transition-opacity duration-150 hover:text-[#A5E446]"
+                style={{ textDecoration: "none" }}
+              >
+                Remora
+              </a>{" "}
+              and{" "}
+              <a
+                href="/projects"
+                className="text-white/60 transition-opacity duration-150 hover:text-[#A5E446]"
+                style={{ textDecoration: "none" }}
+              >
+                Strix
+              </a>
+              .
+            </p>
+
+            <div className="flex flex-wrap items-center gap-4">
+              <a
+                href="/projects"
+                className="inline-flex items-center gap-2 bg-[#A5E446] px-6 py-3 text-black transition-colors duration-150 hover:bg-[#95D03E]"
+                style={{
+                  fontFamily: metaFont,
+                  fontSize: "0.75rem",
+                  textTransform: "uppercase",
+                  letterSpacing: "0.02em",
+                  textDecoration: "none",
+                }}
+              >
+                View My Projects →
+              </a>
+              <a
+                href="/game"
+                className="inline-flex items-center gap-2 border border-[#484848] px-6 py-3 text-white transition-all duration-150 hover:border-white/50 hover:bg-white/[0.03]"
+                style={{
+                  fontFamily: metaFont,
+                  fontSize: "0.75rem",
+                  textTransform: "uppercase",
+                  letterSpacing: "0.02em",
+                  textDecoration: "none",
+                }}
+              >
+                Try Battle Squares →
+              </a>
+            </div>
+
+            {/* Node diagram — mobile only (below CTAs) */}
+            <div className="mt-12 flex justify-center lg:hidden">
+              <NodeDiagram />
+            </div>
           </div>
-          <span
-            className="mb-5 block text-[#A5E446]"
-            style={{
-              fontFamily: metaFont,
-              fontSize: "11px",
-              letterSpacing: "0.1em",
-              textTransform: "uppercase",
-            }}
-          >
-            AI Engineer · Co-Founder
-          </span>
 
-          <h1
-            className="text-white"
-            style={{
-              fontFamily: "system-ui, -apple-system, 'Segoe UI', sans-serif",
-              fontSize: "clamp(48px, 7vw, 80px)",
-              fontWeight: 700,
-              letterSpacing: "-0.02em",
-              lineHeight: 1.05,
-              marginBottom: "24px",
-            }}
-          >
-            Vin Jones
-          </h1>
-
-          <p className="mb-3 max-w-lg text-[17px] leading-[1.65] text-white/60">
-            Master&apos;s student in Information Systems at BYU, focused on AI
-            efficiency, predictive analytics, and secure systems — including
-            locally-hosted AI.
-          </p>
-          <p className="mb-12 max-w-lg text-[17px] leading-[1.65] text-white/60">
-            At{" "}
-            <a
-              href="https://leland.com/"
-              className="text-[#A5E446] transition-opacity duration-150 hover:opacity-75"
-              style={{ textDecoration: "none" }}
-            >
-              Leland
-            </a>{" "}
-            building curriculum and infrastructure that makes AI accessible to
-            everyone, from everyday users to engineering teams. Previously
-            co-founded{" "}
-            <a
-              href="https://stuplanning.com/"
-              className="text-[#A5E446] transition-opacity duration-150 hover:opacity-75"
-              style={{ textDecoration: "none" }}
-            >
-              stu
-            </a>
-            .
-          </p>
-
-          <div className="flex flex-wrap items-center gap-4">
-            <a
-              href="/projects"
-              className="inline-flex items-center gap-2 bg-[#A5E446] px-6 py-3 text-black transition-colors duration-150 hover:bg-[#95D03E]"
-              style={{
-                fontFamily: metaFont,
-                fontSize: "0.75rem",
-                textTransform: "uppercase",
-                letterSpacing: "0.02em",
-                textDecoration: "none",
-              }}
-            >
-              View My Projects →
-            </a>
-            <a
-              href="/game"
-              className="inline-flex items-center gap-2 border border-[#484848] px-6 py-3 text-white transition-all duration-150 hover:border-white/50 hover:bg-white/[0.03]"
-              style={{
-                fontFamily: metaFont,
-                fontSize: "0.75rem",
-                textTransform: "uppercase",
-                letterSpacing: "0.02em",
-                textDecoration: "none",
-              }}
-            >
-              Try Battle Squares →
-            </a>
+          {/* ── Right: node diagram — desktop only ── */}
+          <div className="hidden shrink-0 lg:block">
+            <NodeDiagram />
           </div>
         </div>
       </section>
@@ -218,6 +258,7 @@ export default function Home() {
                   alt={co.name}
                   width={co.width}
                   height={co.height}
+                  unoptimized={"unoptimized" in co ? co.unoptimized : false}
                   className="object-contain"
                 />
               </div>
