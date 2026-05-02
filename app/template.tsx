@@ -11,6 +11,8 @@ export default function Template({ children }: { children: React.ReactNode }) {
     return <>{children}</>;
   }
 
+  const isHome = pathname === "/";
+
   return (
     <>
       <a
@@ -19,20 +21,26 @@ export default function Template({ children }: { children: React.ReactNode }) {
       >
         Skip to main content
       </a>
-      <div className="orb orb-green" aria-hidden="true" />
-      <div className="orb orb-indigo" aria-hidden="true" />
+      {!isHome && <div className="orb orb-green" aria-hidden="true" />}
+      {!isHome && <div className="orb orb-indigo" aria-hidden="true" />}
       <div className="relative flex min-h-screen w-full flex-col lg:flex-row">
         <SiteHeader />
         <div className="flex min-w-0 flex-1 flex-col overflow-x-hidden">
-          <main
-            id="main-content"
-            tabIndex={-1}
-            className="mx-auto w-full max-w-7xl flex-grow px-4 py-6 pb-28 sm:px-6 md:py-8 lg:px-8 lg:pb-8"
-          >
-            <div className="rounded-xl border border-white/10 bg-white/[0.07] p-6 shadow-2xl backdrop-blur-sm md:p-8">
+          {isHome ? (
+            <main id="main-content" tabIndex={-1} className="flex-grow">
               {children}
-            </div>
-          </main>
+            </main>
+          ) : (
+            <main
+              id="main-content"
+              tabIndex={-1}
+              className="mx-auto w-full max-w-7xl flex-grow px-4 py-6 pb-28 sm:px-6 md:py-8 lg:px-8 lg:pb-8"
+            >
+              <div className="rounded-xl border border-white/10 bg-white/[0.07] p-6 shadow-2xl backdrop-blur-sm md:p-8">
+                {children}
+              </div>
+            </main>
+          )}
           <footer className="px-4 pb-28 sm:px-6 lg:px-8 lg:pb-8">
             <SiteFooter />
           </footer>
