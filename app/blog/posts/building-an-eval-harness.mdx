@@ -1,0 +1,38 @@
+---
+title: "Evals aren't a checklist: what I learned building one"
+publishedAt: "2026-06-21"
+summary: "I spent an evening building an eval harness for an AI agent, and it changed what I think evaluating an agent actually means."
+---
+
+I used to think an eval was a checklist. You write down a thing the agent should be able to do, you check whether it can, and you move on. That's the honest starting point, and it's roughly where I was a week ago. Then I actually built one, and almost everything interesting turned out to be hiding inside the words "thing" and "can."
+
+## Why I built it on a video game
+
+To have something real to evaluate, I rebuilt the first level of the original Super Mario Bros from scratch and wired it so an agent can play it through the same interface I use with the arrow keys. The agent reads the state of the world (where it is, what's ahead, where the enemies are) and sends back an action, one frame at a time.
+
+A game turns out to be a good place to learn this. The world hands you free ground truth, so there's no arguing about whether the agent did the right thing (Mario is either alive or he isn't, he either reached the flag or he didn't). And a single run is naturally a trajectory, which is just the sequence of choices the agent made given what it could see. That sequence is the thing you actually want to grade, and most of the time it's the thing people forget to look at.
+
+## The suite, and a result that surprised me
+
+I wrote thirteen scenarios (stomp an enemy, clear a pit, climb a tall pipe, grab a power-up) and scored three agents against all of them. The naive agent that just runs right and jumps at walls passed 2 of 13. A tuned heuristic with proper jump timing passed 7. That spread is the whole point of an eval, because a suite that everyone passes or everyone fails tells you nothing, even when the task is real.
+
+The part that taught me something was the judge. I had an LLM read the recorded play-by-play of each run and grade the decisions rather than the outcome. Two of my scenarios were scoring as opposites, one as a pass and one as a fail, and the judge noticed the agent was doing the exact same thing in both. It was jumping over enemies instead of landing on them (safe in one scenario, an objective-miss in the other). That was one root cause wearing two different scores, and a binary pass/fail report would never have shown me that. I fixed the single behavior and three scenarios flipped to passing at once, with nothing else regressing.
+
+## What an eval actually is
+
+Here's the reframe I walked away with. An eval isn't "can it do X." It's a question of how often it succeeds and how it fails across the whole spread of a task, measured in a way that's reproducible and sharp enough to drive your next change. The hard part isn't picking the task. It's defining "well" precisely enough to grade automatically, and then trusting the grader.
+
+A few things fell out of that once I saw it:
+
+- **Grade the path, not just the destination.** Two agents can both survive a level. One stomped on purpose and one got lucky, and an outcome-only eval can't tell them apart.
+- **Improve the system, never the test.** When I wanted a scenario to pass, the fix went into the agent, never into the scoring. Editing the test to pass the test is how you lie to yourself.
+- **Re-run everything after each change.** The suite is a ratchet. A real fix generalizes across scenarios, and a hack only moves the one you targeted (mine had to clear a regression before it counted).
+- **Determinism comes first.** I had a bug where the world didn't fully reset between runs, which would have quietly made every rerun disagree with the last. You can't measure progress on a surface that shifts under you.
+
+## Where I'm going next
+
+The honest gap right now is that my judge is unvalidated. I'm trusting an LLM's scores without ever checking them against my own. Everyone who does this seriously points at the same fix, from Hamel Husain's eval course to Shreya Shankar's "Who Validates the Validators?" to Anthropic's guide on agent evals. You hand-label a sample yourself, you measure how well the judge agrees with you, and only then do you trust it at scale. After that comes binary per-failure-mode scoring, partial credit, and eventually pointing the whole harness at an actual LLM agent instead of my scripted ones.
+
+The part I'm most excited about is that this compounds. Every feature I add to the game becomes new behavior to evaluate, so the suite grows with the thing it's testing. That's the loop I want to be in.
+
+The code is on GitHub at [github.com/mattej5/mario-eval](https://github.com/mattej5/mario-eval) if you want to see how it's wired. If you're running an LLM as a judge somewhere real, I'd genuinely like to know how you keep it honest.

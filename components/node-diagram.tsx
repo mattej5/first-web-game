@@ -23,7 +23,15 @@ function pathD(x: number) {
   return `M ${CX},${CY} C ${CX},${CY + 80} ${x},${NODE_Y - 80} ${x},${NODE_Y}`;
 }
 
-export function NodeDiagram() {
+// Approx path length for the cubic beziers above — used for the scroll trace.
+const PATH_LEN = 260;
+
+export function NodeDiagram({ progress }: { progress?: number }) {
+  // Scroll-driven "circuit trace": when a progress value is supplied, lines
+  // draw in via stroke-dashoffset and nodes light lime sequentially.
+  const traced = typeof progress === "number";
+  const p = traced ? Math.min(1, Math.max(0, progress!)) : 1;
+
   return (
     <svg
       width={W}
@@ -45,7 +53,7 @@ export function NodeDiagram() {
         ))}
       </defs>
 
-      {/* Dashed branch lines */}
+      {/* Dashed branch lines (ambient track) */}
       {specs.map((s, i) => (
         <path
           key={i}
@@ -56,6 +64,25 @@ export function NodeDiagram() {
           strokeDasharray="3 7"
         />
       ))}
+
+      {/* Scroll-driven lime trace drawn over each branch */}
+      {traced &&
+        specs.map((s, i) => {
+          const seg = specs.length;
+          const local = Math.min(1, Math.max(0, p * seg - i));
+          return (
+            <path
+              key={`trace-${i}`}
+              d={pathD(s.x)}
+              fill="none"
+              stroke="#A5E446"
+              strokeWidth="1.5"
+              strokeDasharray={PATH_LEN}
+              strokeDashoffset={PATH_LEN * (1 - local)}
+              style={{ filter: "drop-shadow(0 0 3px rgba(165,228,70,0.7))" }}
+            />
+          );
+        })}
 
       {/* Flowing particles — 3 per branch, staggered */}
       {specs.map((s, i) =>
@@ -84,48 +111,59 @@ export function NodeDiagram() {
       )}
 
       {/* Specialty nodes */}
-      {specs.map((s, i) => (
-        <g key={i}>
-          <circle
-            cx={s.x}
-            cy={NODE_Y}
-            r={NODE_R}
-            fill="rgba(255,255,255,0.05)"
-            stroke="rgba(255,255,255,0.22)"
-            strokeWidth="1"
-          >
-            <animate
-              attributeName="opacity"
-              values="1;0.35;1"
-              dur="3.5s"
-              repeatCount="indefinite"
-              begin={`${blinkDelays[i]}s`}
-            />
-          </circle>
-          <text
-            x={s.x}
-            y={NODE_Y + NODE_R + 13}
-            textAnchor="middle"
-            fill="rgba(255,255,255,0.4)"
-            fontSize="8"
-            fontFamily="'Departure Mono','SF Mono','Fira Code',monospace"
-            letterSpacing="0.06em"
-          >
-            {s.label[0]}
-          </text>
-          <text
-            x={s.x}
-            y={NODE_Y + NODE_R + 23}
-            textAnchor="middle"
-            fill="rgba(255,255,255,0.4)"
-            fontSize="8"
-            fontFamily="'Departure Mono','SF Mono','Fira Code',monospace"
-            letterSpacing="0.06em"
-          >
-            {s.label[1]}
-          </text>
-        </g>
-      ))}
+      {specs.map((s, i) => {
+        const lit = traced && p * specs.length >= i + 0.85;
+        return (
+          <g key={i}>
+            <circle
+              cx={s.x}
+              cy={NODE_Y}
+              r={NODE_R}
+              fill={lit ? "rgba(165,228,70,0.18)" : "rgba(255,255,255,0.05)"}
+              stroke={lit ? "#A5E446" : "rgba(255,255,255,0.22)"}
+              strokeWidth="1"
+              style={{
+                transition: "fill 0.25s ease, stroke 0.25s ease",
+                filter: lit
+                  ? "drop-shadow(0 0 4px rgba(165,228,70,0.7))"
+                  : "none",
+              }}
+            >
+              {!traced && (
+                <animate
+                  attributeName="opacity"
+                  values="1;0.35;1"
+                  dur="3.5s"
+                  repeatCount="indefinite"
+                  begin={`${blinkDelays[i]}s`}
+                />
+              )}
+            </circle>
+            <text
+              x={s.x}
+              y={NODE_Y + NODE_R + 13}
+              textAnchor="middle"
+              fill="rgba(255,255,255,0.4)"
+              fontSize="8"
+              fontFamily="'Departure Mono','SF Mono','Fira Code',monospace"
+              letterSpacing="0.06em"
+            >
+              {s.label[0]}
+            </text>
+            <text
+              x={s.x}
+              y={NODE_Y + NODE_R + 23}
+              textAnchor="middle"
+              fill="rgba(255,255,255,0.4)"
+              fontSize="8"
+              fontFamily="'Departure Mono','SF Mono','Fira Code',monospace"
+              letterSpacing="0.06em"
+            >
+              {s.label[1]}
+            </text>
+          </g>
+        );
+      })}
 
       {/* Center node — pulsing ring */}
       <circle
