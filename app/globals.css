@@ -29,52 +29,32 @@ body {
   min-height: 100vh;
 }
 
-@keyframes orb-a {
-  0%   { transform: translate(0, 0) scale(1); }
-  33%  { transform: translate(60px, -40px) scale(1.08); }
-  66%  { transform: translate(-30px, 50px) scale(0.95); }
-  100% { transform: translate(0, 0) scale(1); }
+/* Reveal-on-scroll (IntersectionObserver-driven via <Reveal>) */
+[data-reveal] {
+  opacity: 0;
+  transform: translateY(16px);
 }
 
-@keyframes orb-b {
-  0%   { transform: translate(0, 0) scale(1); }
-  33%  { transform: translate(-50px, 30px) scale(0.92); }
-  66%  { transform: translate(40px, -60px) scale(1.06); }
-  100% { transform: translate(0, 0) scale(1); }
-}
-
-.orb {
-  position: fixed;
-  border-radius: 50%;
-  filter: blur(120px);
-  pointer-events: none;
-  z-index: 0;
-}
-
-.orb-green {
-  width: 600px;
-  height: 600px;
-  background: radial-gradient(circle, rgba(165, 228, 70, 0.18) 0%, transparent 70%);
-  bottom: -100px;
-  left: 5%;
-  animation: orb-a 14s ease-in-out infinite;
-}
-
-.orb-indigo {
-  width: 500px;
-  height: 500px;
-  background: radial-gradient(circle, rgba(99, 102, 241, 0.2) 0%, transparent 70%);
-  top: -80px;
-  right: 10%;
-  animation: orb-b 19s ease-in-out infinite;
+[data-reveal].reveal-in {
+  opacity: 1;
+  transform: translateY(0);
+  transition:
+    opacity 0.4s ease,
+    transform 0.4s ease;
+  transition-delay: var(--reveal-delay, 0ms);
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .orb {
-    animation: none;
-  }
-
   * {
     transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+  }
+
+  /* Disable all custom scroll/entrance motion — show final state immediately */
+  [data-reveal] {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
   }
 }

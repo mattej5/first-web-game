@@ -1,8 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
 
-import { getPostClickCount, recordEvent } from "../events/store";
+import { getEventsSummary, isAnalyticsEventType, recordEvent } from "./store";
 
-type PostClickRequestBody = {
+type EventRequestBody = {
+  type?: unknown;
   slug?: unknown;
   referrer?: unknown;
 };
@@ -16,21 +17,25 @@ function normalizeOptionalString(value: unknown) {
   return trimmed.length > 0 ? trimmed : undefined;
 }
 
-export async function GET(request: NextRequest) {
-  const slug = normalizeOptionalString(
-    request.nextUrl.searchParams.get("slug")
-  );
-  const count = await getPostClickCount(slug);
-  return NextResponse.json({ count });
+export async function GET() {
+  const summary = await getEventsSummary();
+  return NextResponse.json(summary);
 }
 
 export async function POST(request: NextRequest) {
-  let body: PostClickRequestBody = {};
+  let body: EventRequestBody;
 
   try {
-    body = (await request.json()) as PostClickRequestBody;
+    body = (await request.json()) as EventRequestBody;
   } catch {
-    // Existing callers use JSON, but malformed payloads should not break tracking.
+    return NextResponse.json(
+      { error: "Expected a JSON request body." },
+      { status: 400 }
+    );
+  }
+
+  if (!isAnalyticsEventType(body.type)) {
+    return NextResponse.json({ error: "Invalid event type." }, { status: 400 });
   }
 
   const slug = normalizeOptionalString(body.slug);
@@ -39,7 +44,7 @@ export async function POST(request: NextRequest) {
     normalizeOptionalString(request.headers.get("referer"));
 
   const result = await recordEvent({
-    type: "post_click",
+    type: body.type,
     slug,
     referrer,
   });

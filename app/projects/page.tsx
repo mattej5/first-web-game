@@ -1,297 +1,217 @@
 "use client";
 
-import Accordion from "@mui/material/Accordion";
-import AccordionSummary from "@mui/material/AccordionSummary";
-import AccordionDetails from "@mui/material/AccordionDetails";
-import Typography from "@mui/material/Typography";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import Button from "@mui/material/Button";
+import { useEffect, useRef } from "react";
+import { projects, type Project, type ProjectTier } from "@/data/projects";
+import { GridCanvas } from "@/components/grid-canvas";
+import { Reveal } from "@/components/use-reveal";
+import { useScrollProgress } from "@/components/use-scroll-progress";
+import { track } from "@/lib/analytics";
 
-export default function ProjectPage() {
+const metaFont =
+  "'Departure Mono', 'SF Mono', 'Fira Code', 'Cascadia Code', monospace";
+
+const tierOrder: ProjectTier[] = ["FLAGSHIP AI", "PRODUCTS", "ARCHIVE"];
+const tierBlurb: Record<ProjectTier, string> = {
+  "FLAGSHIP AI": "The work I lead with: agents, MCP, and on-device AI.",
+  PRODUCTS: "Shipped things people actually use.",
+  ARCHIVE: "Earlier builds, kept for the record.",
+};
+
+function metaLabel(color: string): React.CSSProperties {
+  return {
+    fontFamily: metaFont,
+    fontSize: "11px",
+    letterSpacing: "0.1em",
+    textTransform: "uppercase",
+    color,
+  };
+}
+
+function ProjectCard({
+  project,
+  litRef,
+}: {
+  project: Project;
+  litRef: (el: HTMLDivElement | null) => void;
+}) {
   return (
-    <div>
-      <h1 className="mb-4 text-2xl font-bold">Current and Past Projects</h1>
-      <p className="text-gray-900">
-        Here you can find a selection of my recent projects, showcasing my
-        skills in software development, data engineering, and cloud
-        architecture.
+    <div
+      data-reveal
+      ref={litRef}
+      className="group border border-white/[0.08] bg-black p-6 transition-colors duration-150 hover:border-white/[0.14] hover:bg-[#050505]"
+    >
+      <div className="mb-3 flex flex-wrap gap-x-4 gap-y-1">
+        {project.tags.map((tag) => (
+          <span
+            key={tag}
+            data-tag
+            style={{
+              fontFamily: metaFont,
+              fontSize: "11px",
+              letterSpacing: "0.1em",
+              textTransform: "uppercase",
+              color: "#808080",
+              transition: "color 0.3s ease",
+            }}
+          >
+            {tag}
+          </span>
+        ))}
+      </div>
+
+      <h3
+        className="mb-2 text-white"
+        style={{ fontSize: "22px", fontWeight: 700, letterSpacing: "-0.01em" }}
+      >
+        {project.title}
+      </h3>
+
+      <p className="max-w-2xl text-[15px] leading-[1.65] text-white/60">
+        {project.description}
       </p>
-      <br />
 
-      <Accordion className="mb-6">
-        <AccordionSummary
-          expandIcon={<ExpandMoreIcon />}
-          aria-controls="panel-agent-3d-content"
-          id="panel-agent-3d-header"
-        >
-          <Typography sx={{ fontWeight: "bold" }}>
-            Agent in a 3D Playground
-          </Typography>
-        </AccordionSummary>
-        <AccordionDetails>
-          <Typography>
-            An interactive agent playground built using Next.js and Three.js.
-            The playground features a 3D office workspace where an AI agent
-            navigates between three desks (Planning, Writing, Critique) to
-            recursively write a book.
-          </Typography>
-          <br />
-          <Button
-            variant="contained"
-            sx={{
-              backgroundColor: "#047857",
-              "&:hover": { backgroundColor: "#065f46" },
-            }}
-            href="https://www.loom.com/share/ff38ea5b69c34ce0a9f19522c9af04e3"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Watch Demo on Loom
-          </Button>
-        </AccordionDetails>
-      </Accordion>
-
-      <Accordion className="mb-6">
-        <AccordionSummary
-          expandIcon={<ExpandMoreIcon />}
-          aria-controls="panel1-content"
-          id="panel1-header"
-        >
-          {/* Make the title bold */}
-          <Typography sx={{ fontWeight: "bold" }}>
-            A Better Way to Graduation
-          </Typography>
-        </AccordionSummary>
-        <AccordionDetails>
-          <Typography>
-            I&apos;m building a platform to help university students effectively
-            plan their academic careers, advisors to guide their students, and
-            registrars to forecast their resource allocation. This is an ongoing
-            project that I am working on for the Sandbox program.
-          </Typography>
-          <br />
-          {/* Make the button green */}
-          <Button
-            variant="contained"
-            sx={{
-              backgroundColor: "#047857",
-              "&:hover": { backgroundColor: "#065f46" },
-            }}
-            href="https://stuplanning.com"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Visit the stu website
-          </Button>
-        </AccordionDetails>
-      </Accordion>
-
-      <Accordion className="mb-6">
-        <AccordionSummary
-          expandIcon={<ExpandMoreIcon />}
-          aria-controls="panel-lumenarie-content"
-          id="panel-lumenarie-header"
-        >
-          <Typography sx={{ fontWeight: "bold" }}>
-            Lumenarie Marketplace
-          </Typography>
-        </AccordionSummary>
-        <AccordionDetails>
-          <Typography>
-            A classroom marketplace that helps my wife&apos;s science students
-            earn and spend star-themed rewards while reinforcing collaboration,
-            kindness, and accountability. Teachers get quick dashboards for
-            awarding Lumens, reviewing submissions, and keeping the class
-            economy transparent without extra admin work.
-          </Typography>
-          <br />
-          <Typography component="div" sx={{ mt: 2 }}>
-            <strong>Impact:</strong>
-            <ul style={{ marginTop: "8px", paddingLeft: "20px" }}>
-              <li>
-                <strong>73 active students</strong> with{" "}
-                <strong>273 transactions</strong> since implementation
-              </li>
-              <li>
-                Reduced daily award time from{" "}
-                <strong>40 minutes to 5 minutes</strong> per day
-              </li>
-              <li>
-                <strong>175 minutes saved per week</strong> (87.5% time
-                reduction)
-              </li>
-            </ul>
-          </Typography>
-          <br />
-          <Button
-            variant="contained"
-            sx={{
-              backgroundColor: "#047857",
-              "&:hover": { backgroundColor: "#065f46" },
-            }}
-            href="https://lumenarie-marketplace.vinjones.me"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Explore Lumenarie Marketplace
-          </Button>
-        </AccordionDetails>
-      </Accordion>
-
-      <Accordion className="mb-6">
-        <AccordionSummary
-          expandIcon={<ExpandMoreIcon />}
-          aria-controls="panel1-content"
-          id="panel1-header"
-        >
-          <Typography sx={{ fontWeight: "bold" }}>
-            Automation for Teachers: Agentic AI for grading student notes
-          </Typography>
-        </AccordionSummary>
-        <AccordionDetails>
-          <Typography>
-            I detailed my experience integrating an automation that uses AI
-            agents to grade student notes in a blog post. This project was done
-            in collaboration with a high school teacher to help automate one of
-            their grading processes.
-          </Typography>
-          <br />
-          <Button
-            variant="contained"
-            sx={{
-              backgroundColor: "#047857",
-              "&:hover": { backgroundColor: "#065f46" },
-            }}
-            color="primary"
-            href="/blog/automation-for-teachers"
-          >
-            See blog post
-          </Button>
-        </AccordionDetails>
-      </Accordion>
-
-      <Accordion className="mb-6">
-        <AccordionSummary
-          expandIcon={<ExpandMoreIcon />}
-          aria-controls="panel1-content"
-          id="panel1-header"
-        >
-          <Typography sx={{ fontWeight: "bold" }}>App in a Day</Typography>
-        </AccordionSummary>
-        <AccordionDetails>
-          <Typography>
-            During the summer, my manager encouraged me to learn React Native,
-            so I built an app (android download provided) that allows people to
-            link to the same game session from separate devices and play some
-            old-fashioned tic-tac-toe.
-          </Typography>
-          <br />
-          <Button
-            variant="contained"
-            sx={{
-              backgroundColor: "#047857",
-              "&:hover": { backgroundColor: "#065f46" },
-            }}
-            color="primary"
-            href="https://drive.google.com/file/d/1jfkryUnuZjf38Rk6u1nunske7avgSXOz/view?usp=drive_link"
-          >
-            Request to download the Android App
-          </Button>
-        </AccordionDetails>
-      </Accordion>
-
-      <Accordion className="mb-6">
-        <AccordionSummary
-          expandIcon={<ExpandMoreIcon />}
-          aria-controls="panel1-content"
-          id="panel1-header"
-        >
-          <Typography sx={{ fontWeight: "bold" }}>
-            Next.JS as a Game Engine
-          </Typography>
-        </AccordionSummary>
-        <AccordionDetails>
-          <Typography>
-            Check out one of my experimental builds that uses Next.js as a game
-            engine!
-          </Typography>
-          <br />
-          <Button
-            variant="contained"
-            sx={{
-              backgroundColor: "#047857",
-              "&:hover": { backgroundColor: "#065f46" },
-            }}
-            color="primary"
-            href="/game"
-          >
-            Play Game
-          </Button>
-        </AccordionDetails>
-      </Accordion>
-
-      <Accordion className="mb-6">
-        <AccordionSummary
-          expandIcon={<ExpandMoreIcon />}
-          aria-controls="panel1-content"
-          id="panel1-header"
-        >
-          <Typography sx={{ fontWeight: "bold" }}>INTEX I</Typography>
-        </AccordionSummary>
-        <AccordionDetails>
-          <Typography>
-            Since this was a school project that has since been shut down,
-            I&apos;ve written a blog post detailing the project and some of the
-            challenges we faced.
-          </Typography>
-          <br />
-          <Button
-            variant="contained"
-            sx={{
-              backgroundColor: "#047857",
-              "&:hover": { backgroundColor: "#065f46" },
-            }}
-            color="primary"
-            href="/blog/intex-I"
-          >
-            See Post
-          </Button>
-        </AccordionDetails>
-      </Accordion>
-
-      <Accordion className="mb-6">
-        <AccordionSummary
-          expandIcon={<ExpandMoreIcon />}
-          aria-controls="panel1-content"
-          id="panel1-header"
-        >
-          <Typography sx={{ fontWeight: "bold" }}>
-            Data Migration Accuracy Tool
-          </Typography>
-        </AccordionSummary>
-        <AccordionDetails>
-          <Typography>
-            This tool allows a user to compare two excel files representing the
-            before and after states of a data migration, highlighting
-            discrepancies in the data and providing a high-level overview of the
-            accuracy of each column. This is an older project using python and
-            pandas, but it remains a useful utility for data migration tasks.
-            <br />
-            <br />
-            <Button
-              variant="contained"
-              sx={{
-                backgroundColor: "#047857",
-                "&:hover": { backgroundColor: "#065f46" },
-              }}
-              color="primary"
-              href="https://github.com/mattej5/data-migration-accuracy-tool"
+      {project.impactStats && (
+        <ul className="mt-4 space-y-1.5 pl-0">
+          {project.impactStats.map((stat) => (
+            <li
+              key={stat}
+              className="flex items-center gap-2.5 text-[14px] text-white/50"
             >
-              See Github Repository
-            </Button>
-          </Typography>
-        </AccordionDetails>
-      </Accordion>
+              <span className="h-1 w-1 shrink-0 rounded-full bg-[#A5E446]" />
+              {stat}
+            </li>
+          ))}
+        </ul>
+      )}
+
+      {project.link && (
+        <a
+          href={project.link.url}
+          onClick={() => track("project_click", { slug: project.title })}
+          target={project.link.url.startsWith("http") ? "_blank" : undefined}
+          rel={
+            project.link.url.startsWith("http")
+              ? "noopener noreferrer"
+              : undefined
+          }
+          className="mt-5 inline-flex items-center gap-2 text-[#A5E446] transition-opacity duration-150 hover:opacity-75"
+          style={{
+            fontFamily: metaFont,
+            fontSize: "0.75rem",
+            textTransform: "uppercase",
+            letterSpacing: "0.02em",
+            textDecoration: "none",
+          }}
+        >
+          {project.link.label} →
+        </a>
+      )}
     </div>
+  );
+}
+
+export default function ProjectsPage() {
+  const { ref: listRef, progress } = useScrollProgress<HTMLDivElement>();
+  const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
+
+  useEffect(() => {
+    track("page_view", { slug: "projects" });
+  }, []);
+
+  // As the fill line passes each card, flicker its tags grey → lime.
+  useEffect(() => {
+    const list = listRef.current;
+    if (!list) return;
+    const fillY = list.clientHeight * progress;
+    cardRefs.current.forEach((card) => {
+      if (!card) return;
+      const cardMid = card.offsetTop + card.offsetHeight * 0.35;
+      const lit = cardMid <= fillY;
+      card.querySelectorAll<HTMLElement>("[data-tag]").forEach((t) => {
+        t.style.color = lit ? "#A5E446" : "#808080";
+      });
+    });
+  }, [progress, listRef]);
+
+  let cardIndex = 0;
+
+  return (
+    <>
+      {/* ── Hero ── */}
+      <section
+        className="relative overflow-hidden bg-black"
+        style={{ paddingTop: "120px", paddingBottom: "56px" }}
+      >
+        <GridCanvas />
+        <div className="relative z-[2] mx-auto max-w-4xl px-6">
+          <span className="mb-5 block" style={metaLabel("#A5E446")}>
+            Selected Work
+          </span>
+          <h1
+            className="mb-5 text-white"
+            style={{
+              fontSize: "clamp(36px, 5vw, 60px)",
+              fontWeight: 700,
+              letterSpacing: "-0.02em",
+              lineHeight: 1.05,
+            }}
+          >
+            Things I&apos;ve Built
+          </h1>
+          <p className="max-w-xl text-[17px] leading-[1.65] text-white/60">
+            Agents, MCP servers, and on-device AI, plus the products and
+            experiments that got me here.
+          </p>
+        </div>
+      </section>
+
+      {/* ── Project list with lime scroll rail ── */}
+      <div className="mx-auto max-w-4xl px-6 pb-24">
+        <div ref={listRef} className="relative pl-6 md:pl-10">
+          {/* rail track */}
+          <div className="absolute top-0 bottom-0 left-0 w-px bg-white/[0.08]" />
+          {/* rail fill */}
+          <div
+            className="absolute top-0 left-0 w-px bg-[#A5E446]"
+            style={{
+              height: `${progress * 100}%`,
+              boxShadow: "0 0 8px rgba(165,228,70,0.6)",
+              transition: "height 0.1s linear",
+            }}
+          />
+
+          {tierOrder.map((tier) => {
+            const group = projects.filter((p) => p.tier === tier);
+            if (group.length === 0) return null;
+            return (
+              <section key={tier} className="mb-14">
+                <div className="mb-6">
+                  <span className="block" style={metaLabel("#808080")}>
+                    {tier}
+                  </span>
+                  <p className="mt-1 text-[13px] text-white/40">
+                    {tierBlurb[tier]}
+                  </p>
+                </div>
+                <Reveal className="flex flex-col gap-4">
+                  {group.map((project) => {
+                    const idx = cardIndex++;
+                    return (
+                      <ProjectCard
+                        key={project.title}
+                        project={project}
+                        litRef={(el) => {
+                          cardRefs.current[idx] = el;
+                        }}
+                      />
+                    );
+                  })}
+                </Reveal>
+              </section>
+            );
+          })}
+        </div>
+      </div>
+    </>
   );
 }

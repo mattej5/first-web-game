@@ -11,7 +11,9 @@ export default function Template({ children }: { children: React.ReactNode }) {
     return <>{children}</>;
   }
 
-  const isHome = pathname === "/";
+  // Pages that own their full-bleed dark layout (no glass-card wrapper).
+  const fullBleed =
+    pathname === "/" || pathname === "/projects" || pathname === "/about";
 
   return (
     <>
@@ -21,12 +23,10 @@ export default function Template({ children }: { children: React.ReactNode }) {
       >
         Skip to main content
       </a>
-      {!isHome && <div className="orb orb-green" aria-hidden="true" />}
-      {!isHome && <div className="orb orb-indigo" aria-hidden="true" />}
       <div className="relative flex min-h-screen w-full flex-col lg:flex-row">
         <SiteHeader />
         <div className="flex min-w-0 flex-1 flex-col overflow-x-hidden">
-          {isHome ? (
+          {fullBleed ? (
             <main id="main-content" tabIndex={-1} className="flex-grow">
               {children}
             </main>
