@@ -77,20 +77,32 @@ export default function AboutMe() {
           </p>
           <p data-reveal>
             Most of what I share comes straight from what I ship. I build
-            agents, MCP servers, and on-device AI. Recent work:{" "}
+            agents, MCP servers, and on-device AI. Current work:{" "}
+            <strong>Scout</strong>, an SDR agent that runs real outbound for
+            Leland&apos;s AI Builder Program; <strong>Founder OS</strong>, the
+            agent-powered operating system I run my projects on; a personal
+            second-brain MCP server; and an MCP server I built to manage this
+            site through an agent. Past builds include{" "}
             <strong>School OS</strong>, a Socratic tutor backed by a
-            tamper-evident, hash-chained learning ledger; an on-device
-            foundation-model iOS app that keeps inference on the phone; a
-            personal second-brain MCP server; and an MCP server I built to
-            manage this site through an agent. Alongside those I co-founded{" "}
-            <strong>stu</strong> and keep a handful of builder projects running:
-            Founder OS, buddy-nd, MacroClone, a voice-clone MCP, and more.
+            tamper-evident, hash-chained learning ledger, and an on-device
+            foundation-model iOS app that keeps inference on the phone.
+            Alongside those I co-founded <strong>stu</strong> and keep a handful
+            of builder projects running: buddy-nd, MacroClone, a voice-clone
+            MCP, and more.
           </p>
           <p data-reveal>
-            The throughline is a public plan: I&apos;m building toward Y
-            Combinator by 2031. Everything I make is a rep toward founding
-            something that matters, and toward getting good enough at building
-            with AI that I can teach anyone else to do it too.
+            The throughline is a{" "}
+            <a
+              href="/plan"
+              className="text-[#A5E446] transition-opacity duration-150 hover:opacity-75"
+              style={{ textDecoration: "none" }}
+            >
+              public plan
+            </a>
+            : I&apos;m building toward Y Combinator by 2031. Everything I make
+            is a rep toward founding something that matters, and toward getting
+            good enough at building with AI that I can teach anyone else to do
+            it too.
           </p>
           <p data-reveal>
             Time away from the keyboard keeps the rest of it honest. Whether

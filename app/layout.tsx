@@ -11,6 +11,9 @@ export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   alternates: {
     canonical: "/",
+    types: {
+      "text/markdown": "/llms.txt",
+    },
   },
   openGraph: {
     type: "website",

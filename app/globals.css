@@ -29,6 +29,34 @@ body {
   min-height: 100vh;
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
+/* Visible keyboard focus, tuned to the accent */
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+
+/* One-shot hero entrance: eyebrow → headline → copy → CTAs */
+@keyframes rise-in {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+[data-enter] {
+  opacity: 0;
+  animation: rise-in 0.55s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  animation-delay: var(--enter-delay, 0ms);
+}
+
 /* Reveal-on-scroll (IntersectionObserver-driven via <Reveal>) */
 [data-reveal] {
   opacity: 0;
@@ -51,10 +79,16 @@ body {
     animation-iteration-count: 1 !important;
   }
 
+  html {
+    scroll-behavior: auto;
+  }
+
   /* Disable all custom scroll/entrance motion — show final state immediately */
-  [data-reveal] {
+  [data-reveal],
+  [data-enter] {
     opacity: 1 !important;
     transform: none !important;
     transition: none !important;
+    animation: none !important;
   }
 }

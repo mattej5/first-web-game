@@ -9,6 +9,14 @@ export function SiteFooter() {
       <div className="mx-auto flex max-w-7xl flex-col items-center justify-between space-y-4 px-6 py-4 md:flex-row md:space-y-0">
         <p className="font-mono text-xs text-white/30">
           © {new Date().getFullYear()} Vin Jones. All rights reserved.
+          {" · "}
+          <a
+            href="/llms.txt"
+            className="transition-colors hover:text-[#a5e446]"
+            title="Markdown version of this site, for AI agents"
+          >
+            llms.txt
+          </a>
         </p>
 
         <div className="flex space-x-5 text-white/40">
