@@ -1,11 +1,18 @@
 export default function HistoryPage() {
   const historyData = [
     {
-      title: "Growth Management Intern",
+      title: "AI Education Intern",
       companyOrSchool: "Leland",
       date: "April 2026 - Present",
       type: "work",
       techStack: ["Claude", "Codex", "Gemini", "n8n"],
+    },
+    {
+      title: "AI SDR Agent (Scout)",
+      companyOrSchool: "Leland - AI Builder Program",
+      date: "July 2026",
+      type: "work",
+      techStack: ["Keystroke", "AI Agents", "Outbound Automation"],
     },
     {
       title: "Sandbox (sb05 cohort)",
@@ -13,6 +20,27 @@ export default function HistoryPage() {
       date: "April 2025 - April 2026",
       type: "education",
       techStack: ["AI Building", "Tech Sales", "Build in Public", "Supabase"],
+    },
+    {
+      title: "AI Builder Day Part 2",
+      companyOrSchool: "Leland",
+      date: "Upcoming: August 14-15, 2026",
+      type: "education",
+      techStack: ["AI Building", "Live Event"],
+    },
+    {
+      title: "Build with Gemma: JustBuild Hackathon",
+      companyOrSchool: "Pattern",
+      date: "July 17-18, 2026",
+      type: "education",
+      techStack: ["Gemma", "Ollama", "On-Device AI"],
+    },
+    {
+      title: "SEDI Hackathon",
+      companyOrSchool: "HITLAB",
+      date: "June 17-18, 2026",
+      type: "education",
+      techStack: ["KERI", "ACDC", "Digital Identity", "Healthcare Agents"],
     },
     {
       title: "SCRUM certification",
@@ -52,7 +80,7 @@ export default function HistoryPage() {
     {
       title: "Student Software Engineer",
       companyOrSchool: "BYU Life Sciences IT",
-      date: "February 2025 - November 2026",
+      date: "February 2025 - November 2025",
       type: "work",
       techStack: [
         "Web Development",
@@ -68,7 +96,7 @@ export default function HistoryPage() {
       techStack: ["Project Management", "System Integration", "Data Analysis"],
     },
     {
-      title: "Masters Information Systems Management",
+      title: "BS/MS Information Systems Management (Integrated Program)",
       companyOrSchool: "Brigham Young University - Marriott School of Business",
       date: "Expected: April 2027",
       type: "education",

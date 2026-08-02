@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { GridCanvas } from "@/components/grid-canvas";
+// import { GravityWell } from "@/components/gravity-well";
 import { HeroNodeDiagram } from "@/components/hero-node-diagram";
 import { Reveal } from "@/components/use-reveal";
 import { getBlogPosts, formatDate } from "@/app/blog/utils";
@@ -98,27 +99,12 @@ export default function Home() {
       {/* ── Hero ── */}
       <section className="relative overflow-hidden bg-black pt-16 pb-12 lg:pt-[110px] lg:pb-16">
         <GridCanvas />
-
-        {/* faint headshot wash */}
-        <div
-          aria-hidden
-          className="pointer-events-none absolute inset-y-0 right-0 z-[1]"
-          style={{
-            width: "55%",
-            backgroundImage: "url('/headshot_IS_square.jpg')",
-            backgroundSize: "cover",
-            backgroundPosition: "center top",
-            opacity: 0.07,
-            maskImage: "linear-gradient(to left, black 0%, transparent 70%)",
-            WebkitMaskImage:
-              "linear-gradient(to left, black 0%, transparent 70%)",
-          }}
-        />
+        {/* <GravityWell /> */}
 
         <div className="relative z-[2] mx-auto flex max-w-4xl items-center gap-12 px-6">
           {/* ── Left: text content ── */}
           <div className="flex-1">
-            <div className="mb-6">
+            <div className="mb-6" data-enter>
               <Image
                 src="/headshot_IS_square.jpg"
                 alt="Vin Jones"
@@ -128,18 +114,21 @@ export default function Home() {
               />
             </div>
             <span
+              data-enter
               className="mb-5 block text-[#A5E446]"
               style={{
                 fontFamily: metaFont,
                 fontSize: "11px",
                 letterSpacing: "0.1em",
                 textTransform: "uppercase",
+                ["--enter-delay" as string]: "70ms",
               }}
             >
               AI Builder · AI Education Intern @ Leland
             </span>
 
             <h1
+              data-enter
               className="text-white"
               style={{
                 fontFamily: "system-ui, -apple-system, 'Segoe UI', sans-serif",
@@ -148,12 +137,17 @@ export default function Home() {
                 letterSpacing: "-0.02em",
                 lineHeight: 1.05,
                 marginBottom: "24px",
+                ["--enter-delay" as string]: "140ms",
               }}
             >
               Vin Jones
             </h1>
 
-            <p className="mb-3 max-w-lg text-[17px] leading-[1.65] text-white/60">
+            <p
+              data-enter
+              style={{ ["--enter-delay" as string]: "220ms" }}
+              className="mb-3 max-w-lg text-[17px] leading-[1.65] text-white/60"
+            >
               I build agents, MCP servers, and on-device AI, and help others do
               the same as an AI Education Intern at{" "}
               <a
@@ -165,10 +159,14 @@ export default function Home() {
               </a>
               .
             </p>
-            <p className="mb-4 max-w-lg text-[17px] leading-[1.65] text-white/60">
-              Recent builds: School OS, an on-device foundation-model iOS app,
-              and an agent that drafts a book inside a 3D world. Previously
-              co-founded{" "}
+            <p
+              data-enter
+              style={{ ["--enter-delay" as string]: "280ms" }}
+              className="mb-4 max-w-lg text-[17px] leading-[1.65] text-white/60"
+            >
+              Recent builds: Scout, an SDR agent running real outbound for the
+              AI Builder Program; Founder OS, my agent-powered project OS; and a
+              personal second-brain MCP server. Previously co-founded{" "}
               <a
                 href="https://stuplanning.com/"
                 className="text-[#A5E446] transition-opacity duration-150 hover:opacity-75"
@@ -178,11 +176,25 @@ export default function Home() {
               </a>
               .
             </p>
-            <p className="mb-12 max-w-lg text-[15px] leading-[1.65] text-white/40">
-              Building toward Y Combinator by 2031.
+            <p
+              data-enter
+              style={{ ["--enter-delay" as string]: "340ms" }}
+              className="mb-12 max-w-lg text-[15px] leading-[1.65] text-white/40"
+            >
+              <a
+                href="/plan"
+                className="transition-opacity duration-150 hover:opacity-75"
+                style={{ textDecoration: "none" }}
+              >
+                Building toward Y Combinator by 2031 →
+              </a>
             </p>
 
-            <div className="flex flex-wrap items-center gap-4">
+            <div
+              data-enter
+              style={{ ["--enter-delay" as string]: "420ms" }}
+              className="flex flex-wrap items-center gap-4"
+            >
               <TrackedLink
                 eventType="cta_click"
                 slug="view-projects"
