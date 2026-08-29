@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { GridCanvas } from "@/components/grid-canvas";
 import { Reveal } from "@/components/use-reveal";
+import { Countdown } from "@/components/countdown";
 
 const metaFont =
   "'Departure Mono', 'SF Mono', 'Fira Code', 'Cascadia Code', monospace";
@@ -87,6 +88,9 @@ export default function PlanPage() {
           >
             Y Combinator by 2031
           </h1>
+          <div className="mt-6">
+            <Countdown target="2027-04-22T00:00:00" label="Until Graduation" />
+          </div>
         </div>
       </section>
 
