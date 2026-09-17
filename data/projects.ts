@@ -43,11 +43,25 @@ export const projects: Project[] = [
     },
   },
   {
+    title: "Tessera",
+    tier: "FLAGSHIP AI",
+    tags: ["AGENTS", "EDUCATION", "EVALS"],
+    description:
+      "A Mac-native agent harness that enforces School OS's Comprehension Gate outside the browser. Every course gets its own sandboxed workspace; an agent's file writes sit in escrow until a real comprehension check clears them, then land in a hash-chained ledger next to the work. Own Swift package across six library targets (GRDB persistence, tool-call routing, per-session workspace isolation), 375+ tests passing.",
+  },
+  {
     title: "MCP Server for This Site",
     tier: "FLAGSHIP AI",
     tags: ["MCP", "AGENTS", "FULL-STACK"],
     description:
       "An MCP server I built so I can manage this site's content through an AI agent, a working example of exposing a real app surface to a language model over the Model Context Protocol.",
+  },
+  {
+    title: "Self-Hosted Inference Box",
+    tier: "FLAGSHIP AI",
+    tags: ["ON-DEVICE AI", "MCP", "AGENTS"],
+    description:
+      "A shared GPU box running Ollama (Qwen3.8-27B at 262K context) that I use to run open agent frameworks, including Nous Research's Hermes Agent, off my own hardware instead of a cloud API. I wrote the MCP server that exposes it as tools, with model-switch guardrails so a shared box doesn't get a resident model evicted out from under whoever else is using it.",
   },
   {
     title: "Apple FM: On-Device Foundation Model App",
