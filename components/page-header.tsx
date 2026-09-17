@@ -4,7 +4,12 @@ import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { NAVIGATION_LINKS } from "@/lib/navigation";
-import { FaEnvelope, FaGithub, FaLinkedin } from "react-icons/fa";
+import {
+  FaEnvelope,
+  FaFileDownload,
+  FaGithub,
+  FaLinkedin,
+} from "react-icons/fa";
 
 export function SiteHeader() {
   const pathname = usePathname();
@@ -81,6 +86,13 @@ export function SiteHeader() {
           >
             View My Projects →
           </Link>
+          <Link
+            href="/Vin-Jones-Resume.pdf"
+            download
+            className="flex w-full items-center justify-center rounded border border-white/15 px-4 py-2.5 font-mono text-xs font-medium tracking-wide text-white/70 transition-colors hover:border-white/30 hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#a5e446]"
+          >
+            Download Résumé →
+          </Link>
         </div>
       </aside>
 
@@ -107,6 +119,14 @@ export function SiteHeader() {
             className="rounded bg-[#a5e446] px-3 py-1.5 font-mono text-xs font-medium tracking-wide text-black transition-opacity hover:opacity-90"
           >
             Book a Call →
+          </Link>
+          <Link
+            href="/Vin-Jones-Resume.pdf"
+            download
+            className="text-white/50 transition-colors hover:text-[#a5e446]"
+            aria-label="Download résumé"
+          >
+            <FaFileDownload size={18} />
           </Link>
           <Link
             href="https://github.com/mattej5"
