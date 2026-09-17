@@ -13,7 +13,7 @@ const personJsonLd = {
   "@context": "https://schema.org",
   "@type": "Person",
   name: "Vin Jones",
-  jobTitle: "AI Education Intern, Leland AI Builder Program",
+  jobTitle: "AI Builder",
   url: siteUrl,
   image: `${siteUrl}/headshot_IS_square.jpg`,
   sameAs: [
@@ -22,7 +22,6 @@ const personJsonLd = {
     "mailto:matthew.jones6288@gmail.com",
     "https://stuplanning.com",
   ],
-  worksFor: { "@type": "Organization", name: "Leland" },
 };
 
 const websiteJsonLd = {
@@ -31,7 +30,7 @@ const websiteJsonLd = {
   name: "Vin Jones Portfolio",
   url: siteUrl,
   description:
-    "Portfolio of Vin Jones, an AI builder and AI Education Intern at Leland who ships agents, MCP servers, and on-device AI.",
+    "Portfolio of Vin Jones, an AI builder who ships agents, MCP servers, and on-device AI.",
   publisher: { "@type": "Person", name: "Vin Jones" },
 };
 
@@ -124,7 +123,7 @@ export default function Home() {
                 ["--enter-delay" as string]: "70ms",
               }}
             >
-              AI Builder · AI Education Intern @ Leland
+              AI Builder · BYU MISM &apos;27 · Founder Track
             </span>
 
             <h1
@@ -148,23 +147,23 @@ export default function Home() {
               style={{ ["--enter-delay" as string]: "220ms" }}
               className="mb-3 max-w-lg text-[17px] leading-[1.65] text-white/60"
             >
-              I build agents, MCP servers, and on-device AI, and help others do
-              the same as an AI Education Intern at{" "}
+              I build agents, MCP servers, and on-device AI, with the evals to
+              show whether they work. Most recently the{" "}
               <a
                 href="https://ai.joinleland.com"
                 className="text-[#A5E446] transition-opacity duration-150 hover:opacity-75"
                 style={{ textDecoration: "none" }}
               >
-                Leland&apos;s AI Builder Program
-              </a>
-              .
+                AI Builder Program
+              </a>{" "}
+              at Leland; before that EY.
             </p>
             <p
               data-enter
               style={{ ["--enter-delay" as string]: "280ms" }}
               className="mb-4 max-w-lg text-[17px] leading-[1.65] text-white/60"
             >
-              Recent builds: Scout, an SDR agent running real outbound for the
+              Recent builds: Scout, an SDR agent that ran real outbound for the
               AI Builder Program; Founder OS, my agent-powered project OS; and a
               personal second-brain MCP server. Previously co-founded{" "}
               <a

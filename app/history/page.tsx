@@ -3,7 +3,7 @@ export default function HistoryPage() {
     {
       title: "AI Education Intern",
       companyOrSchool: "Leland",
-      date: "April 2026 - Present",
+      date: "March 2026 - August 2026",
       type: "work",
       techStack: ["Claude", "Codex", "Gemini", "n8n"],
     },
@@ -24,7 +24,7 @@ export default function HistoryPage() {
     {
       title: "AI Builder Day Part 2",
       companyOrSchool: "Leland",
-      date: "Upcoming: August 14-15, 2026",
+      date: "August 14-15, 2026",
       type: "education",
       techStack: ["AI Building", "Live Event"],
     },

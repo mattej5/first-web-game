@@ -44,7 +44,7 @@ export default function AboutMe() {
               textTransform: "uppercase",
             }}
           >
-            AI Builder · AI Education Intern @ Leland
+            AI Builder · BYU MISM &apos;27 · Founder Track
           </span>
           <h1
             className="text-white"
@@ -64,7 +64,8 @@ export default function AboutMe() {
       <div className="mx-auto max-w-4xl px-6 pb-24">
         <Reveal className="max-w-2xl space-y-6 border-t border-white/[0.08] pt-10 text-[17px] leading-[1.7] text-white/70">
           <p data-reveal>
-            I&apos;m an AI Education Intern at{" "}
+            I build agents, MCP servers, and on-device AI, with the evals to
+            show whether they work. Most recently I was an AI Intern and TA on{" "}
             <a
               href="https://ai.joinleland.com"
               className="text-[#A5E446] transition-opacity duration-150 hover:opacity-75"
@@ -72,23 +73,21 @@ export default function AboutMe() {
             >
               Leland&apos;s AI Builder Program
             </a>
-            , where I help people learn to actually build with AI, not just talk
-            about it.
+            , where I helped people learn to actually build with AI, not just
+            talk about it. Before that, EY.
           </p>
           <p data-reveal>
-            Most of what I share comes straight from what I ship. I build
-            agents, MCP servers, and on-device AI. Current work:{" "}
-            <strong>Scout</strong>, an SDR agent that runs real outbound for
-            Leland&apos;s AI Builder Program; <strong>Founder OS</strong>, the
-            agent-powered operating system I run my projects on; a personal
-            second-brain MCP server; and an MCP server I built to manage this
-            site through an agent. Past builds include{" "}
-            <strong>School OS</strong>, a Socratic tutor backed by a
-            tamper-evident, hash-chained learning ledger, and an on-device
-            foundation-model iOS app that keeps inference on the phone.
-            Alongside those I co-founded <strong>stu</strong> and keep a handful
-            of builder projects running: buddy-nd, MacroClone, a voice-clone
-            MCP, and more.
+            Most of what I share comes straight from what I ship. Current work:{" "}
+            <strong>Founder OS</strong>, the agent-powered operating system I
+            run my projects on; a personal second-brain MCP server; and an MCP
+            server I built to manage this site through an agent. Past builds
+            include <strong>Scout</strong>, an SDR agent that ran real outbound
+            for Leland&apos;s AI Builder Program, and <strong>School OS</strong>
+            , a Socratic tutor backed by a tamper-evident, hash-chained learning
+            ledger, and an on-device foundation-model iOS app that keeps
+            inference on the phone. Alongside those I co-founded{" "}
+            <strong>stu</strong> and keep a handful of builder projects running:
+            buddy-nd, MacroClone, a voice-clone MCP, and more.
           </p>
           <p data-reveal>
             The throughline is a{" "}

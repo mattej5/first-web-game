@@ -1,7 +1,6 @@
 import type { IconType } from "react-icons";
 import {
   FaBookOpen,
-  FaCode,
   FaFolderOpen,
   FaGamepad,
   FaHistory,
@@ -28,5 +27,4 @@ export const NAVIGATION_LINKS: NavLink[] = [
     icon: FaGamepad,
     includeInMobile: false,
   },
-  { href: "/vinos", label: "VinOS", icon: FaCode },
 ];
